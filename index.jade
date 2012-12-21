@@ -2,7 +2,7 @@
 html(lange="en")
 
 	head
-		append meta
+		include meta
 
 		//Favicon
 		link( rel="shortcut icon", href="/favicon.ico")
@@ -23,16 +23,19 @@ html(lange="en")
 	body.home
 		#WebsiteApp
 			#Views
-			.wrapper#Wrapper
-				.header
-					.logo logo here
-				.nav
-					a link 1
-					a link 2
-					a link 3
-				.content
-					section section content 1
-					section section content 2
+				include app-raw/views/views
+			.section#Login
+			.section.game#Game.active
+				.player.Player
+					.cards.Cards
+					.board.Board
+					.deck.Deck
+					.graveyard.Graveyard
+					.hand.Hand
 
-				.footer
-					p copyright here
+				.player.Opponent
+					.cards.Cards
+					.board.Board
+					.deck.Deck
+					.graveyard.Graveyard
+					.hand.Hand
