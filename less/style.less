@@ -1,25 +1,35 @@
 @import "style-magic.less";
 
+// Website ==========================
+.section{ .hidden;
+	&.active{ .shown;}
+}
 
 //Game ============================
-.game{ width:100%; height:100%; background:black;}
+.game{ width:100%; height:100%; .abs; left:0; top:0;}
 
-	.board{ width: 75%; height:291px; background:lighten(black, 20%);}
-	.deck{ width:126px; height:176px; .abs; right:0; bottom:0; background:url("../images/back.jpg") no-repeat right center; background-size: contain; .unselectable; z-index: 8;
-		&[data-state="Empty"]{ background-image: url("../images/empty.jpg");}
-	}
 
-	.graveyard{ width:126px; height:176px; .abs; right:0; bottom:176px; background:url("../images/graveyard.jpg") no-repeat right center; background-size: contain; .unselectable; z-index: 8;}
-	.hand{ width:75%; height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable; z-index: 8;
-		&.Active{ background:lighten(black, 35%);}
-	}
+	.player{ width: 100%; height:50%; .abs; bottom:0; left:0; overflow: hidden;  background:lighten(black, 10%);}
+		@backCardImage: url("../images/back.jpg");
+		@graveyardImage: url("../images/graveyard.jpg");
 
-	.card{ width:126px; height:176px; .abs; .fl; background: no-repeat 0 0; background-size: contain; .br(5px); .unselectable; z-index: 16;
-		&[data-area="onDeck"], &[data-area="onOpponentDeck"]{ background-image:url("../images/back.jpg") !important; }
-		&[data-tapped="true"]{ .trans( rotate( 90deg ) ); }
-	}
 
-	.opponent{
+		.board{ width: 75%; height:65%; background:lighten(black, 20%);}
+		.deck{ width:126px; height:35%; .abs; right:0; bottom:0; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8;
+			&[data-state="Empty"]{ background-image: url("../images/empty.jpg");}
+		}
+
+		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:0; bottom:176px; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8;}
+		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable; z-index: 8;
+			&.Active{ background:lighten(black, 35%);}
+		}
+
+		.card{ width:126px; height:176px; max-height:176px; .abs; .fl; background: no-repeat 0 0; background-size: contain; .br(5px); .unselectable; z-index: 16;
+			&[data-area="onDeck"], &[data-area="onOpponentDeck"]{ background-image:@backCardImage !important; }
+			&[data-tapped="true"]{ .trans( rotate( 90deg ) ); }
+		}
+
+	.opponent{  top:0;
 		.board{ .abs; bottom: 0;}
 		.deck{ top: 0; bottom: none;}
 		.graveyard{ bottom: 0;}
@@ -27,10 +37,4 @@
 	}
 
 	
-.section{ .hidden;
-	&.active{ .shown;}
-}
 
-
-.player{ width: 100%; height:50%; .abs; bottom:0; left:0; overflow: hidden;  background:lighten(black, 10%);}
-.opponent{ width: 100%; height:50%; .abs; top:0; left:0; overflow: hidden;  background:lighten(black, 10%);}
