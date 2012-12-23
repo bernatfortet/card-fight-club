@@ -31,6 +31,7 @@ require(
 		//Controllers ==========================
 			
 			"order!controllers/app",
+			"order!controllers/network_controller",
 			"order!controllers/game/game_controller",
 			"order!controllers/game/player_controller",
 			"order!controllers/game/card_controller",
