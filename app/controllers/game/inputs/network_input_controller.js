@@ -12,4 +12,4 @@ NetworkInputController = (function(_super) {
 
   return NetworkInputController;
 
-})(Spine.Controller);
+})(InputController);

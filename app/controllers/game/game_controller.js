@@ -8,6 +8,11 @@ GameController = (function(_super) {
 
   function GameController() {
     GameController.__super__.constructor.apply(this, arguments);
+    this.setPlayers();
+    this.setInputControllers();
+  }
+
+  GameController.prototype.setPlayers = function() {
     this.playerDeck = Deck.create({
       name: "Deck Player",
       baseCards: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 12, 12, 12, 12, 13, 13, 13, 13]
@@ -25,9 +30,15 @@ GameController = (function(_super) {
       deck: this.opponentDeck
     });
     this.player.setDeck(this.playerDeck);
-    this.opponent.setDeck(this.opponentDeck);
-    this.inputController = new InputController();
-  }
+    return this.opponent.setDeck(this.opponentDeck);
+  };
+
+  GameController.prototype.setInputControllers = function() {
+    this.humanInputController = new HumanInputController();
+    this.networkInputController = new NetworkInputController();
+    this.humanInputController.setTargetPlayer(this.player);
+    return this.networkInputController.setTargetPlayer(this.opponent);
+  };
 
   return GameController;
 

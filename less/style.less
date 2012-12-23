@@ -25,8 +25,8 @@
 		}
 
 		.card{ width:126px; height:176px; max-height:176px; .abs; .fl; background: no-repeat 0 0; background-size: contain; .br(5px); .unselectable; z-index: 16;
-			&[data-area="onDeck"], &[data-area="onOpponentDeck"]{ background-image:@backCardImage !important; }
-			&[data-tapped="true"]{ .trans( rotate( 90deg ) ); }
+			&[data-tapped="true"]{ .trans( rotate( 90deg ) ); .anim; }
+			&[data-flipped="true"]{ background-image:@backCardImage !important; .anim; }
 		}
 
 	.opponent{  top:0;

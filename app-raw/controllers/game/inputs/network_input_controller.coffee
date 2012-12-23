@@ -1,4 +1,3 @@
-class NetworkInputController extends Spine.Controller
+class NetworkInputController extends InputController
 	constructor: ->
 		super
-		

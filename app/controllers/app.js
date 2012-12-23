@@ -8,7 +8,7 @@ App = (function(_super) {
 
   function App() {
     App.__super__.constructor.apply(this, arguments);
-    this.game = new GameController();
+    this.gameController = new GameController();
   }
 
   return App;

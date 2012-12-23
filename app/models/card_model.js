@@ -10,9 +10,13 @@ Card = (function(_super) {
     Card.__super__.constructor.apply(this, arguments);
   }
 
-  Card.configure('Card', 'id', "img_id", "deck_id", "area");
+  Card.configure('Card', 'id', "img_id", "deck_id", "area", "controller");
 
   Card.include({
+    setController: function(cardController) {
+      this.controller = cardController;
+      return this.save();
+    },
     canBeTapped: function() {
       return this.isOnBoard;
     },

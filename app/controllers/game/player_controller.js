@@ -32,13 +32,29 @@ PlayerController = (function(_super) {
     cardModel = Card.create({
       id: card_item,
       img_id: card_item,
-      deck_id: 1
+      deck_id: 1,
+      area: null,
+      controller: null
     });
     cardController = new CardController({
       item: cardModel
     });
     return this.el.find(".Cards").append(cardController.el);
   };
+
+  PlayerController.prototype.moveCard = function(card, posX, posY) {
+    return card.controller.move(posX, posY);
+  };
+
+  PlayerController.prototype.tapCard = function(card) {
+    return card.controller.tap();
+  };
+
+  PlayerController.prototype.flipCard = function(card) {
+    return card.controller.flip();
+  };
+
+  PlayerController.prototype.getCardPercentPosX = function(card) {};
 
   return PlayerController;
 
