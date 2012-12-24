@@ -1,19 +1,19 @@
 class Deck extends Spine.Model
-	@configure 'Deck', 'name', 'baseCards', 'currentCards'
+	@configure 'Deck', 'name', 'baseCards', 'cards'
 
 	getTopCard: ->
-		if( !this.currentCards.isEmpty() )
-			return this.currentCards.Dequeue()
+		if( !this.cards.isEmpty() )
+			return this.cards.Dequeue()
 
 	hasCards: ->
-		!this.currentCards.isEmpty()
+		!this.cards.isEmpty()
 
 	shuffle: ->
 		this.shuffleCurrentCardsModernFisherYates() # for x in [1..10]
 
 	shuffleCurrentCardsModernFisherYates : ->
-		length = this.currentCards.Count()
-		array = this.currentCards.GetQueue()
+		length = this.cards.Count()
+		array = this.cards.GetQueue()
 		i = length;
 		while (--i)
 			j = Rand() * (i + 1) | 0
@@ -24,9 +24,11 @@ class Deck extends Spine.Model
 Deck.bind "create", ( deck ) ->
 	q = new Queue()
 	q.Enqueue(card) for card in deck.baseCards
-	deck.currentCards = q
+	deck.cards = q
 
 
+	deck.shuffle()
+	deck.shuffle()
 	deck.shuffle()
 	deck.save()
 

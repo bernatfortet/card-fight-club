@@ -16,7 +16,7 @@ html(lange="en")
 		script( data-main="app/main.js", src="app/libs/require-jquery.min.js")
 		
 		//Socket IO Client
-		script( src="http://localhost:8080/socket.io/socket.io.js")
+		//script( src="http://localhost:8080/socket.io/socket.io.js")
 
 		//Other Javascript
 		script( src="app/libs/ga.js")
@@ -30,12 +30,14 @@ html(lange="en")
 				include app-raw/views/views
 			.section#Login
 			.section.game#Game.active
+				.zoomed-card.ZoomedCard
 				.player.Player
 					.cards.Cards
 					.board.Board
 					.deck.Deck
 					.graveyard.Graveyard
 					.hand.Hand
+
 
 				.player.opponent.Opponent
 					.cards.Cards

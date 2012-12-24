@@ -4,16 +4,16 @@ class PlayerController extends Spine.Controller
 
 	setDeck: () ->
 		console.log("setting Deck");
-		this.addCard() for card in this.deck.baseCards
+		this.addCard( card ) for card in this.deck.cards.queue()
 
 	drawCard: () ->
 		console.log("draw Card");
 
-	addCard: ->
-		card_item = this.deck.getTopCard()
-		cardModel = Card.create( id: card_item, img_id: card_item, deck_id: 1, area: null, controller: null  )
+	addCard: ( cardId ) ->
+		cardModel = Card.create( img_id: cardId, deck_id: 1, area: null, controller: null  )
 		cardController = new CardController( item: cardModel )
 		this.el.find(".Cards").append( cardController.el )
+		cardController.moveToDeck()
 
 	moveCard: ( card, posX, posY ) ->
 		card.controller.move( posX, posY )
@@ -23,6 +23,12 @@ class PlayerController extends Spine.Controller
 
 	flipCard: ( card ) ->
 		card.controller.flip()
+
+	flipCardUp: ( card ) ->
+		card.controller.flipUp()
+
+	flipCardDown: ( card ) ->
+		card.controller.flipDown()
 
 	getCardPercentPosX: ( card ) ->
 

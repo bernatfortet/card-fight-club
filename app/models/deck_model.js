@@ -10,14 +10,14 @@ Deck = (function(_super) {
     Deck.__super__.constructor.apply(this, arguments);
   }
 
-  Deck.configure('Deck', 'name', 'baseCards', 'currentCards');
+  Deck.configure('Deck', 'name', 'baseCards', 'cards');
 
   Deck.prototype.getTopCard = function() {
-    if (!this.currentCards.isEmpty()) return this.currentCards.Dequeue();
+    if (!this.cards.isEmpty()) return this.cards.Dequeue();
   };
 
   Deck.prototype.hasCards = function() {
-    return !this.currentCards.isEmpty();
+    return !this.cards.isEmpty();
   };
 
   Deck.prototype.shuffle = function() {
@@ -26,8 +26,8 @@ Deck = (function(_super) {
 
   Deck.prototype.shuffleCurrentCardsModernFisherYates = function() {
     var array, i, j, length, swap, _results;
-    length = this.currentCards.Count();
-    array = this.currentCards.GetQueue();
+    length = this.cards.Count();
+    array = this.cards.GetQueue();
     i = length;
     _results = [];
     while (--i) {
@@ -51,7 +51,9 @@ Deck.bind("create", function(deck) {
     card = _ref[_i];
     q.Enqueue(card);
   }
-  deck.currentCards = q;
+  deck.cards = q;
+  deck.shuffle();
+  deck.shuffle();
   deck.shuffle();
   return deck.save();
 });

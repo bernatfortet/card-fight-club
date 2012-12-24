@@ -9,13 +9,10 @@ NetworkInputController = (function(_super) {
 
   function NetworkInputController() {
     this.onTest = __bind(this.onTest, this);    NetworkInputController.__super__.constructor.apply(this, arguments);
-    this.server = io.connect('http:localhost:8080');
     this.setListeners();
   }
 
-  NetworkInputController.prototype.setListeners = function() {
-    return this.server.on("test", this.onTest);
-  };
+  NetworkInputController.prototype.setListeners = function() {};
 
   NetworkInputController.prototype.onTest = function() {
     return console.log("on test");

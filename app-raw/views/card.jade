@@ -1,5 +1,6 @@
 | <script type="text/x-jquery-tmpl" id="CardTemplate">
 
-.card.Card(style="background-image: url('images/cards/${img_id}.jpg')", data-area="${area}", data-flipped="false", data-tapped="false", data-id="${id}")
+.card.Card( data-area="${area}", data-flipped="down", data-tapped="false", data-zoom="false", data-id="${id}")
+	.img(style="background-image: url('images/cards/${img_id}.jpg')")
 
 | </script>

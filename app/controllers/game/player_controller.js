@@ -13,11 +13,11 @@ PlayerController = (function(_super) {
   PlayerController.prototype.setDeck = function() {
     var card, _i, _len, _ref, _results;
     console.log("setting Deck");
-    _ref = this.deck.baseCards;
+    _ref = this.deck.cards.queue();
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       card = _ref[_i];
-      _results.push(this.addCard());
+      _results.push(this.addCard(card));
     }
     return _results;
   };
@@ -26,12 +26,10 @@ PlayerController = (function(_super) {
     return console.log("draw Card");
   };
 
-  PlayerController.prototype.addCard = function() {
-    var cardController, cardModel, card_item;
-    card_item = this.deck.getTopCard();
+  PlayerController.prototype.addCard = function(cardId) {
+    var cardController, cardModel;
     cardModel = Card.create({
-      id: card_item,
-      img_id: card_item,
+      img_id: cardId,
       deck_id: 1,
       area: null,
       controller: null
@@ -39,7 +37,8 @@ PlayerController = (function(_super) {
     cardController = new CardController({
       item: cardModel
     });
-    return this.el.find(".Cards").append(cardController.el);
+    this.el.find(".Cards").append(cardController.el);
+    return cardController.moveToDeck();
   };
 
   PlayerController.prototype.moveCard = function(card, posX, posY) {
@@ -52,6 +51,14 @@ PlayerController = (function(_super) {
 
   PlayerController.prototype.flipCard = function(card) {
     return card.controller.flip();
+  };
+
+  PlayerController.prototype.flipCardUp = function(card) {
+    return card.controller.flipUp();
+  };
+
+  PlayerController.prototype.flipCardDown = function(card) {
+    return card.controller.flipDown();
   };
 
   PlayerController.prototype.getCardPercentPosX = function(card) {};

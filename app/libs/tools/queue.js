@@ -6,7 +6,12 @@ Created by Stephen Morley - http://code.stephenmorley.org/ - under CC
 function Queue()
 {
 	var queue  = [];
+
 	var offset = 0;
+
+	this.queue = function(){
+		return queue;
+	}
 
 	this.Count = function(){
 		return (queue.length - offset);

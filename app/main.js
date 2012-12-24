@@ -32,9 +32,11 @@ require(
 			
 			"order!controllers/app",
 			"order!controllers/network_controller",
+
 			"order!controllers/game/game_controller",
 			"order!controllers/game/player_controller",
 			"order!controllers/game/card_controller",
+			"order!controllers/game/zoomed_card_controller",
 			
 			//Inputs
 			"order!controllers/game/inputs/input_controller",

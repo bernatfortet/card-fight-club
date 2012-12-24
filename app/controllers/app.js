@@ -8,7 +8,6 @@ App = (function(_super) {
 
   function App() {
     App.__super__.constructor.apply(this, arguments);
-    this.networkController = new NetworkController;
     this.gameController = new GameController();
   }
 

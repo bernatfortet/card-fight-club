@@ -9,7 +9,15 @@ CardController = (function(_super) {
 
   CardController.prototype.template = "CardTemplate";
 
+  CardController.prototype.isTapped = false;
+
+  CardController.prototype.isFlippedUp = false;
+
   function CardController() {
+    this.zoomOut = __bind(this.zoomOut, this);
+    this.zoomIn = __bind(this.zoomIn, this);
+    this.flipDown = __bind(this.flipDown, this);
+    this.flipUp = __bind(this.flipUp, this);
     this.flip = __bind(this.flip, this);
     this.tap = __bind(this.tap, this);    CardController.__super__.constructor.apply(this, arguments);
     this.render();
@@ -25,6 +33,13 @@ CardController = (function(_super) {
     return this.el.css("top", posY);
   };
 
+  CardController.prototype.moveToDeck = function() {
+    var deckPosX, deckPosY;
+    deckPosX = $(".Deck").offset().left;
+    deckPosY = $(".Deck").offset().top;
+    return this.move(deckPosX, deckPosY);
+  };
+
   CardController.prototype.tap = function() {
     if (this.el.attr("data-tapped") === "false") {
       return this.el.attr("data-tapped", "true");
@@ -34,11 +49,29 @@ CardController = (function(_super) {
   };
 
   CardController.prototype.flip = function() {
-    if (this.el.attr("data-flipped") === "false") {
-      return this.el.attr("data-flipped", "true");
+    if (this.el.attr("data-flipped") === "up") {
+      return this.flipDown();
     } else {
-      return this.el.attr("data-flipped", "false");
+      return this.flipUp();
     }
+  };
+
+  CardController.prototype.flipUp = function() {
+    this.el.attr("data-flipped", "up");
+    return this.isFlippedUp = true;
+  };
+
+  CardController.prototype.flipDown = function() {
+    this.el.attr("data-flipped", "down");
+    return this.isFlippedUp = false;
+  };
+
+  CardController.prototype.zoomIn = function() {
+    return this.el.attr("data-zoom", "true");
+  };
+
+  CardController.prototype.zoomOut = function() {
+    return this.el.attr("data-zoom", "false");
   };
 
   return CardController;

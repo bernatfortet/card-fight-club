@@ -25,7 +25,7 @@
     <!--App Javascript-->
     <script data-main="app/main.js" src="app/libs/require-jquery.min.js"></script>
     <!--Socket IO Client-->
-    <script src="http://localhost:8080/socket.io/socket.io.js"></script>
+    <!--script( src="http://localhost:8080/socket.io/socket.io.js")-->
     <!--Other Javascript-->
     <script src="app/libs/ga.js"></script>
     <!--RSS TODO-->
@@ -35,10 +35,13 @@
     <div id="WebsiteApp">
       <div id="Views">
         <!--Header--><script type="text/x-jquery-tmpl" id="CardTemplate">
-        <div style="background-image: url('images/cards/${img_id}.jpg')" data-area="${area}" data-flipped="false" data-tapped="false" data-id="${id}" class="card Card"></div></script>
+        <div data-area="${area}" data-flipped="down" data-tapped="false" data-zoom="false" data-id="${id}" class="card Card">
+          <div style="background-image: url('images/cards/${img_id}.jpg')" class="img"></div>
+        </div></script>
       </div>
       <div id="Login" class="section"></div>
       <div id="Game" class="section game active">
+        <div class="zoomed-card ZoomedCard"></div>
         <div class="player Player">
           <div class="cards Cards"></div>
           <div class="board Board"></div>
