@@ -6,6 +6,13 @@ GameController = (function(_super) {
 
   __extends(GameController, _super);
 
+  GameController.prototype.areas = {
+    deck: "deck",
+    hand: "hand",
+    board: "board",
+    graveyard: "graveyard"
+  };
+
   function GameController() {
     GameController.__super__.constructor.apply(this, arguments);
     this.setPlayers();

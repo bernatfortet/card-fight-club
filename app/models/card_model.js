@@ -13,6 +13,10 @@ Card = (function(_super) {
   Card.configure('Card', 'id', "img_id", "deck_id", "area", "controller");
 
   Card.include({
+    setArea: function(area) {
+      this.area = area;
+      return this.save();
+    },
     setController: function(cardController) {
       this.controller = cardController;
       return this.save();
@@ -21,13 +25,16 @@ Card = (function(_super) {
       return this.isOnBoard;
     },
     isOnBoard: function() {
-      return this.area === "onBoard";
+      return this.area === "board";
     },
     isOnDeck: function() {
-      return this.area === "onDeck";
+      return this.area === "deck";
+    },
+    isOnHand: function() {
+      return this.area === "hand";
     },
     isOnGraveyard: function() {
-      return this.area === "onGraveyard";
+      return this.area === "graveyard";
     }
   });
 

@@ -6,17 +6,16 @@ PlayerController = (function(_super) {
 
   __extends(PlayerController, _super);
 
+  PlayerController.prototype.deck = null;
+
   function PlayerController(deck) {
     PlayerController.__super__.constructor.apply(this, arguments);
   }
 
   PlayerController.prototype.setDeck = function() {
-    var card, _i, _len, _ref, _results;
-    console.log("setting Deck");
-    _ref = this.deck.cards.queue();
+    var card, _ref, _results;
     _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      card = _ref[_i];
+    for (card = _ref = this.deck.cards.Count() - 1; _ref <= 0 ? card <= 0 : card >= 0; _ref <= 0 ? card++ : card--) {
       _results.push(this.addCard(card));
     }
     return _results;
@@ -26,12 +25,12 @@ PlayerController = (function(_super) {
     return console.log("draw Card");
   };
 
-  PlayerController.prototype.addCard = function(cardId) {
+  PlayerController.prototype.addCard = function(cardNumber) {
     var cardController, cardModel;
     cardModel = Card.create({
-      img_id: cardId,
+      img_id: this.deck.cards.Get(cardNumber),
       deck_id: 1,
-      area: null,
+      area: "deck",
       controller: null
     });
     cardController = new CardController({
@@ -61,7 +60,33 @@ PlayerController = (function(_super) {
     return card.controller.flipDown();
   };
 
-  PlayerController.prototype.getCardPercentPosX = function(card) {};
+  PlayerController.prototype.onCardGoesToHand = function(card) {
+    if (card.area !== "hand") return this.onCardChangesArea(card, "hand");
+  };
+
+  PlayerController.prototype.onCardGoesToDeck = function(card) {
+    if (card.area !== "deck") return this.onCardChangesArea(card, "deck");
+  };
+
+  PlayerController.prototype.onCardGoesToBoard = function(card) {
+    if (card.area !== "board") return this.onCardChangesArea(card, "board");
+  };
+
+  PlayerController.prototype.onCardGoesToGraveyard = function(card) {
+    if (card.area !== "graveyard") {
+      return this.onCardChangesArea(card, "graveyard");
+    }
+  };
+
+  PlayerController.prototype.onCardChangesArea = function(card, area) {
+    if (card.area !== area) {
+      if (card.area === "deck" && (area === "hand" || area === "graveyard" || area === "board")) {
+        this.deck.getTopCard();
+      }
+      if (area === "deck") this.deck.putCardOnTop(card);
+      return card.setArea(area);
+    }
+  };
 
   return PlayerController;
 

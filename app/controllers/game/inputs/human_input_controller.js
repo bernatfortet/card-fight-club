@@ -9,12 +9,16 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.activeCard = null;
 
-  HumanInputController.prototype.zoomingCard = false;
+  HumanInputController.prototype.cardOriginalArea = null;
+
+  HumanInputController.prototype.cardFinalArea = null;
 
   function HumanInputController() {
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
+    this.onDropCardOnGraveyard = __bind(this.onDropCardOnGraveyard, this);
     this.onDropCardOnDeck = __bind(this.onDropCardOnDeck, this);
+    this.onDropCardOnBoard = __bind(this.onDropCardOnBoard, this);
     this.onDropCardOnHand = __bind(this.onDropCardOnHand, this);
     this.onCardDragStops = __bind(this.onCardDragStops, this);
     this.onDoubleClick = __bind(this.onDoubleClick, this);
@@ -31,8 +35,14 @@ HumanInputController = (function(_super) {
     $(".Hand").droppable({
       drop: this.onDropCardOnHand
     });
+    $(".Board").droppable({
+      drop: this.onDropCardOnBoard
+    });
     $(".Deck").droppable({
       drop: this.onDropCardOnDeck
+    });
+    $(".Graveyard").droppable({
+      drop: this.onDropCardOnGraveyard
     });
     $(".Card").on("dblclick", this.onDoubleClick);
     $(".Card").on("contextmenu", this.onRightMouseClick);
@@ -63,21 +73,29 @@ HumanInputController = (function(_super) {
     return console.log("onDropCardOnHand");
   };
 
+  HumanInputController.prototype.onDropCardOnBoard = function(event, ui) {
+    this.onCardGoesToBoard(this.getCardId(ui.draggable), ui.position);
+    return console.log("onDropCardOnBoard");
+  };
+
   HumanInputController.prototype.onDropCardOnDeck = function(event, ui) {
     this.onCardGoesToDeck(this.getCardId(ui.draggable), ui.position);
     return console.log("onDropCardOnDeck");
   };
 
+  HumanInputController.prototype.onDropCardOnGraveyard = function(event, ui) {
+    this.onCardGoesToGraveyard(this.getCardId(ui.draggable), ui.position);
+    return console.log("onDropCardOnDeck");
+  };
+
   HumanInputController.prototype.onMouseOverCard = function(event) {
     this.activeCard = event.currentTarget;
-    this.onZoomCardIn(this.getCardId(this.activeCard));
-    return console.log("onMouseOverCard", this.activeCard);
+    return this.onZoomCardIn(this.getCardId(this.activeCard));
   };
 
   HumanInputController.prototype.onMouseOutCard = function(event) {
     this.activeCard = null;
-    this.onZoomCardOut();
-    return console.log("onMouseOutCard");
+    return this.onZoomCardOut();
   };
 
   HumanInputController.prototype.getCardId = function(cardTarget) {

@@ -1,16 +1,17 @@
 class PlayerController extends Spine.Controller
+	deck: null
+
 	constructor: ( deck ) ->
 		super
 
 	setDeck: () ->
-		console.log("setting Deck");
-		this.addCard( card ) for card in this.deck.cards.queue()
+		this.addCard( card ) for card in [this.deck.cards.Count()-1..0]
 
 	drawCard: () ->
 		console.log("draw Card");
 
-	addCard: ( cardId ) ->
-		cardModel = Card.create( img_id: cardId, deck_id: 1, area: null, controller: null  )
+	addCard: ( cardNumber ) ->
+		cardModel = Card.create( img_id: this.deck.cards.Get(cardNumber), deck_id: 1, area: "deck", controller: null  )
 		cardController = new CardController( item: cardModel )
 		this.el.find(".Cards").append( cardController.el )
 		cardController.moveToDeck()
@@ -30,6 +31,31 @@ class PlayerController extends Spine.Controller
 	flipCardDown: ( card ) ->
 		card.controller.flipDown()
 
-	getCardPercentPosX: ( card ) ->
+	onCardGoesToHand: ( card ) ->
+		if( card.area != "hand" )
+			this.onCardChangesArea( card, "hand" )
 
-		
+	onCardGoesToDeck: ( card ) ->
+		if( card.area != "deck" )
+			this.onCardChangesArea( card, "deck" )
+
+	onCardGoesToBoard: ( card ) ->
+		if( card.area != "board" )
+			this.onCardChangesArea( card, "board" )
+
+	onCardGoesToGraveyard: ( card ) ->
+		if( card.area != "graveyard" )
+			this.onCardChangesArea( card, "graveyard" )
+
+	onCardChangesArea: ( card, area ) ->
+		if( card.area != area )
+
+			if( card.area == "deck" && ( area == "hand" || area == "graveyard" || area == "board" ) )
+				this.deck.getTopCard()
+
+			if( area == "deck" )
+				this.deck.putCardOnTop( card )
+
+			card.setArea( area )
+
+	# getCardPercentPosX: ( card ) ->

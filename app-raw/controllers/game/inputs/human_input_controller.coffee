@@ -1,7 +1,8 @@
 class HumanInputController extends InputController
 
 	activeCard: null
-	zoomingCard: false
+	cardOriginalArea: null
+	cardFinalArea: null
 
 	constructor: ->
 		super
@@ -20,8 +21,16 @@ class HumanInputController extends InputController
 			drop: this.onDropCardOnHand
 		})
 
+		$(".Board").droppable({
+			drop: this.onDropCardOnBoard
+		})
+
 		$(".Deck").droppable({
 			drop: this.onDropCardOnDeck
+		})
+
+		$(".Graveyard").droppable({
+			drop: this.onDropCardOnGraveyard
 		})
 
 		$(".Card").on("dblclick", this.onDoubleClick )
@@ -43,25 +52,31 @@ class HumanInputController extends InputController
 		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
 		this.onCardIsMoved( this.getCardId( event.target ), ui.position )	
 
-
 	onDropCardOnHand: ( event, ui ) =>
 		this.onCardGoesToHand( this.getCardId( ui.draggable ), ui.position )	
 		console.log( "onDropCardOnHand");
+
+	onDropCardOnBoard: ( event, ui ) =>
+		this.onCardGoesToBoard( this.getCardId( ui.draggable ), ui.position )	
+		console.log( "onDropCardOnBoard");
 
 	onDropCardOnDeck: ( event, ui ) =>
 		this.onCardGoesToDeck( this.getCardId( ui.draggable ), ui.position )	
 		console.log( "onDropCardOnDeck");
 
+	onDropCardOnGraveyard: ( event, ui ) =>
+		this.onCardGoesToGraveyard( this.getCardId( ui.draggable ), ui.position )	
+		console.log( "onDropCardOnDeck");
 			
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget
 		this.onZoomCardIn( this.getCardId( this.activeCard ))
-		console.log( "onMouseOverCard", this.activeCard);
+		#console.log( "onMouseOverCard", this.activeCard);
 
 	onMouseOutCard: ( event ) =>
 		this.activeCard = null
 		this.onZoomCardOut()
-		console.log( "onMouseOutCard");
+		#console.log( "onMouseOutCard");
 
 	getCardId: ( cardTarget ) ->
 		card = $(cardTarget)

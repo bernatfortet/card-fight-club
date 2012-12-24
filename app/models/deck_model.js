@@ -12,8 +12,15 @@ Deck = (function(_super) {
 
   Deck.configure('Deck', 'name', 'baseCards', 'cards');
 
+  Deck.prototype.putCardOnTop = function(card) {};
+
   Deck.prototype.getTopCard = function() {
-    if (!this.cards.isEmpty()) return this.cards.Dequeue();
+    var card;
+    if (!this.cards.isEmpty()) {
+      card = this.cards.Get(0);
+      this.cards.Remove(0);
+      return card;
+    }
   };
 
   Deck.prototype.hasCards = function() {
@@ -21,13 +28,13 @@ Deck = (function(_super) {
   };
 
   Deck.prototype.shuffle = function() {
-    return this.shuffleCurrentCardsModernFisherYates();
+    return this.shuffleWithModernFisherYates();
   };
 
-  Deck.prototype.shuffleCurrentCardsModernFisherYates = function() {
+  Deck.prototype.shuffleWithModernFisherYates = function() {
     var array, i, j, length, swap, _results;
     length = this.cards.Count();
-    array = this.cards.GetQueue();
+    array = this.cards.list;
     i = length;
     _results = [];
     while (--i) {
@@ -44,14 +51,14 @@ Deck = (function(_super) {
 })(Spine.Model);
 
 Deck.bind("create", function(deck) {
-  var card, q, _i, _len, _ref;
-  q = new Queue();
+  var card, cardsList, _i, _len, _ref;
+  cardsList = new List();
   _ref = deck.baseCards;
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
     card = _ref[_i];
-    q.Enqueue(card);
+    cardsList.Add(card);
   }
-  deck.cards = q;
+  deck.cards = cardsList;
   deck.shuffle();
   deck.shuffle();
   deck.shuffle();

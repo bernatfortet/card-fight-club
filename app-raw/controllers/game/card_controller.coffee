@@ -21,7 +21,6 @@ class CardController extends Spine.Controller
 		deckPosY = $(".Deck").offset().top
 		this.move( deckPosX, deckPosY )
 
-
 	tap: =>
 		if( this.el.attr("data-tapped") == "false" )
 			this.el.attr("data-tapped", "true")

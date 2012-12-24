@@ -1,4 +1,11 @@
 class GameController extends Spine.Controller
+
+	areas:
+		deck: "deck"
+		hand: "hand"
+		board: "board"
+		graveyard: "graveyard"
+
 	constructor: ->
 		super
 		this.setPlayers()

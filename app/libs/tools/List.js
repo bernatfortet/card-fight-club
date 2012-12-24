@@ -39,8 +39,11 @@ function List ()
 			return null;
 		}
 	}	
-	
-	//REVISAR
+
+	this.isEmpty = function(){
+		return ( this.list.length == 0);
+	}
+
 	this.Clear = function() {
 		this.list = [];
 	}
