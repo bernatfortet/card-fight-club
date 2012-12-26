@@ -1,20 +1,26 @@
 class PlayerController extends Spine.Controller
 	deck: null
 
-	constructor: ( deck ) ->
+	constructor: () ->
 		super
 
-	setDeck: () ->
-		this.addCard( card ) for card in [this.deck.cards.Count()-1..0]
+	setDeck: ( deck ) ->
+		this.deck = Deck.create( 
+			name: deck.name, 
+			baseCards: deck.cardList
+		)
 
-	drawCard: () ->
-		console.log("draw Card");
+	createCardFromTopOfDeck: () ->
+		topCard = this.deck.getTopCard()
+		if( topCard )
+			this.addCard( topCard )
 
-	addCard: ( cardNumber ) ->
-		cardModel = Card.create( img_id: this.deck.cards.Get(cardNumber), deck_id: 1, area: "deck", controller: null  )
-		cardController = new CardController( item: cardModel )
+	addCard: ( card ) ->
+		cardController = new CardController( item: card )
 		this.el.find(".Cards").append( cardController.el )
-		cardController.moveToDeck()
+		app.gameController.humanInputController.setCardListeners( cardController.el )
+		cardController.moveToHand()
+		this.flipCardUp( card )
 
 	moveCard: ( card, posX, posY ) ->
 		card.controller.move( posX, posY )
@@ -32,30 +38,29 @@ class PlayerController extends Spine.Controller
 		card.controller.flipDown()
 
 	onCardGoesToHand: ( card ) ->
-		if( card.area != "hand" )
-			this.onCardChangesArea( card, "hand" )
+		if( this.checkIfCardComesFromSameArea( card.area, "hand" ) )
+			card.setArea( "hand" )
 
 	onCardGoesToDeck: ( card ) ->
-		if( card.area != "deck" )
-			this.onCardChangesArea( card, "deck" )
+		if( this.checkIfCardComesFromSameArea( card.area, "deck" ) )
+			this.deck.putCardOnTop( card )
+			card.setArea( "deck" )
 
 	onCardGoesToBoard: ( card ) ->
-		if( card.area != "board" )
-			this.onCardChangesArea( card, "board" )
+		if( this.checkIfCardComesFromSameArea( card.area, "board" ) )
+			card.setArea( "board" )
 
 	onCardGoesToGraveyard: ( card ) ->
-		if( card.area != "graveyard" )
-			this.onCardChangesArea( card, "graveyard" )
+		if( this.checkIfCardComesFromSameArea( card.area, "graveyard" ) )
+			card.setArea( "graveyard" )
 
-	onCardChangesArea: ( card, area ) ->
-		if( card.area != area )
+	checkIfCardComesFromSameArea: ( originArea, targetArea ) ->
+		if( originArea != targetArea )
+			return true
+		else
+			return false
 
-			if( card.area == "deck" && ( area == "hand" || area == "graveyard" || area == "board" ) )
-				this.deck.getTopCard()
-
-			if( area == "deck" )
-				this.deck.putCardOnTop( card )
-
-			card.setArea( area )
+	onDrawCard: () ->
+		this.createCardFromTopOfDeck()
 
 	# getCardPercentPosX: ( card ) ->

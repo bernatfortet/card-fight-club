@@ -14,11 +14,13 @@ ZoomedCardController = (function(_super) {
 
   ZoomedCardController.prototype.zoomIn = function(card) {
     if (card.controller.isFlippedUp) {
-      return this.el.css("background-image", "url('images/cards/" + card.controller.item.img_id + ".jpg')");
+      this.el.attr("data-isZooming", "true");
+      return this.el.css("background-image", "url('images/cards/" + card.controller.item.img + "')");
     }
   };
 
   ZoomedCardController.prototype.zoomOut = function() {
+    this.el.attr("data-isZooming", "false");
     return this.el.css("background-image", "none");
   };
 

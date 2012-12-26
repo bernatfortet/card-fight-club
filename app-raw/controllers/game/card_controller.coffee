@@ -16,6 +16,12 @@ class CardController extends Spine.Controller
 		this.el.css("left", posX )
 		this.el.css("top", posY )
 
+	moveToHand: () ->
+		this.item.setArea( "hand" )
+		handPosX = $(".Hand").offset().left
+		handPosY = $(".Hand").offset().top
+		this.move( handPosX, handPosY )
+
 	moveToDeck: () ->
 		deckPosX = $(".Deck").offset().left
 		deckPosY = $(".Deck").offset().top

@@ -11,11 +11,6 @@ class HumanInputController extends InputController
 
 
 	setListeners: ->
-		$(".Card").draggable({
-			stop: this.onCardDragStops
-			snap: ".Hand, .Deck, .Graveyard"
-			snapMode: "inner"
-		})
 
 		$(".Hand").droppable({
 			drop: this.onDropCardOnHand
@@ -29,15 +24,23 @@ class HumanInputController extends InputController
 			drop: this.onDropCardOnDeck
 		})
 
+		$(".Deck").on("dblclick", this.onDoubleClickDeck )
+
 		$(".Graveyard").droppable({
 			drop: this.onDropCardOnGraveyard
 		})
 
-		$(".Card").on("dblclick", this.onDoubleClick )
-		$(".Card").on("contextmenu", this.onRightMouseClick )
+	setCardListeners: ( cardElement ) ->
+		cardElement.draggable({
+			stop: this.onCardDragStops
+			snap: ".Hand, .Deck, .Graveyard"
+			snapMode: "inner"
+		})
+		cardElement.on("dblclick", this.onDoubleClickCard )
+		cardElement.on("contextmenu", this.onRightMouseClick )
 
-		$(".Card").on("mouseover", this.onMouseOverCard )
-		$(".Card").on("mouseout", this.onMouseOutCard )
+		cardElement.on("mouseover", this.onMouseOverCard )
+		cardElement.on("mouseout", this.onMouseOutCard )
 
 	onRightMouseClick: ( event ) =>
 		RIGHT_MOUSE_BUTTON = 3
@@ -45,8 +48,11 @@ class HumanInputController extends InputController
 			#event.preventDefault()
 			this.onCardIsTapped( this.getCardId( event.currentTarget ) )
 
-	onDoubleClick: (event) =>
+	onDoubleClickCard: ( event ) =>
 		this.onCardIsFlipped( this.getCardId( event.currentTarget ) )
+
+	onDoubleClickDeck: () =>
+		this.onDrawCard()
 
 	onCardDragStops: ( event, ui )  =>
 		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
@@ -67,7 +73,7 @@ class HumanInputController extends InputController
 	onDropCardOnGraveyard: ( event, ui ) =>
 		this.onCardGoesToGraveyard( this.getCardId( ui.draggable ), ui.position )	
 		console.log( "onDropCardOnDeck");
-			
+
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget
 		this.onZoomCardIn( this.getCardId( this.activeCard ))

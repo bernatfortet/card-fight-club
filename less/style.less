@@ -38,7 +38,9 @@
 		.hand{ top: 0; bottom: none;}
 	}
 
-	.zoomed-card{ width:50%; height:50%; .fixed; right:0; top:25%; z-index:32; background-repeat:no-repeat; background-position:right center; .br(25px);}
+	.zoomed-card{ width:50%; height:50%; .fixed; right:0; top:25%; z-index:0; background-repeat:no-repeat; background-position:right center; .br(25px);
+		&[data-isZooming="true"]{ z-index:32; }
+	}
 
 	
 

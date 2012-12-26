@@ -21,17 +21,13 @@ HumanInputController = (function(_super) {
     this.onDropCardOnBoard = __bind(this.onDropCardOnBoard, this);
     this.onDropCardOnHand = __bind(this.onDropCardOnHand, this);
     this.onCardDragStops = __bind(this.onCardDragStops, this);
-    this.onDoubleClick = __bind(this.onDoubleClick, this);
+    this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
+    this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
     this.onRightMouseClick = __bind(this.onRightMouseClick, this);    HumanInputController.__super__.constructor.apply(this, arguments);
     this.setListeners();
   }
 
   HumanInputController.prototype.setListeners = function() {
-    $(".Card").draggable({
-      stop: this.onCardDragStops,
-      snap: ".Hand, .Deck, .Graveyard",
-      snapMode: "inner"
-    });
     $(".Hand").droppable({
       drop: this.onDropCardOnHand
     });
@@ -41,13 +37,22 @@ HumanInputController = (function(_super) {
     $(".Deck").droppable({
       drop: this.onDropCardOnDeck
     });
-    $(".Graveyard").droppable({
+    $(".Deck").on("dblclick", this.onDoubleClickDeck);
+    return $(".Graveyard").droppable({
       drop: this.onDropCardOnGraveyard
     });
-    $(".Card").on("dblclick", this.onDoubleClick);
-    $(".Card").on("contextmenu", this.onRightMouseClick);
-    $(".Card").on("mouseover", this.onMouseOverCard);
-    return $(".Card").on("mouseout", this.onMouseOutCard);
+  };
+
+  HumanInputController.prototype.setCardListeners = function(cardElement) {
+    cardElement.draggable({
+      stop: this.onCardDragStops,
+      snap: ".Hand, .Deck, .Graveyard",
+      snapMode: "inner"
+    });
+    cardElement.on("dblclick", this.onDoubleClickCard);
+    cardElement.on("contextmenu", this.onRightMouseClick);
+    cardElement.on("mouseover", this.onMouseOverCard);
+    return cardElement.on("mouseout", this.onMouseOutCard);
   };
 
   HumanInputController.prototype.onRightMouseClick = function(event) {
@@ -58,8 +63,12 @@ HumanInputController = (function(_super) {
     }
   };
 
-  HumanInputController.prototype.onDoubleClick = function(event) {
+  HumanInputController.prototype.onDoubleClickCard = function(event) {
     return this.onCardIsFlipped(this.getCardId(event.currentTarget));
+  };
+
+  HumanInputController.prototype.onDoubleClickDeck = function() {
+    return this.onDrawCard();
   };
 
   HumanInputController.prototype.onCardDragStops = function(event, ui) {

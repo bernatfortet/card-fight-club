@@ -33,6 +33,14 @@ CardController = (function(_super) {
     return this.el.css("top", posY);
   };
 
+  CardController.prototype.moveToHand = function() {
+    var handPosX, handPosY;
+    this.item.setArea("hand");
+    handPosX = $(".Hand").offset().left;
+    handPosY = $(".Hand").offset().top;
+    return this.move(handPosX, handPosY);
+  };
+
   CardController.prototype.moveToDeck = function() {
     var deckPosX, deckPosY;
     deckPosX = $(".Deck").offset().left;

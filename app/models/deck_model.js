@@ -10,21 +10,21 @@ Deck = (function(_super) {
     Deck.__super__.constructor.apply(this, arguments);
   }
 
-  Deck.configure('Deck', 'name', 'baseCards', 'cards');
+  Deck.configure('Deck', 'id', 'name', 'baseCards', 'cardsOnDeck', 'cardsOnHand', 'cardOnBoard', 'cardOnGraveyard');
 
   Deck.prototype.putCardOnTop = function(card) {};
 
   Deck.prototype.getTopCard = function() {
-    var card;
-    if (!this.cards.isEmpty()) {
-      card = this.cards.Get(0);
-      this.cards.Remove(0);
-      return card;
+    var topCard;
+    if (!this.cardsOnDeck.isEmpty()) {
+      topCard = this.cardsOnDeck.list[0];
+      this.cardsOnDeck.Remove(topCard);
+      return Card.find(topCard);
     }
   };
 
   Deck.prototype.hasCards = function() {
-    return !this.cards.isEmpty();
+    return !this.cardsOnDeck.isEmpty();
   };
 
   Deck.prototype.shuffle = function() {
@@ -33,8 +33,8 @@ Deck = (function(_super) {
 
   Deck.prototype.shuffleWithModernFisherYates = function() {
     var array, i, j, length, swap, _results;
-    length = this.cards.Count();
-    array = this.cards.list;
+    length = this.cardsOnDeck.Count();
+    array = this.cardsOnDeck.list;
     i = length;
     _results = [];
     while (--i) {
@@ -46,21 +46,62 @@ Deck = (function(_super) {
     return _results;
   };
 
+  Deck.prototype.addCardToArea = function(card, area) {
+    switch (area) {
+      case "deck":
+        this.cardsOnDeck.Add(card.id);
+        if (card.controller !== null) {
+          card.controller.el.remove();
+          return card.controller = null;
+        }
+        break;
+      case "hand":
+        return this.cardsOnHand.Add(card.id);
+      case "board":
+        return this.cardOnBoard.Add(card.id);
+      case "graveyard":
+        return this.cardOnGraveyard.Add(card.id);
+    }
+  };
+
+  Deck.prototype.removeCardFromArea = function(card, area) {
+    switch (area) {
+      case "deck":
+        return this.cardsOnDeck.Remove(card.id);
+      case "hand":
+        return this.cardsOnHand.Remove(card.id);
+      case "board":
+        return this.cardOnBoard.Remove(card.id);
+      case "graveyard":
+        return this.cardOnGraveyard.Remove(card.id);
+    }
+  };
+
+  Deck.prototype.createCard = function(cardJSON) {
+    var cardModel;
+    cardModel = Card.create({
+      card_id: cardJSON.card_id,
+      img: cardJSON.img,
+      deck: this,
+      area: "deck",
+      controller: null
+    });
+    return this.addCardToArea(cardModel, cardModel.area);
+  };
+
   return Deck;
 
 })(Spine.Model);
 
 Deck.bind("create", function(deck) {
-  var card, cardsList, _i, _len, _ref;
-  cardsList = new List();
-  _ref = deck.baseCards;
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    card = _ref[_i];
-    cardsList.Add(card);
+  var cardIndex;
+  deck.cardsOnDeck = new List();
+  deck.cardsOnHand = new List();
+  deck.cardOnBoard = new List();
+  deck.cardOnGraveyard = new List();
+  for (cardIndex in deck.baseCards) {
+    deck.createCard(deck.baseCards[cardIndex]);
   }
-  deck.cards = cardsList;
-  deck.shuffle();
-  deck.shuffle();
   deck.shuffle();
   return deck.save();
 });

@@ -11,6 +11,10 @@ App = (function(_super) {
     this.gameController = new GameController();
   }
 
+  App.prototype.initialize = function() {
+    return this.gameController.initialize();
+  };
+
   return App;
 
 })(Spine.Controller);

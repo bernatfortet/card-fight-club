@@ -95,4 +95,4 @@ button{width:auto;overflow:visible;}
 .opponent .deck{top:0;bottom:none;}
 .opponent .graveyard{bottom:0;top:37%;}
 .opponent .hand{top:0;bottom:none;}
-.zoomed-card{width:50%;height:50%;position:fixed;right:0;top:25%;z-index:32;background-repeat:no-repeat;background-position:right center;border-radius:25px;-moz-border-radius:25px;-webkit-border-radius:25px;}
+.zoomed-card{width:50%;height:50%;position:fixed;right:0;top:25%;z-index:0;background-repeat:no-repeat;background-position:right center;border-radius:25px;-moz-border-radius:25px;-webkit-border-radius:25px;}.zoomed-card[data-isZooming="true"]{z-index:32;}

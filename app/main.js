@@ -55,6 +55,7 @@ require(
 
 		$(document).ready(function(){
 			app = new App({ el: $("body")});
+			app.initialize();
 		});
     }
 );

@@ -10,6 +10,7 @@ InputController = (function(_super) {
   InputController.prototype.targetPlayer = null;
 
   function InputController() {
+    this.onDrawCard = __bind(this.onDrawCard, this);
     this.onShuffleDeck = __bind(this.onShuffleDeck, this);
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
@@ -47,7 +48,6 @@ InputController = (function(_super) {
   };
 
   InputController.prototype.onCardGoesToBoard = function(cardId) {
-    this.targetPlayer.flipCardDown(Card.find(cardId));
     return this.targetPlayer.onCardGoesToBoard(Card.find(cardId));
   };
 
@@ -64,6 +64,10 @@ InputController = (function(_super) {
   };
 
   InputController.prototype.onShuffleDeck = function(deckId) {};
+
+  InputController.prototype.onDrawCard = function() {
+    return this.targetPlayer.onDrawCard();
+  };
 
   return InputController;
 

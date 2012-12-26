@@ -8,36 +8,32 @@ PlayerController = (function(_super) {
 
   PlayerController.prototype.deck = null;
 
-  function PlayerController(deck) {
+  function PlayerController() {
     PlayerController.__super__.constructor.apply(this, arguments);
   }
 
-  PlayerController.prototype.setDeck = function() {
-    var card, _ref, _results;
-    _results = [];
-    for (card = _ref = this.deck.cards.Count() - 1; _ref <= 0 ? card <= 0 : card >= 0; _ref <= 0 ? card++ : card--) {
-      _results.push(this.addCard(card));
-    }
-    return _results;
-  };
-
-  PlayerController.prototype.drawCard = function() {
-    return console.log("draw Card");
-  };
-
-  PlayerController.prototype.addCard = function(cardNumber) {
-    var cardController, cardModel;
-    cardModel = Card.create({
-      img_id: this.deck.cards.Get(cardNumber),
-      deck_id: 1,
-      area: "deck",
-      controller: null
+  PlayerController.prototype.setDeck = function(deck) {
+    return this.deck = Deck.create({
+      name: deck.name,
+      baseCards: deck.cardList
     });
+  };
+
+  PlayerController.prototype.createCardFromTopOfDeck = function() {
+    var topCard;
+    topCard = this.deck.getTopCard();
+    if (topCard) return this.addCard(topCard);
+  };
+
+  PlayerController.prototype.addCard = function(card) {
+    var cardController;
     cardController = new CardController({
-      item: cardModel
+      item: card
     });
     this.el.find(".Cards").append(cardController.el);
-    return cardController.moveToDeck();
+    app.gameController.humanInputController.setCardListeners(cardController.el);
+    cardController.moveToHand();
+    return this.flipCardUp(card);
   };
 
   PlayerController.prototype.moveCard = function(card, posX, posY) {
@@ -61,31 +57,40 @@ PlayerController = (function(_super) {
   };
 
   PlayerController.prototype.onCardGoesToHand = function(card) {
-    if (card.area !== "hand") return this.onCardChangesArea(card, "hand");
+    if (this.checkIfCardComesFromSameArea(card.area, "hand")) {
+      return card.setArea("hand");
+    }
   };
 
   PlayerController.prototype.onCardGoesToDeck = function(card) {
-    if (card.area !== "deck") return this.onCardChangesArea(card, "deck");
+    if (this.checkIfCardComesFromSameArea(card.area, "deck")) {
+      this.deck.putCardOnTop(card);
+      return card.setArea("deck");
+    }
   };
 
   PlayerController.prototype.onCardGoesToBoard = function(card) {
-    if (card.area !== "board") return this.onCardChangesArea(card, "board");
+    if (this.checkIfCardComesFromSameArea(card.area, "board")) {
+      return card.setArea("board");
+    }
   };
 
   PlayerController.prototype.onCardGoesToGraveyard = function(card) {
-    if (card.area !== "graveyard") {
-      return this.onCardChangesArea(card, "graveyard");
+    if (this.checkIfCardComesFromSameArea(card.area, "graveyard")) {
+      return card.setArea("graveyard");
     }
   };
 
-  PlayerController.prototype.onCardChangesArea = function(card, area) {
-    if (card.area !== area) {
-      if (card.area === "deck" && (area === "hand" || area === "graveyard" || area === "board")) {
-        this.deck.getTopCard();
-      }
-      if (area === "deck") this.deck.putCardOnTop(card);
-      return card.setArea(area);
+  PlayerController.prototype.checkIfCardComesFromSameArea = function(originArea, targetArea) {
+    if (originArea !== targetArea) {
+      return true;
+    } else {
+      return false;
     }
+  };
+
+  PlayerController.prototype.onDrawCard = function() {
+    return this.createCardFromTopOfDeck();
   };
 
   return PlayerController;

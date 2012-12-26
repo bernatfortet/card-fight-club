@@ -4,3 +4,6 @@ class App extends Spine.Controller
 		super
 		#this.networkController = new NetworkController
 		this.gameController = new GameController()
+
+	initialize: ->
+		this.gameController.initialize()

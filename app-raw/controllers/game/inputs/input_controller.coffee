@@ -32,7 +32,6 @@ class InputController extends Spine.Controller
 		#console.log( "onCardGoesToDeck", Card.find( cardId ) );
 
 	onCardGoesToBoard: ( cardId ) =>
-		this.targetPlayer.flipCardDown( Card.find( cardId ) )
 		this.targetPlayer.onCardGoesToBoard( Card.find( cardId ) )
 		#console.log( "onCardGoesToBoard", Card.find( cardId ) );
 
@@ -50,3 +49,6 @@ class InputController extends Spine.Controller
 
 	onShuffleDeck: ( deckId ) =>
 		#console.log( "onShuffleDeck", Deck.find( deckId ) );
+	
+	onDrawCard: () =>
+		this.targetPlayer.onDrawCard();

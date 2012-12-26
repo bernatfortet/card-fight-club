@@ -1,9 +1,11 @@
 class Card extends Spine.Model
-	@configure 'Card', 'id', "img_id", "deck_id", "area", "controller"
+	@configure 'Card', 'id', 'card_id', "img", "deck", "area", "controller"
 
 	@include
-		setArea: ( area ) ->
-			this.area = area
+		setArea: ( targetArea ) ->
+			this.deck.removeCardFromArea( this, this.area )
+			this.area = targetArea
+			this.deck.addCardToArea( this, targetArea )
 			this.save()
 
 		setController: ( cardController ) ->

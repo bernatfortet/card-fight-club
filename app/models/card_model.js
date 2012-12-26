@@ -10,11 +10,13 @@ Card = (function(_super) {
     Card.__super__.constructor.apply(this, arguments);
   }
 
-  Card.configure('Card', 'id', "img_id", "deck_id", "area", "controller");
+  Card.configure('Card', 'id', 'card_id', "img", "deck", "area", "controller");
 
   Card.include({
-    setArea: function(area) {
-      this.area = area;
+    setArea: function(targetArea) {
+      this.deck.removeCardFromArea(this, this.area);
+      this.area = targetArea;
+      this.deck.addCardToArea(this, targetArea);
       return this.save();
     },
     setController: function(cardController) {

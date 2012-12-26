@@ -15,34 +15,59 @@ GameController = (function(_super) {
 
   function GameController() {
     GameController.__super__.constructor.apply(this, arguments);
-    this.setPlayers();
-    this.setInputControllers();
-    this.zoomedCardController = new ZoomedCardController({
-      el: $(".ZoomedCard")
-    });
   }
 
+  GameController.prototype.initialize = function() {
+    this.humanInputController = new HumanInputController();
+    this.networkInputController = new NetworkInputController();
+    this.setPlayers();
+    this.setInputControllers();
+    return this.zoomedCardController = new ZoomedCardController({
+      el: $(".ZoomedCard")
+    });
+  };
+
   GameController.prototype.setPlayers = function() {
-    this.playerDeck = Deck.create({
-      name: "Deck Player",
-      baseCards: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 12, 12, 12, 12, 13, 13, 13, 13, 8, 8, 8, 8, 8]
-    });
-    this.opponentDeck = Deck.create({
-      name: "Deck Opponent",
-      baseCards: [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 12, 12, 12, 12, 13, 13, 13, 13, 8, 8, 8, 8, 8]
-    });
+    var playerInfo;
+    playerInfo = this.getPlayerInfo();
     this.player = new PlayerController({
-      el: $(".Player"),
-      deck: this.playerDeck
+      el: $(".Player")
     });
-    return this.player.setDeck(this.playerDeck);
+    return this.player.setDeck(playerInfo.player.deck);
   };
 
   GameController.prototype.setInputControllers = function() {
-    this.humanInputController = new HumanInputController();
-    this.networkInputController = new NetworkInputController();
     this.humanInputController.setTargetPlayer(this.player);
     return this.networkInputController.setTargetPlayer(this.opponent);
+  };
+
+  GameController.prototype.getPlayerInfo = function() {
+    return {
+      player: {
+        name: "Socra",
+        deck: {
+          deck_id: 1,
+          name: "deck1",
+          cardList: {
+            0: {
+              card_id: 1,
+              img: "1.jpg",
+              name: "name1"
+            },
+            1: {
+              card_id: 2,
+              img: "2.jpg",
+              name: "name2"
+            },
+            2: {
+              card_id: 3,
+              img: "3.jpg",
+              name: "name3"
+            }
+          }
+        }
+      }
+    };
   };
 
   return GameController;
