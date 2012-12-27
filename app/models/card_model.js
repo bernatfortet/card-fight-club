@@ -10,33 +10,18 @@ Card = (function(_super) {
     Card.__super__.constructor.apply(this, arguments);
   }
 
-  Card.configure('Card', 'id', 'card_id', "img", "name", "deck", "area", "controller");
+  Card.configure('Card', 'id', 'card_id', "img", "name", "deck", "areaId", "controller");
 
   Card.include({
-    setArea: function(targetArea) {
-      this.deck.controller.removeCardFromArea(this, this.area);
-      this.area = targetArea;
-      this.deck.controller.addCardToArea(this, targetArea);
+    setArea: function(areaId) {
+      Area.find(this.areaId).controller.removeCard(this);
+      this.areaId = areaId;
+      Area.find(this.areaId).controller.addCard(this);
       return this.save();
     },
     setController: function(cardController) {
       this.controller = cardController;
       return this.save();
-    },
-    canBeTapped: function() {
-      return this.isOnBoard;
-    },
-    isOnBoard: function() {
-      return this.area === "board";
-    },
-    isOnDeck: function() {
-      return this.area === "deck";
-    },
-    isOnHand: function() {
-      return this.area === "hand";
-    },
-    isOnGraveyard: function() {
-      return this.area === "graveyard";
     }
   });
 

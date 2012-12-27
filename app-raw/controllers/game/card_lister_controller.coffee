@@ -31,7 +31,7 @@ class CardListerController extends Spine.Controller
 
 	showCardsFromArea: ( deckId, area ) ->
 		this.closeLister()
-		cards = Deck.find( deckId ).getCardsModelListFromArea( area )
+		cards = Deck.find( deckId ).getCardsModels()
 		this.renderCards( cards )
 		this.currentArea = area
 		this.currentDeckId = deckId

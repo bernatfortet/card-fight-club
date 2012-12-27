@@ -1,17 +1,17 @@
-var aModel,
+var GraveyardController,
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
-aModel = (function(_super) {
+GraveyardController = (function(_super) {
 
-  __extends(aModel, _super);
+  __extends(GraveyardController, _super);
 
-  function aModel() {
-    aModel.__super__.constructor.apply(this, arguments);
+  function GraveyardController() {
+    GraveyardController.__super__.constructor.apply(this, arguments);
   }
 
-  aModel.configure('Model', 'name');
+  GraveyardController.prototype.onCardDrops = function(card) {};
 
-  return aModel;
+  return GraveyardController;
 
-})(Spine.Model);
+})(AreaController);

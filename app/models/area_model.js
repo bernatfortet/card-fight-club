@@ -10,14 +10,73 @@ Area = (function(_super) {
     Area.__super__.constructor.apply(this, arguments);
   }
 
-  Area.configure('Area');
+  Area.configure('Area', "name", 'cards', 'controller');
 
   Area.include({
-    test: function() {
-      return console.log("hellow");
+    setController: function(controller) {
+      this.controller = controller;
+      return this.save();
+    },
+    setList: function() {
+      this.cards = new List();
+      return this.save();
+    },
+    getTopCard: function() {
+      var topCard;
+      if (!this.cards.isEmpty()) {
+        topCard = this.cards.list[0];
+        this.cards.Remove(topCard);
+        return Card.find(topCard);
+      }
+    },
+    isEmpty: function() {
+      return this.cards.Count() <= 0;
+    },
+    shuffle: function() {
+      return this.shuffleWithModernFisherYates();
+    },
+    shuffleWithModernFisherYates: function() {
+      var array, i, j, length, swap, _results;
+      length = this.cards.Count();
+      array = this.cards.list;
+      i = length;
+      _results = [];
+      while (--i) {
+        j = Rand() * (i + 1) | 0;
+        swap = array[i];
+        array[i] = array[j];
+        _results.push(array[j] = swap);
+      }
+      return _results;
+    },
+    addCard: function(cardModel) {
+      return this.cards.Insert(0, cardModel.id);
+    },
+    removeCard: function(cardModel) {
+      return this.cards.Remove(cardModel.id);
+    },
+    moveCard: function(itemIndex, newIndex) {
+      return this.cards.Move(itemIndex, newIndex);
+    },
+    getCardsModels: function() {
+      var iCounter, object,
+        _this = this;
+      object = new Object();
+      iCounter = 0;
+      Card.each(function(card) {
+        if (card.area === _this.name) {
+          object[iCounter] = card;
+          return iCounter++;
+        }
+      });
+      return object;
     }
   });
 
   return Area;
 
 })(Spine.Model);
+
+Area.bind("create", function(area) {
+  return area.cards = new List();
+});

@@ -44,15 +44,17 @@ html(lange="en")
 
 				.player.Player
 					.cards.Cards
-					.board.Board
-					.deck.Deck(data-isEmpty="true")
-					.graveyard.Graveyard
-					.hand.Hand
+					.deck.Deck.Area(data-isEmpty="true")
+					.hand.Hand.Area(data-isEmpty="true")
+					.board.Board.Area(data-isEmpty="true")
+					.graveyard.Graveyard.Area(data-isEmpty="true")
+					.sideboard.Sideboard.Area(data-isEmpty="true")
 
 
 				.player.opponent.Opponent
 					.cards.Cards
-					.board.Board
-					.deck.Deck
-					.graveyard.Graveyard
-					.hand.Hand
+					.deck.Deck(data-isEmpty="true")
+					.hand.Hand(data-isEmpty="true")
+					.board.Board(data-isEmpty="true")
+					.graveyard.Graveyard(data-isEmpty="true")
+					.sideboard.Sideboard(data-isEmpty="true")

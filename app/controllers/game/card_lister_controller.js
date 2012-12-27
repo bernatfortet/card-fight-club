@@ -44,7 +44,7 @@ CardListerController = (function(_super) {
   CardListerController.prototype.showCardsFromArea = function(deckId, area) {
     var cards;
     this.closeLister();
-    cards = Deck.find(deckId).getCardsModelListFromArea(area);
+    cards = Deck.find(deckId).getCardsModels();
     this.renderCards(cards);
     this.currentArea = area;
     this.currentDeckId = deckId;

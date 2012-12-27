@@ -8,23 +8,14 @@ class HumanInputController extends InputController
 
 	setListeners: ->
 
-		$(".Hand").droppable({
-			drop: this.onDropCardOnHand
+		$(".Player .Area").droppable({
+			drop: this.onDropCardOnArea
 		})
 
-		$(".Board").droppable({
-			drop: this.onDropCardOnBoard
-		})
-
-		$(".Deck").droppable({
-			drop: this.onDropCardOnDeck
-		})
-
-		$(".Deck").on("dblclick", this.onDoubleClickDeck )
-
+		$(".Player .Deck").on("dblclick", this.onDoubleClickDeck )
 
 		$.contextMenu({
-			selector: ".Deck"
+			selector: ".Player .Deck"
 			items:
 				shuffle:
 					name: "Shuffle"
@@ -40,7 +31,7 @@ class HumanInputController extends InputController
 				#	name: "Put Bottom Card to Top"
 		})
 
-		$(".Graveyard").droppable({
+		$(".Player .Graveyard").droppable({
 			drop: this.onDropCardOnGraveyard
 		})
 
@@ -72,21 +63,9 @@ class HumanInputController extends InputController
 		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
 		this.onCardIsMoved( this.getCardId( event.target ), ui.position )	
 
-	onDropCardOnHand: ( event, ui ) =>
-		this.onCardGoesToHand( this.getCardId( ui.draggable ), ui.position )	
-		console.log( "onDropCardOnHand");
-
-	onDropCardOnBoard: ( event, ui ) =>
-		this.onCardGoesToBoard( this.getCardId( ui.draggable ), ui.position )	
-		console.log( "onDropCardOnBoard");
-
-	onDropCardOnDeck: ( event, ui ) =>
-		this.onCardGoesToDeck( this.getCardId( ui.draggable ), ui.position )	
-		console.log( "onDropCardOnDeck");
-
-	onDropCardOnGraveyard: ( event, ui ) =>
-		this.onCardGoesToGraveyard( this.getCardId( ui.draggable ), ui.position )	
-		console.log( "onDropCardOnDeck");
+	onDropCardOnArea: ( event, ui ) =>
+		areaId = $(event.target).data().areaId
+		this.onCardGoesToArea( this.getCardId( ui.draggable ), areaId )	
 
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget

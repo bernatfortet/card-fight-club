@@ -15,10 +15,7 @@ InputController = (function(_super) {
     this.onShuffleDeck = __bind(this.onShuffleDeck, this);
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
-    this.onCardGoesToGraveyard = __bind(this.onCardGoesToGraveyard, this);
-    this.onCardGoesToBoard = __bind(this.onCardGoesToBoard, this);
-    this.onCardGoesToDeck = __bind(this.onCardGoesToDeck, this);
-    this.onCardGoesToHand = __bind(this.onCardGoesToHand, this);    InputController.__super__.constructor.apply(this, arguments);
+    this.onCardGoesToArea = __bind(this.onCardGoesToArea, this);    InputController.__super__.constructor.apply(this, arguments);
   }
 
   InputController.prototype.setTargetPlayer = function(targetPlayer) {
@@ -37,23 +34,8 @@ InputController = (function(_super) {
     return this.targetPlayer.flipCard(Card.find(cardId));
   };
 
-  InputController.prototype.onCardGoesToHand = function(cardId) {
-    this.targetPlayer.flipCardUp(Card.find(cardId));
-    this.onZoomCardIn(cardId);
-    return this.targetPlayer.onCardGoesToHand(Card.find(cardId));
-  };
-
-  InputController.prototype.onCardGoesToDeck = function(cardId) {
-    this.targetPlayer.flipCardDown(Card.find(cardId));
-    return this.targetPlayer.onCardGoesToDeck(Card.find(cardId));
-  };
-
-  InputController.prototype.onCardGoesToBoard = function(cardId) {
-    return this.targetPlayer.onCardGoesToBoard(Card.find(cardId));
-  };
-
-  InputController.prototype.onCardGoesToGraveyard = function(cardId) {
-    return this.targetPlayer.onCardGoesToGraveyard(Card.find(cardId));
+  InputController.prototype.onCardGoesToArea = function(cardId, areaId) {
+    return this.targetPlayer.onCardGoesToArea(Card.find(cardId), areaId);
   };
 
   InputController.prototype.onZoomCardIn = function(cardId) {

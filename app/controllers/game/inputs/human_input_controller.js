@@ -14,10 +14,7 @@ HumanInputController = (function(_super) {
   function HumanInputController() {
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
-    this.onDropCardOnGraveyard = __bind(this.onDropCardOnGraveyard, this);
-    this.onDropCardOnDeck = __bind(this.onDropCardOnDeck, this);
-    this.onDropCardOnBoard = __bind(this.onDropCardOnBoard, this);
-    this.onDropCardOnHand = __bind(this.onDropCardOnHand, this);
+    this.onDropCardOnArea = __bind(this.onDropCardOnArea, this);
     this.onCardDragStops = __bind(this.onCardDragStops, this);
     this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
@@ -25,18 +22,12 @@ HumanInputController = (function(_super) {
   }
 
   HumanInputController.prototype.setListeners = function() {
-    $(".Hand").droppable({
-      drop: this.onDropCardOnHand
+    $(".Player .Area").droppable({
+      drop: this.onDropCardOnArea
     });
-    $(".Board").droppable({
-      drop: this.onDropCardOnBoard
-    });
-    $(".Deck").droppable({
-      drop: this.onDropCardOnDeck
-    });
-    $(".Deck").on("dblclick", this.onDoubleClickDeck);
+    $(".Player .Deck").on("dblclick", this.onDoubleClickDeck);
     $.contextMenu({
-      selector: ".Deck",
+      selector: ".Player .Deck",
       items: {
         shuffle: {
           name: "Shuffle",
@@ -48,7 +39,7 @@ HumanInputController = (function(_super) {
         }
       }
     });
-    return $(".Graveyard").droppable({
+    return $(".Player .Graveyard").droppable({
       drop: this.onDropCardOnGraveyard
     });
   };
@@ -87,24 +78,10 @@ HumanInputController = (function(_super) {
     return this.onCardIsMoved(this.getCardId(event.target), ui.position);
   };
 
-  HumanInputController.prototype.onDropCardOnHand = function(event, ui) {
-    this.onCardGoesToHand(this.getCardId(ui.draggable), ui.position);
-    return console.log("onDropCardOnHand");
-  };
-
-  HumanInputController.prototype.onDropCardOnBoard = function(event, ui) {
-    this.onCardGoesToBoard(this.getCardId(ui.draggable), ui.position);
-    return console.log("onDropCardOnBoard");
-  };
-
-  HumanInputController.prototype.onDropCardOnDeck = function(event, ui) {
-    this.onCardGoesToDeck(this.getCardId(ui.draggable), ui.position);
-    return console.log("onDropCardOnDeck");
-  };
-
-  HumanInputController.prototype.onDropCardOnGraveyard = function(event, ui) {
-    this.onCardGoesToGraveyard(this.getCardId(ui.draggable), ui.position);
-    return console.log("onDropCardOnDeck");
+  HumanInputController.prototype.onDropCardOnArea = function(event, ui) {
+    var areaId;
+    areaId = $(event.target).data().areaId;
+    return this.onCardGoesToArea(this.getCardId(ui.draggable), areaId);
   };
 
   HumanInputController.prototype.onMouseOverCard = function(event) {

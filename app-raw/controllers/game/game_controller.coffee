@@ -16,6 +16,8 @@ class GameController extends Spine.Controller
 		this.humanInputController = new HumanInputController()
 		this.networkInputController = new NetworkInputController()
 
+		this.multiplayerController = new MultiplayerController()
+
 		this.zoomedCardController = new ZoomedCardController({ el: $(".ZoomedCard")})
 		this.cardListerController = new CardListerController({ el: $(".CardLister")})
 

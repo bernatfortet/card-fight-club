@@ -20,24 +20,9 @@ class InputController extends Spine.Controller
 		this.targetPlayer.flipCard( Card.find( cardId ) )
 		#console.log( "onCardIsFlipped ", Card.find( cardId ) );
 
-	onCardGoesToHand: ( cardId ) =>
-		this.targetPlayer.flipCardUp( Card.find( cardId ) )
-		this.onZoomCardIn( cardId )
-		this.targetPlayer.onCardGoesToHand( Card.find( cardId ) )
-		#console.log( "onDropCardOnHand", Card.find( cardId ) );
-
-	onCardGoesToDeck: ( cardId ) =>
-		this.targetPlayer.flipCardDown( Card.find( cardId ) )
-		this.targetPlayer.onCardGoesToDeck( Card.find( cardId ) )
-		#console.log( "onCardGoesToDeck", Card.find( cardId ) );
-
-	onCardGoesToBoard: ( cardId ) =>
-		this.targetPlayer.onCardGoesToBoard( Card.find( cardId ) )
-		#console.log( "onCardGoesToBoard", Card.find( cardId ) );
-
-	onCardGoesToGraveyard: ( cardId ) =>
-		this.targetPlayer.onCardGoesToGraveyard( Card.find( cardId ) )
-		#console.log( "onCardGoesToGraveyard", Card.find( cardId ) );
+	onCardGoesToArea: ( cardId, areaId ) =>
+		this.targetPlayer.onCardGoesToArea( Card.find( cardId ), areaId )
+		#console.log( "onCardGoesToArea ", Card.find( cardId ), "AreaId: " + areaId );
 
 	onZoomCardIn: ( cardId ) =>
 		app.gameController.zoomedCardController.zoomIn( Card.find( cardId ) )

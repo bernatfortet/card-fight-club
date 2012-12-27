@@ -36,10 +36,18 @@ require(
 
 			"order!controllers/game/game_controller",
 			"order!controllers/game/player_controller",
-			"order!controllers/game/deck_controller",
+			"order!controllers/game/multiplayer_controller",
 			"order!controllers/game/card_controller",
 			"order!controllers/game/zoomed_card_controller",
 			"order!controllers/game/card_lister_controller",
+
+			//Areas
+			"order!controllers/game/areas/area_controller",
+			"order!controllers/game/areas/deck_controller",
+			"order!controllers/game/areas/hand_controller",
+			"order!controllers/game/areas/board_controller",
+			"order!controllers/game/areas/graveyard_controller",
+			"order!controllers/game/areas/sideboard_controller",
 			
 			//Inputs
 			"order!controllers/game/inputs/input_controller",
@@ -47,8 +55,10 @@ require(
 			"order!controllers/game/inputs/network_input_controller",
 
 		//Models ==========================
-			"order!models/deck_model",
 			"order!models/card_model",
+			"order!models/deck_model",
+			"order!models/area_model",
+
 
 	],
 	function( require ) {

@@ -16,16 +16,12 @@ class CardController extends Spine.Controller
 		this.el.css("left", posX )
 		this.el.css("top", posY )
 
-	moveToHand: () ->
-		this.item.setArea( "hand" )
-		handPosX = $(".Hand").offset().left
-		handPosY = $(".Hand").offset().top
-		this.move( handPosX, handPosY )
-
-	moveToDeck: () ->
-		deckPosX = $(".Deck").offset().left
-		deckPosY = $(".Deck").offset().top
-		this.move( deckPosX, deckPosY )
+	moveToArea: ( areaId ) ->
+		areaModel = Area.find( areaId )
+		this.item.setArea( areaModel.id )
+		areaPosX = areaModel.controller.el.offset().left
+		areaPosY = areaModel.controller.el.offset().top
+		this.move( areaPosX, areaPosY )
 
 	tap: =>
 		if( this.el.attr("data-tapped") == "false" )
@@ -52,3 +48,8 @@ class CardController extends Spine.Controller
 
 	zoomOut: =>
 		this.el.attr("data-zoom", "false")
+
+	getLocation: =>
+		location: 
+			x: this.el.offset().left
+			y: this.el.offset().top
