@@ -70,7 +70,7 @@ PlayerController = (function(_super) {
       controller: deckController
     });
     deckController.deck = this.deck;
-    return this.shuffleDeck();
+    return this.shuffleArea(this.deckArea.id);
   };
 
   PlayerController.prototype.createCardFromTopOfDeck = function() {
@@ -133,17 +133,19 @@ PlayerController = (function(_super) {
     }
   };
 
-  PlayerController.prototype.shuffleDeck = function() {
-    this.deckArea.shuffle();
-    return app.gameController.multiplayerController.onShuffle(this.deckArea);
+  PlayerController.prototype.shuffleArea = function(areaId) {
+    var areaModel;
+    areaModel = Area.find(areaId);
+    areaModel.shuffle();
+    return app.gameController.multiplayerController.onShuffle(areaModel);
   };
 
   PlayerController.prototype.onDrawCard = function() {
     return this.createCardFromTopOfDeck();
   };
 
-  PlayerController.prototype.showDeckCards = function() {
-    return app.gameController.cardListerController.show(this.deck.cardsOnDeck.list);
+  PlayerController.prototype.showCardsFromArea = function(areaId) {
+    return app.gameController.cardListerController.showCardsFromArea(Area.find(areaId));
   };
 
   return PlayerController;

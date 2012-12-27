@@ -38,17 +38,33 @@ class Area extends Spine.Model
 		removeCard: ( cardModel ) ->
 			this.cards.Remove( cardModel.id )
 
+		moveCardUp: ( itemIndex ) ->
+			newIndex = itemIndex-1
+			this.moveCard( itemIndex, newIndex )
+
+		moveCardDown: ( itemIndex ) ->
+			newIndex = itemIndex+1
+			this.moveCard( itemIndex, newIndex )
+
+		moveCardToTop: ( itemIndex ) ->
+			newIndex = 0
+			this.moveCard( itemIndex, newIndex )
+
+		moveCardToBottom: ( itemIndex ) ->
+			newIndex = this.cards.Count()-1
+			this.moveCard( itemIndex, newIndex )
+
 		moveCard: ( itemIndex, newIndex ) ->
 			this.cards.Move( itemIndex, newIndex )
+			this.save()
 
 		getCardsModels: () ->
 			object = new Object()
 			iCounter = 0
 
-			Card.each ( card ) =>
-				if( card.area == this.name )
-					object[iCounter] = card
-					iCounter++
+			for cardId in this.cards.list
+				object[iCounter] = Card.find( cardId )
+				iCounter++
 
 			return object
 

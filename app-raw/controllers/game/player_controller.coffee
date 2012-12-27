@@ -38,7 +38,7 @@ class PlayerController extends Spine.Controller
 
 		deckController.deck = this.deck
 
-		this.shuffleDeck()
+		this.shuffleArea( this.deckArea.id )
 
 	createCardFromTopOfDeck: () ->
 		topCard = this.deckArea.getTopCard()
@@ -86,14 +86,15 @@ class PlayerController extends Spine.Controller
 		else
 			return false
 
-	shuffleDeck: () ->
-		this.deckArea.shuffle()
-		app.gameController.multiplayerController.onShuffle( this.deckArea )
+	shuffleArea: ( areaId ) ->
+		areaModel = Area.find( areaId )
+		areaModel.shuffle()
+		app.gameController.multiplayerController.onShuffle( areaModel )
 
 	onDrawCard: () ->
 		this.createCardFromTopOfDeck()
 
-	showDeckCards: () ->
-		app.gameController.cardListerController.show( this.deck.cardsOnDeck.list )
+	showCardsFromArea: ( areaId ) ->
+		app.gameController.cardListerController.showCardsFromArea( Area.find( areaId ) )
 
 	# getCardPercentPosX: ( card ) ->

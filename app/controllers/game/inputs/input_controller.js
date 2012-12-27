@@ -11,8 +11,8 @@ InputController = (function(_super) {
 
   function InputController() {
     this.onDrawCard = __bind(this.onDrawCard, this);
-    this.onViewDeckCards = __bind(this.onViewDeckCards, this);
-    this.onShuffleDeck = __bind(this.onShuffleDeck, this);
+    this.onViewCardsFromArea = __bind(this.onViewCardsFromArea, this);
+    this.onShuffleArea = __bind(this.onShuffleArea, this);
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
     this.onCardGoesToArea = __bind(this.onCardGoesToArea, this);    InputController.__super__.constructor.apply(this, arguments);
@@ -46,12 +46,16 @@ InputController = (function(_super) {
     return app.gameController.zoomedCardController.zoomOut();
   };
 
-  InputController.prototype.onShuffleDeck = function() {
-    return this.targetPlayer.deck.shuffle();
+  InputController.prototype.onShuffleArea = function(key, opt) {
+    var areaId;
+    areaId = opt.$trigger.data().areaId;
+    return this.targetPlayer.shuffleArea(areaId);
   };
 
-  InputController.prototype.onViewDeckCards = function() {
-    return app.gameController.cardListerController.showDeckCards(this.targetPlayer.deck.id);
+  InputController.prototype.onViewCardsFromArea = function(key, opt) {
+    var areaId;
+    areaId = opt.$trigger.data().areaId;
+    return this.targetPlayer.showCardsFromArea(areaId);
   };
 
   InputController.prototype.onDrawCard = function() {

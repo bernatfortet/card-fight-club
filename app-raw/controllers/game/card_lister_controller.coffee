@@ -13,28 +13,30 @@ class CardListerController extends Spine.Controller
 
 		this.el.find(".Close").on("click", this.closeLister )
 		this.el.on("click", "li", this.onClickItem )
-
+		this.el.find(".MoveToTop").on("click", this.moveCardToTop )
+		this.el.find(".MoveUp").on("click", this.moveCardUp )
+		this.el.find(".MoveDown").on("click", this.moveCardDown )
+		this.el.find(".MoveToBottom").on("click", this.moveCardToBottom )
 
 	onClickItem: (event) =>
-		this.el.find("li[data-state='selected']").attr("data-state", "")
+		this.cleanSelectedItem()
 		clickedItem = $(event.currentTarget)
 		this.selectedItem = clickedItem
 		clickedItem.attr("data-state", "selected")
+
+	cleanSelectedItem: ->
+		this.el.find("li[data-state='selected']").attr("data-state", "")
 
 	closeLister: =>
 		this.el.find(".List").html("")
 		this.el.attr("data-state","hidden")
 
-
-	showDeckCards: ( deckId ) ->
-		this.showCardsFromArea( deckId, "deck")
-
-	showCardsFromArea: ( deckId, area ) ->
+	showCardsFromArea: ( area ) ->
 		this.closeLister()
-		cards = Deck.find( deckId ).getCardsModels()
+		this.cleanSelectedItem()
+		cards = area.getCardsModels()
 		this.renderCards( cards )
 		this.currentArea = area
-		this.currentDeckId = deckId
 		this.currentList = cards
 		this.el.attr("data-state","visible")
 
@@ -45,29 +47,21 @@ class CardListerController extends Spine.Controller
 		this.el.find(".List").append( "<li>#{card.name}</li>" )
 
 	refresh: ->
-		this.showCardsFromArea( this.currentDeckId, this.currentArea )
+		this.showCardsFromArea( this.currentArea )
 
-	moveCardUp: ->
-		itemIndex = selectedItem.index()
-		newIndex = itemIndex-1
-		Deck.find( this.currentDeckId ).moveItemInArea( itemIndex, newIndex, area )
+	moveCardUp: =>
+		this.currentArea.moveCardUp( this.selectedItem.index() )
 		this.refresh()
 
-	moveCardDown: ->
-		itemIndex = selectedItem.index()
-		newIndex = itemIndex+1
-		Deck.find( this.currentDeckId ).moveItemInArea( itemIndex, newIndex, area )
+	moveCardDown: =>
+		this.currentArea.moveCardDown( this.selectedItem.index() )
 		this.refresh()
 
-	moveCardToTop: ->
-		itemIndex = selectedItem.index()
-		newIndex = 0
-		Deck.find( this.currentDeckId ).moveItemInArea( itemIndex, newIndex, area )
+	moveCardToTop: =>
+		this.currentArea.moveCardToTop( this.selectedItem.index() )
 		this.refresh()
 
-	moveCardBottom: ->
-		itemIndex = selectedItem.index()
-		newIndex = -1
-		Deck.find( this.currentDeckId ).moveItemInArea( itemIndex, newIndex, area )
+	moveCardToBottom: =>
+		this.currentArea.moveCardToBottom( this.selectedItem.index() )
 		this.refresh()
 

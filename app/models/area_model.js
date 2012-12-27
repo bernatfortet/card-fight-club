@@ -55,20 +55,40 @@ Area = (function(_super) {
     removeCard: function(cardModel) {
       return this.cards.Remove(cardModel.id);
     },
+    moveCardUp: function(itemIndex) {
+      var newIndex;
+      newIndex = itemIndex - 1;
+      return this.moveCard(itemIndex, newIndex);
+    },
+    moveCardDown: function(itemIndex) {
+      var newIndex;
+      newIndex = itemIndex + 1;
+      return this.moveCard(itemIndex, newIndex);
+    },
+    moveCardToTop: function(itemIndex) {
+      var newIndex;
+      newIndex = 0;
+      return this.moveCard(itemIndex, newIndex);
+    },
+    moveCardToBottom: function(itemIndex) {
+      var newIndex;
+      newIndex = this.cards.Count() - 1;
+      return this.moveCard(itemIndex, newIndex);
+    },
     moveCard: function(itemIndex, newIndex) {
-      return this.cards.Move(itemIndex, newIndex);
+      this.cards.Move(itemIndex, newIndex);
+      return this.save();
     },
     getCardsModels: function() {
-      var iCounter, object,
-        _this = this;
+      var cardId, iCounter, object, _i, _len, _ref;
       object = new Object();
       iCounter = 0;
-      Card.each(function(card) {
-        if (card.area === _this.name) {
-          object[iCounter] = card;
-          return iCounter++;
-        }
-      });
+      _ref = this.cards.list;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cardId = _ref[_i];
+        object[iCounter] = Card.find(cardId);
+        iCounter++;
+      }
       return object;
     }
   });

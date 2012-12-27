@@ -34,21 +34,21 @@ html(lange="en")
 				.zoomed-card.ZoomedCard
 
 				.card-lister.CardLister(data-state="hidden")
-					.button.move-top move To Top
-					.button.move-up move Up
+					.button.MoveTopTop move To Top
+					.button.MoveUp move Up
 					.list.List
-					.button.move-down move Down
-					.button.move-bottom move To Bottom
+					.button.MoveDown move Down
+					.button.MoveToBottom move To Bottom
 
 					.close.Close
 
 				.player.Player
 					.cards.Cards
-					.deck.Deck.Area(data-isEmpty="true")
+					.deck.Deck.Area.CardPile(data-isEmpty="true")
 					.hand.Hand.Area(data-isEmpty="true")
 					.board.Board.Area(data-isEmpty="true")
-					.graveyard.Graveyard.Area(data-isEmpty="true")
-					.sideboard.Sideboard.Area(data-isEmpty="true")
+					.graveyard.Graveyard.Area.CardPile(data-isEmpty="true")
+					.sideboard.Sideboard.Area.CardPile(data-isEmpty="true")
 
 
 				.player.opponent.Opponent

@@ -56,10 +56,7 @@ function List ()
 	this.Move = function( index, newIndex ){
 		var item = this.list[index];
 		this.Remove( item );
-
-		if( newIndex == -1 )
-			this.Insert( this.Count() , item )
-		
+		this.Insert( newIndex, item )
 		return this.list;
 	}
 }

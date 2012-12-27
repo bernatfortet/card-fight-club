@@ -18,18 +18,30 @@ CardListerController = (function(_super) {
   CardListerController.prototype.currentDeckId = null;
 
   function CardListerController() {
+    this.moveCardToBottom = __bind(this.moveCardToBottom, this);
+    this.moveCardToTop = __bind(this.moveCardToTop, this);
+    this.moveCardDown = __bind(this.moveCardDown, this);
+    this.moveCardUp = __bind(this.moveCardUp, this);
     this.closeLister = __bind(this.closeLister, this);
     this.onClickItem = __bind(this.onClickItem, this);    CardListerController.__super__.constructor.apply(this, arguments);
     this.el.find(".Close").on("click", this.closeLister);
     this.el.on("click", "li", this.onClickItem);
+    this.el.find(".MoveToTop").on("click", this.moveCardToTop);
+    this.el.find(".MoveUp").on("click", this.moveCardUp);
+    this.el.find(".MoveDown").on("click", this.moveCardDown);
+    this.el.find(".MoveToBottom").on("click", this.moveCardToBottom);
   }
 
   CardListerController.prototype.onClickItem = function(event) {
     var clickedItem;
-    this.el.find("li[data-state='selected']").attr("data-state", "");
+    this.cleanSelectedItem();
     clickedItem = $(event.currentTarget);
     this.selectedItem = clickedItem;
     return clickedItem.attr("data-state", "selected");
+  };
+
+  CardListerController.prototype.cleanSelectedItem = function() {
+    return this.el.find("li[data-state='selected']").attr("data-state", "");
   };
 
   CardListerController.prototype.closeLister = function() {
@@ -37,17 +49,13 @@ CardListerController = (function(_super) {
     return this.el.attr("data-state", "hidden");
   };
 
-  CardListerController.prototype.showDeckCards = function(deckId) {
-    return this.showCardsFromArea(deckId, "deck");
-  };
-
-  CardListerController.prototype.showCardsFromArea = function(deckId, area) {
+  CardListerController.prototype.showCardsFromArea = function(area) {
     var cards;
     this.closeLister();
-    cards = Deck.find(deckId).getCardsModels();
+    this.cleanSelectedItem();
+    cards = area.getCardsModels();
     this.renderCards(cards);
     this.currentArea = area;
-    this.currentDeckId = deckId;
     this.currentList = cards;
     return this.el.attr("data-state", "visible");
   };
@@ -66,38 +74,26 @@ CardListerController = (function(_super) {
   };
 
   CardListerController.prototype.refresh = function() {
-    return this.showCardsFromArea(this.currentDeckId, this.currentArea);
+    return this.showCardsFromArea(this.currentArea);
   };
 
   CardListerController.prototype.moveCardUp = function() {
-    var itemIndex, newIndex;
-    itemIndex = selectedItem.index();
-    newIndex = itemIndex - 1;
-    Deck.find(this.currentDeckId).moveItemInArea(itemIndex, newIndex, area);
+    this.currentArea.moveCardUp(this.selectedItem.index());
     return this.refresh();
   };
 
   CardListerController.prototype.moveCardDown = function() {
-    var itemIndex, newIndex;
-    itemIndex = selectedItem.index();
-    newIndex = itemIndex + 1;
-    Deck.find(this.currentDeckId).moveItemInArea(itemIndex, newIndex, area);
+    this.currentArea.moveCardDown(this.selectedItem.index());
     return this.refresh();
   };
 
   CardListerController.prototype.moveCardToTop = function() {
-    var itemIndex, newIndex;
-    itemIndex = selectedItem.index();
-    newIndex = 0;
-    Deck.find(this.currentDeckId).moveItemInArea(itemIndex, newIndex, area);
+    this.currentArea.moveCardToTop(this.selectedItem.index());
     return this.refresh();
   };
 
-  CardListerController.prototype.moveCardBottom = function() {
-    var itemIndex, newIndex;
-    itemIndex = selectedItem.index();
-    newIndex = -1;
-    Deck.find(this.currentDeckId).moveItemInArea(itemIndex, newIndex, area);
+  CardListerController.prototype.moveCardToBottom = function() {
+    this.currentArea.moveCardToBottom(this.selectedItem.index());
     return this.refresh();
   };
 

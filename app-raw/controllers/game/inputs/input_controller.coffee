@@ -32,12 +32,14 @@ class InputController extends Spine.Controller
 		app.gameController.zoomedCardController.zoomOut()
 		#console.log( "onZoomCard", Deck.find( deckId ) );
 
-	onShuffleDeck: () =>
-		this.targetPlayer.deck.shuffle()
+	onShuffleArea: ( key, opt ) =>
+		areaId = opt.$trigger.data().areaId
+		this.targetPlayer.shuffleArea( areaId )
 		#console.log( "onShuffleDeck", Deck.find( deckId ) );
 
-	onViewDeckCards: () =>
-		app.gameController.cardListerController.showDeckCards( this.targetPlayer.deck.id )
+	onViewCardsFromArea: ( key, opt ) =>
+		areaId = opt.$trigger.data().areaId
+		this.targetPlayer.showCardsFromArea( areaId )
 	
 	onDrawCard: () =>
 		this.targetPlayer.onDrawCard();

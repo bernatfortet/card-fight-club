@@ -15,14 +15,14 @@ class HumanInputController extends InputController
 		$(".Player .Deck").on("dblclick", this.onDoubleClickDeck )
 
 		$.contextMenu({
-			selector: ".Player .Deck"
+			selector: ".Player .CardPile"
 			items:
 				shuffle:
 					name: "Shuffle"
-					callback: this.onShuffleDeck
+					callback: this.onShuffleArea
 				view:
 					name: "View Cards"
-					callback: this.onViewDeckCards
+					callback: this.onViewCardsFromArea
 				#reveal:
 				#	name: "Reveal Top Card"
 				#topToBottom:
