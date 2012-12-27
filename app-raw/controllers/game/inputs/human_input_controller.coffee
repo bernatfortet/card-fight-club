@@ -1,14 +1,10 @@
 class HumanInputController extends InputController
 
 	activeCard: null
-	cardOriginalArea: null
-	cardFinalArea: null
+	humanPlayer: null
 
 	constructor: ->
 		super
-		
-		this.setListeners()
-
 
 	setListeners: ->
 
@@ -25,6 +21,24 @@ class HumanInputController extends InputController
 		})
 
 		$(".Deck").on("dblclick", this.onDoubleClickDeck )
+
+
+		$.contextMenu({
+			selector: ".Deck"
+			items:
+				shuffle:
+					name: "Shuffle"
+					callback: this.onShuffleDeck
+				view:
+					name: "View Cards"
+					callback: this.onViewDeckCards
+				#reveal:
+				#	name: "Reveal Top Card"
+				#topToBottom:
+				#	name: "Put Top Card to Bottom"
+				#bottomToTop:
+				#	name: "Put Bottom Card to Top"
+		})
 
 		$(".Graveyard").droppable({
 			drop: this.onDropCardOnGraveyard

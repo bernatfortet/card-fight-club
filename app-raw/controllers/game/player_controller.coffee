@@ -5,9 +5,12 @@ class PlayerController extends Spine.Controller
 		super
 
 	setDeck: ( deck ) ->
+
+		deckController = new DeckController( el: this.el.find(".Deck") )
 		this.deck = Deck.create( 
 			name: deck.name, 
 			baseCards: deck.cardList
+			controller: deckController
 		)
 
 	createCardFromTopOfDeck: () ->
@@ -62,5 +65,8 @@ class PlayerController extends Spine.Controller
 
 	onDrawCard: () ->
 		this.createCardFromTopOfDeck()
+
+	showDeckCards: () ->
+		app.gameController.cardListerController.show( this.deck.cardsOnDeck.list )
 
 	# getCardPercentPosX: ( card ) ->

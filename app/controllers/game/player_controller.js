@@ -13,9 +13,14 @@ PlayerController = (function(_super) {
   }
 
   PlayerController.prototype.setDeck = function(deck) {
+    var deckController;
+    deckController = new DeckController({
+      el: this.el.find(".Deck")
+    });
     return this.deck = Deck.create({
       name: deck.name,
-      baseCards: deck.cardList
+      baseCards: deck.cardList,
+      controller: deckController
     });
   };
 
@@ -91,6 +96,10 @@ PlayerController = (function(_super) {
 
   PlayerController.prototype.onDrawCard = function() {
     return this.createCardFromTopOfDeck();
+  };
+
+  PlayerController.prototype.showDeckCards = function() {
+    return app.gameController.cardListerController.show(this.deck.cardsOnDeck.list);
   };
 
   return PlayerController;

@@ -30,11 +30,22 @@ html(lange="en")
 				include app-raw/views/views
 			.section#Login
 			.section.game#Game.active
+
 				.zoomed-card.ZoomedCard
+
+				.card-lister.CardLister(data-state="hidden")
+					.button.move-top move To Top
+					.button.move-up move Up
+					.list.List
+					.button.move-down move Down
+					.button.move-bottom move To Bottom
+
+					.close.Close
+
 				.player.Player
 					.cards.Cards
 					.board.Board
-					.deck.Deck
+					.deck.Deck(data-isEmpty="true")
 					.graveyard.Graveyard
 					.hand.Hand
 

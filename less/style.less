@@ -11,12 +11,13 @@
 
 	.player{ width: 100%; height:50%; .abs; bottom:0; left:0; overflow: hidden;  background:lighten(black, 10%);}
 		@backCardImage: url("../images/back.jpg");
+		@emtyCardImage: url("../images/empty.jpg");
 		@graveyardImage: url("../images/graveyard.jpg");
 
 
 		.board{ width: 75%; height:65%; background:lighten(black, 20%);}
-		.deck{ width:126px; height:35%; .abs; right:0; bottom:0; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8;
-			&[data-state="Empty"]{ background-image: url("../images/empty.jpg");}
+		.deck{ width:126px; height:35%; .abs; right:0; bottom:0; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8; .anchor;
+			&[data-isEmpty="true"]{ background-image: url("../images/empty.jpg");}
 		}
 
 		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:0; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8;}
@@ -24,8 +25,9 @@
 			&.Active{ background:lighten(black, 35%);}
 		}
 
-		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; background: no-repeat 0 0; background-size: contain; .br(5px); .unselectable; z-index: 16;
+		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; background: no-repeat 0 0; background-size: contain; .br(5px); .unselectable; z-index: 16; .anchor;
 			.img{ width:100%; height:100%; .rel; display:block; background-size: contain; .br(5px); background-repeat:no-repeat;}
+			&:hover .img{ .bs( 0px 0px 10px 0px fade(black, 70%) ); left:-2px; top:-2px; .anim;}
 			&[data-zoom="true"] .img{ width:300%; height:300%; left:-50%; top:-50%; .br(15px); }
 			&[data-tapped="true"] .img{ .trans( rotate( 90deg ) ); }
 			&[data-flipped="down"] .img{ background-image:@backCardImage !important; }
@@ -42,5 +44,19 @@
 		&[data-isZooming="true"]{ z-index:32; }
 	}
 
-	
+	.card-lister{ .abs; left:40%; top:50px; padding:5px; background:white; z-index:32;
+		.button{ margin-bottom:3px; padding:4px; background:grey; color:white; .br(2px); .ingame-button; } 
 
+		li{ padding:0 10px; color:black; .anchor;
+			&:hover{ background:grey;}
+			&[data-state="selected"]{ background:green;}
+		}
+		&[data-state="visible"]{ .shown; }
+		&[data-state="hidden"]{ .hidden; }
+	}
+
+	.context-menu-list{ min-width:60px; .abs; background:white; .br(3px); .bs( 0px 0px 15px 0px #000 ); .unselectable;
+		.context-menu-item{ padding:7px 10px; color:black; .anchor;
+			&:hover{ background:black; color:white;}
+		}
+	}

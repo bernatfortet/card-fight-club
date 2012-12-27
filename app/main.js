@@ -25,6 +25,7 @@ require(
 			"order!libs/jquery/jquery-ui.min",
 			"order!libs/jquery/plugins/jquery.easing.1.3",
 			"order!libs/jquery/plugins/jquery.tmpl",
+			"order!libs/jquery/plugins/jquery.contextMenu",
 			"order!libs/jquery/plugins/jwerty",
 
 			
@@ -35,8 +36,10 @@ require(
 
 			"order!controllers/game/game_controller",
 			"order!controllers/game/player_controller",
+			"order!controllers/game/deck_controller",
 			"order!controllers/game/card_controller",
 			"order!controllers/game/zoomed_card_controller",
+			"order!controllers/game/card_lister_controller",
 			
 			//Inputs
 			"order!controllers/game/inputs/input_controller",

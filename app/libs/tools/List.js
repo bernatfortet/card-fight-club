@@ -47,4 +47,19 @@ function List ()
 	this.Clear = function() {
 		this.list = [];
 	}
+
+	this.Insert = function( index, item ){
+		this.list.splice( index, 0, item )
+		return this.list;
+	}
+
+	this.Move = function( index, newIndex ){
+		var item = this.list[index];
+		this.Remove( item );
+
+		if( newIndex == -1 )
+			this.Insert( this.Count() , item )
+		
+		return this.list;
+	}
 }

@@ -18,27 +18,23 @@ GameController = (function(_super) {
   }
 
   GameController.prototype.initialize = function() {
+    var playerInfo;
     this.humanInputController = new HumanInputController();
     this.networkInputController = new NetworkInputController();
-    this.setPlayers();
-    this.setInputControllers();
-    return this.zoomedCardController = new ZoomedCardController({
+    this.zoomedCardController = new ZoomedCardController({
       el: $(".ZoomedCard")
     });
-  };
-
-  GameController.prototype.setPlayers = function() {
-    var playerInfo;
+    this.cardListerController = new CardListerController({
+      el: $(".CardLister")
+    });
     playerInfo = this.getPlayerInfo();
     this.player = new PlayerController({
       el: $(".Player")
     });
-    return this.player.setDeck(playerInfo.player.deck);
-  };
-
-  GameController.prototype.setInputControllers = function() {
+    this.player.setDeck(playerInfo.player.deck);
     this.humanInputController.setTargetPlayer(this.player);
-    return this.networkInputController.setTargetPlayer(this.opponent);
+    this.networkInputController.setTargetPlayer(this.opponent);
+    return this.humanInputController.setListeners();
   };
 
   GameController.prototype.getPlayerInfo = function() {

@@ -9,9 +9,7 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.activeCard = null;
 
-  HumanInputController.prototype.cardOriginalArea = null;
-
-  HumanInputController.prototype.cardFinalArea = null;
+  HumanInputController.prototype.humanPlayer = null;
 
   function HumanInputController() {
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
@@ -24,7 +22,6 @@ HumanInputController = (function(_super) {
     this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
     this.onRightMouseClick = __bind(this.onRightMouseClick, this);    HumanInputController.__super__.constructor.apply(this, arguments);
-    this.setListeners();
   }
 
   HumanInputController.prototype.setListeners = function() {
@@ -38,6 +35,19 @@ HumanInputController = (function(_super) {
       drop: this.onDropCardOnDeck
     });
     $(".Deck").on("dblclick", this.onDoubleClickDeck);
+    $.contextMenu({
+      selector: ".Deck",
+      items: {
+        shuffle: {
+          name: "Shuffle",
+          callback: this.onShuffleDeck
+        },
+        view: {
+          name: "View Cards",
+          callback: this.onViewDeckCards
+        }
+      }
+    });
     return $(".Graveyard").droppable({
       drop: this.onDropCardOnGraveyard
     });
