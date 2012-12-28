@@ -4,10 +4,6 @@ class CardController extends Spine.Controller
 	isTapped: false
 	isFlippedUp: false
 
-	location:
-		x: 0
-		y: 0
-
 	constructor: ->
 		super
 		this.render()
@@ -17,20 +13,13 @@ class CardController extends Spine.Controller
 		this.el = ( $("#"+this.template).tmpl( this.item ) )
 
 	move: ( posX, posY ) ->
-		this.el.css("left", posX * $(window).width()  )
-		this.el.css("top", posY * $(window).height() )
-		this.setLocation()
+		this.el.css("left", posX * 100 + "%" )
+		this.el.css("top", posY * 100 + "%" )
 
-	setLocation: ->
-		this.location.x = this.el.offset().left / $(window).width()
-		this.location.y = this.el.offset().top / $(window).height()
-
-	moveToArea: ( areaId ) ->
-		areaModel = Area.find( areaId )
-		this.item.setArea( areaModel.id )
-		areaPosX = areaModel.controller.el.offset().left / $(window).width()
-		areaPosY = areaModel.controller.el.offset().top / $(window).height()
-		this.move( areaPosX, areaPosY )
+	getLocation: ->
+		cardLocation =
+			x: this.el.offset().left / $(window).width() * 100
+			y: this.el.offset().top / $(window).height() * 100
 
 	tap: =>
 		if( this.el.attr("data-tapped") == "false" )

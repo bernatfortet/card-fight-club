@@ -3,8 +3,14 @@ class HumanInputController extends InputController
 	activeCard: null
 	humanPlayer: null
 
+	originalWidth: null
+	originalHeight: null
+
 	constructor: ->
 		super
+
+		this.originalWidth = $(window).width()
+		this.originalHeight = $(window).height()
 
 	setListeners: ->
 

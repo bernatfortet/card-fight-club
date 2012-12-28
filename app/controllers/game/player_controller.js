@@ -79,49 +79,66 @@ PlayerController = (function(_super) {
     if (topCard) return this.addCard(topCard);
   };
 
-  PlayerController.prototype.addCard = function(card) {
+  PlayerController.prototype.addCard = function(cardModel) {
     var cardController;
     cardController = new CardController({
-      item: card
+      item: cardModel
     });
-    card.setController(cardController);
-    this.el.find(".Cards").append(cardController.el);
-    app.gameController.humanInputController.setCardListeners(cardController.el);
-    cardController.moveToArea(this.hand.id);
-    this.flipCardUp(card);
-    return app.gameController.multiplayerController.onCreateCard(card);
+    cardModel.setController(cardController);
+    app.gameController.multiplayerController.onCreateCard(cardModel);
+    this.renderCard(cardController.el);
+    this.setCardListeners(cardController.el);
+    this.moveToAreaLocation(cardModel, this.hand.id);
+    this.onCardGoesToArea(cardModel, this.hand.id);
+    return this.flipCardUp(cardModel);
   };
 
-  PlayerController.prototype.moveCard = function(card, location) {
-    return card.controller.move(location.left / $(window).width(), location.top / $(window).height());
+  PlayerController.prototype.renderCard = function(cardEl) {
+    return this.el.find(".Cards").append(cardEl);
   };
 
-  PlayerController.prototype.tapCard = function(card) {
-    return card.controller.tap();
+  PlayerController.prototype.setCardListeners = function(cardEl) {
+    return app.gameController.humanInputController.setCardListeners(cardEl);
   };
 
-  PlayerController.prototype.flipCard = function(card) {
-    return card.controller.flip();
+  PlayerController.prototype.moveToAreaLocation = function(cardModel, areaId) {
+    var areaModel, areaPosX, areaPosY;
+    areaModel = Area.find(areaId);
+    areaPosX = areaModel.controller.el.offset().left / $(window).width();
+    areaPosY = areaModel.controller.el.offset().top / $(window).height();
+    return cardModel.controller.move(areaPosX, areaPosY);
   };
 
-  PlayerController.prototype.flipCardUp = function(card) {
-    return card.controller.flipUp();
+  PlayerController.prototype.moveCard = function(cardModel, location) {
+    return cardModel.controller.move(location.left / $(window).width(), location.top / $(window).height());
   };
 
-  PlayerController.prototype.flipCardDown = function(card) {
-    return card.controller.flipDown();
+  PlayerController.prototype.tapCard = function(cardModel) {
+    return cardModel.controller.tap();
   };
 
-  PlayerController.prototype.onCardGoesToArea = function(card, areaId) {
+  PlayerController.prototype.flipCard = function(cardModel) {
+    return cardModel.controller.flip();
+  };
+
+  PlayerController.prototype.flipCardUp = function(cardModel) {
+    return cardModel.controller.flipUp();
+  };
+
+  PlayerController.prototype.flipCardDown = function(cardModel) {
+    return cardModel.controller.flipDown();
+  };
+
+  PlayerController.prototype.onCardGoesToArea = function(cardModel, areaId) {
     var areaModel;
     areaModel = Area.find(areaId);
-    if (!this.checkIfCardComesFromSameArea(card.areaId, areaModel.id)) {
-      app.gameController.multiplayerController.onMoveCard(card);
+    if (!this.checkIfCardComesFromSameArea(cardModel.areaId, areaModel.id)) {
+      app.gameController.multiplayerController.onMoveCard(cardModel);
       app.gameController.multiplayerController.onCardChangesArea(areaModel);
-      areaModel.controller.onCardDrops(card);
-      return card.setArea(areaId);
+      areaModel.controller.onCardDrops(cardModel);
+      return cardModel.setArea(areaId);
     } else {
-      return app.gameController.multiplayerController.onMoveCard(card);
+      return app.gameController.multiplayerController.onMoveCard(cardModel);
     }
   };
 

@@ -11,6 +11,10 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.humanPlayer = null;
 
+  HumanInputController.prototype.originalWidth = null;
+
+  HumanInputController.prototype.originalHeight = null;
+
   function HumanInputController() {
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
@@ -19,6 +23,8 @@ HumanInputController = (function(_super) {
     this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
     this.onRightMouseClick = __bind(this.onRightMouseClick, this);    HumanInputController.__super__.constructor.apply(this, arguments);
+    this.originalWidth = $(window).width();
+    this.originalHeight = $(window).height();
   }
 
   HumanInputController.prototype.setListeners = function() {

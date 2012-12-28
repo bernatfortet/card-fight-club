@@ -18,12 +18,20 @@ MultiplayerController = (function(_super) {
     return console.log("Area has shuffled ", area.name, area.id);
   };
 
-  MultiplayerController.prototype.onMoveCard = function(card) {
-    return console.log("Card has moved ", card.controller.location);
+  MultiplayerController.prototype.onMoveCard = function(cardModel) {
+    return console.log("Card has moved ", cardModel.controller.getLocation());
   };
 
   MultiplayerController.prototype.onCardChangesArea = function(area) {
     return console.log("Card has changed area ", area.name, area.id);
+  };
+
+  MultiplayerController.prototype.onFlipCardUp = function(cardModel) {
+    return console.log("Card has flipped Up ", cardModel);
+  };
+
+  MultiplayerController.prototype.onFlipCardDown = function(cardModel) {
+    return console.log("Card has flipped Down ", cardModel);
   };
 
   MultiplayerController.prototype.sendEvent = function() {};

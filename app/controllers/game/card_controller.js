@@ -13,11 +13,6 @@ CardController = (function(_super) {
 
   CardController.prototype.isFlippedUp = false;
 
-  CardController.prototype.location = {
-    x: 0,
-    y: 0
-  };
-
   function CardController() {
     this.zoomOut = __bind(this.zoomOut, this);
     this.zoomIn = __bind(this.zoomIn, this);
@@ -34,23 +29,16 @@ CardController = (function(_super) {
   };
 
   CardController.prototype.move = function(posX, posY) {
-    this.el.css("left", posX * $(window).width());
-    this.el.css("top", posY * $(window).height());
-    return this.setLocation();
+    this.el.css("left", posX * 100 + "%");
+    return this.el.css("top", posY * 100 + "%");
   };
 
-  CardController.prototype.setLocation = function() {
-    this.location.x = this.el.offset().left / $(window).width();
-    return this.location.y = this.el.offset().top / $(window).height();
-  };
-
-  CardController.prototype.moveToArea = function(areaId) {
-    var areaModel, areaPosX, areaPosY;
-    areaModel = Area.find(areaId);
-    this.item.setArea(areaModel.id);
-    areaPosX = areaModel.controller.el.offset().left / $(window).width();
-    areaPosY = areaModel.controller.el.offset().top / $(window).height();
-    return this.move(areaPosX, areaPosY);
+  CardController.prototype.getLocation = function() {
+    var cardLocation;
+    return cardLocation = {
+      x: this.el.offset().left / $(window).width() * 100,
+      y: this.el.offset().top / $(window).height() * 100
+    };
   };
 
   CardController.prototype.tap = function() {

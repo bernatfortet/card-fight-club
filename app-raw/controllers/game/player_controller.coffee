@@ -45,40 +45,55 @@ class PlayerController extends Spine.Controller
 		if( topCard )
 			this.addCard( topCard )
 
-	addCard: ( card ) ->
-		cardController = new CardController( item: card )
-		card.setController( cardController )
-		this.el.find(".Cards").append( cardController.el )
-		app.gameController.humanInputController.setCardListeners( cardController.el )
-		cardController.moveToArea( this.hand.id )
-		this.flipCardUp( card )
-		app.gameController.multiplayerController.onCreateCard( card )
+	addCard: ( cardModel ) ->
+		cardController = new CardController( item: cardModel )
+		cardModel.setController( cardController )
+		app.gameController.multiplayerController.onCreateCard( cardModel )
 
-	moveCard: ( card, location ) ->
-		card.controller.move( location.left / $(window).width(), location.top / $(window).height() )
+		this.renderCard( cardController.el )
+		this.setCardListeners( cardController.el )
+		this.moveToAreaLocation( cardModel, this.hand.id )
+		
+		this.onCardGoesToArea( cardModel, this.hand.id )
+		this.flipCardUp( cardModel )
 
-	tapCard: ( card ) ->
-		card.controller.tap()
+	renderCard: ( cardEl ) ->
+		this.el.find(".Cards").append( cardEl )
 
-	flipCard: ( card ) ->
-		card.controller.flip()
+	setCardListeners: ( cardEl ) ->
+		app.gameController.humanInputController.setCardListeners( cardEl )
 
-	flipCardUp: ( card ) ->
-		card.controller.flipUp()
-
-	flipCardDown: ( card ) ->
-		card.controller.flipDown()
-
-	onCardGoesToArea: ( card, areaId ) ->
+	moveToAreaLocation: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
-		if( !this.checkIfCardComesFromSameArea( card.areaId, areaModel.id ) )
-			app.gameController.multiplayerController.onMoveCard( card )
+		areaPosX = areaModel.controller.el.offset().left / $(window).width()
+		areaPosY = areaModel.controller.el.offset().top / $(window).height()
+		cardModel.controller.move( areaPosX, areaPosY )
+
+	moveCard: ( cardModel, location ) ->
+		cardModel.controller.move( location.left / $(window).width(), location.top / $(window).height() )
+
+	tapCard: ( cardModel ) ->
+		cardModel.controller.tap()
+
+	flipCard: ( cardModel ) ->
+		cardModel.controller.flip()
+
+	flipCardUp: ( cardModel ) ->
+		cardModel.controller.flipUp()
+
+	flipCardDown: ( cardModel ) ->
+		cardModel.controller.flipDown()
+
+	onCardGoesToArea: ( cardModel, areaId ) ->
+		areaModel = Area.find( areaId )
+		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
+			app.gameController.multiplayerController.onMoveCard( cardModel )
 			app.gameController.multiplayerController.onCardChangesArea( areaModel )
-			areaModel.controller.onCardDrops( card )
-			card.setArea( areaId )
+			areaModel.controller.onCardDrops( cardModel )
+			cardModel.setArea( areaId )
 
 		else
-			app.gameController.multiplayerController.onMoveCard( card )
+			app.gameController.multiplayerController.onMoveCard( cardModel )
 
 	checkIfCardComesFromSameArea: ( originArea, targetArea ) ->
 		if( originArea == targetArea )
@@ -97,4 +112,4 @@ class PlayerController extends Spine.Controller
 	showCardsFromArea: ( areaId ) ->
 		app.gameController.cardListerController.showCardsFromArea( Area.find( areaId ) )
 
-	# getCardPercentPosX: ( card ) ->
+	# getCardPercentPosX: ( cardModel ) ->
