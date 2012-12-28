@@ -15,7 +15,7 @@ ZoomedCardController = (function(_super) {
   ZoomedCardController.prototype.zoomIn = function(card) {
     if (card.controller.isFlippedUp) {
       this.el.attr("data-isZooming", "true");
-      return this.el.css("background-image", "url('images/cards/" + card.controller.item.img + "')");
+      return this.el.css("background-image", "url('" + card.controller.item.image_url + "')");
     }
   };
 

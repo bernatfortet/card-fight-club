@@ -21,18 +21,15 @@ class GameController extends Spine.Controller
 		this.zoomedCardController = new ZoomedCardController({ el: $(".ZoomedCard")})
 		this.cardListerController = new CardListerController({ el: $(".CardLister")})
 
-		playerInfo = this.getPlayerInfo()
 		this.player = new PlayerController({ el: $(".Player")})
-		this.player.setDeck( playerInfo.player.deck )
+		this.player.setDeck( User.first().deck )
 
 		this.humanInputController.setTargetPlayer( this.player )
 		this.networkInputController.setTargetPlayer( this.opponent )
 
 		this.humanInputController.setListeners()
 
-
-
-	getPlayerInfo: ->
+	getPlayerInfoOLD: ->
 		player:
 			name: "Socra"
 			deck:

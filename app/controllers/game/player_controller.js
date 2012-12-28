@@ -66,7 +66,7 @@ PlayerController = (function(_super) {
     sideboardController.setItem(this.sideboard);
     this.deck = Deck.create({
       name: deck.name,
-      baseCards: deck.cardList,
+      baseCards: deck.cards,
       controller: deckController
     });
     deckController.deck = this.deck;

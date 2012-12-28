@@ -32,7 +32,7 @@ class PlayerController extends Spine.Controller
 
 		this.deck = Deck.create( 
 			name: deck.name, 
-			baseCards: deck.cardList
+			baseCards: deck.cards
 			controller: deckController
 		)
 

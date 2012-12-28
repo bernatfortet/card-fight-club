@@ -9,6 +9,7 @@ require(
 			//Spine Libs
 			"order!libs/spine/spine",
 			"order!libs/spine/modules/ajax",
+			"order!libs/spine/modules/local",
 			"order!libs/spine/modules/manager",
 
 			"order!libs/json2",
@@ -32,6 +33,7 @@ require(
 		//Controllers ==========================
 			
 			"order!controllers/app",
+			"order!controllers/db_controller",
 			"order!controllers/network_controller",
 
 			"order!controllers/game/game_controller",
@@ -55,6 +57,10 @@ require(
 			"order!controllers/game/inputs/network_input_controller",
 
 		//Models ==========================
+			"order!models/user_model",
+			"order!models/user_card_model",
+
+			//GAME
 			"order!models/card_model",
 			"order!models/deck_model",
 			"order!models/area_model",
@@ -68,7 +74,7 @@ require(
 
 		$(document).ready(function(){
 			app = new App({ el: $("body")});
-			app.initialize();
+			//app.initialize();
 		});
     }
 );

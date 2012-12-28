@@ -13,12 +13,13 @@ Deck = (function(_super) {
   Deck.configure('Deck', 'id', 'name', 'baseCards', 'controller');
 
   Deck.include({
-    createCard: function(cardJSON) {
-      var cardModel;
+    createCard: function(cardId) {
+      var cardModel, realCardModel;
+      realCardModel = UserCard.find(cardId);
       cardModel = Card.create({
-        card_id: cardJSON.card_id,
-        img: cardJSON.img,
-        name: cardJSON.name,
+        card_id: realCardModel.id,
+        image_url: realCardModel.data.image_url,
+        name: realCardModel.data.name,
         deck: this,
         areaId: this.controller.item.id,
         controller: null

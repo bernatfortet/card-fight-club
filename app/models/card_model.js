@@ -10,7 +10,7 @@ Card = (function(_super) {
     Card.__super__.constructor.apply(this, arguments);
   }
 
-  Card.configure('Card', 'id', 'card_id', "img", "name", "deck", "areaId", "controller");
+  Card.configure('Card', 'id', 'card_id', "image_url", "name", "deck", "areaId", "controller");
 
   Card.include({
     setArea: function(areaId) {

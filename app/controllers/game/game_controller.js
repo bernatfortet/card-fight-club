@@ -18,7 +18,6 @@ GameController = (function(_super) {
   }
 
   GameController.prototype.initialize = function() {
-    var playerInfo;
     this.humanInputController = new HumanInputController();
     this.networkInputController = new NetworkInputController();
     this.multiplayerController = new MultiplayerController();
@@ -28,17 +27,16 @@ GameController = (function(_super) {
     this.cardListerController = new CardListerController({
       el: $(".CardLister")
     });
-    playerInfo = this.getPlayerInfo();
     this.player = new PlayerController({
       el: $(".Player")
     });
-    this.player.setDeck(playerInfo.player.deck);
+    this.player.setDeck(User.first().deck);
     this.humanInputController.setTargetPlayer(this.player);
     this.networkInputController.setTargetPlayer(this.opponent);
     return this.humanInputController.setListeners();
   };
 
-  GameController.prototype.getPlayerInfo = function() {
+  GameController.prototype.getPlayerInfoOLD = function() {
     return {
       player: {
         name: "Socra",

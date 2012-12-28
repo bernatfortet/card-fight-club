@@ -6,12 +6,24 @@ App = (function(_super) {
 
   __extends(App, _super);
 
+  App.prototype.userInfo = null;
+
   function App() {
     App.__super__.constructor.apply(this, arguments);
     this.gameController = new GameController();
+    this.dbController = new DBController();
+    this.initialize();
   }
 
   App.prototype.initialize = function() {
+    return this.dbController.getUserInfo();
+  };
+
+  App.prototype.createUser = function(userData, deckData) {
+    User.create({
+      name: userData.name,
+      deck: deckData
+    });
     return this.gameController.initialize();
   };
 
