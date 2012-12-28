@@ -75,7 +75,7 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.onCardDragStops = function(event, ui) {
     var cardPosition;
     cardPosition = ui.position;
-    return this.onCardIsMoved(this.getCardId(event.target), ui.position);
+    return this.onMoveCard(this.getCardId(event.target), ui.position);
   };
 
   HumanInputController.prototype.onDropCardOnArea = function(event, ui) {

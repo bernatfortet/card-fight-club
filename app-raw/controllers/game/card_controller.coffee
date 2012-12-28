@@ -4,6 +4,10 @@ class CardController extends Spine.Controller
 	isTapped: false
 	isFlippedUp: false
 
+	location:
+		x: 0
+		y: 0
+
 	constructor: ->
 		super
 		this.render()
@@ -13,14 +17,19 @@ class CardController extends Spine.Controller
 		this.el = ( $("#"+this.template).tmpl( this.item ) )
 
 	move: ( posX, posY ) ->
-		this.el.css("left", posX )
-		this.el.css("top", posY )
+		this.el.css("left", posX * $(window).width()  )
+		this.el.css("top", posY * $(window).height() )
+		this.setLocation()
+
+	setLocation: ->
+		this.location.x = this.el.offset().left / $(window).width()
+		this.location.y = this.el.offset().top / $(window).height()
 
 	moveToArea: ( areaId ) ->
 		areaModel = Area.find( areaId )
 		this.item.setArea( areaModel.id )
-		areaPosX = areaModel.controller.el.offset().left
-		areaPosY = areaModel.controller.el.offset().top
+		areaPosX = areaModel.controller.el.offset().left / $(window).width()
+		areaPosY = areaModel.controller.el.offset().top / $(window).height()
 		this.move( areaPosX, areaPosY )
 
 	tap: =>
@@ -49,7 +58,3 @@ class CardController extends Spine.Controller
 	zoomOut: =>
 		this.el.attr("data-zoom", "false")
 
-	getLocation: =>
-		location: 
-			x: this.el.offset().left
-			y: this.el.offset().top

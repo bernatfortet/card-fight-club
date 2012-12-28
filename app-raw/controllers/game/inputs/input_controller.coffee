@@ -8,7 +8,7 @@ class InputController extends Spine.Controller
 	setTargetPlayer: ( targetPlayer ) ->
 		this.targetPlayer = targetPlayer
 
-	onCardIsMoved: ( cardId, position ) ->
+	onMoveCard: ( cardId, position ) ->
 		this.targetPlayer.moveCard( Card.find( cardId ), position )
 		#console.log("onCardIsMoved ", Card.find( cardId ), position);
 

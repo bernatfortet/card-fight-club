@@ -22,7 +22,7 @@ InputController = (function(_super) {
     return this.targetPlayer = targetPlayer;
   };
 
-  InputController.prototype.onCardIsMoved = function(cardId, position) {
+  InputController.prototype.onMoveCard = function(cardId, position) {
     return this.targetPlayer.moveCard(Card.find(cardId), position);
   };
 

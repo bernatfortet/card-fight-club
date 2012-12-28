@@ -19,7 +19,7 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.onMoveCard = function(card) {
-    return console.log("Card has moved ", card.controller.getLocation());
+    return console.log("Card has moved ", card.controller.location);
   };
 
   MultiplayerController.prototype.onCardChangesArea = function(area) {

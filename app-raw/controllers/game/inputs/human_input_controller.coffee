@@ -61,7 +61,7 @@ class HumanInputController extends InputController
 
 	onCardDragStops: ( event, ui )  =>
 		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
-		this.onCardIsMoved( this.getCardId( event.target ), ui.position )	
+		this.onMoveCard( this.getCardId( event.target ), ui.position )	
 
 	onDropCardOnArea: ( event, ui ) =>
 		areaId = $(event.target).data().areaId

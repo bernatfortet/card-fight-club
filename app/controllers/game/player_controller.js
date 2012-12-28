@@ -92,8 +92,8 @@ PlayerController = (function(_super) {
     return app.gameController.multiplayerController.onCreateCard(card);
   };
 
-  PlayerController.prototype.moveCard = function(card, posX, posY) {
-    return card.controller.move(posX, posY);
+  PlayerController.prototype.moveCard = function(card, location) {
+    return card.controller.move(location.left / $(window).width(), location.top / $(window).height());
   };
 
   PlayerController.prototype.tapCard = function(card) {

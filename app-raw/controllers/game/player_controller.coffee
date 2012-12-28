@@ -54,8 +54,8 @@ class PlayerController extends Spine.Controller
 		this.flipCardUp( card )
 		app.gameController.multiplayerController.onCreateCard( card )
 
-	moveCard: ( card, posX, posY ) ->
-		card.controller.move( posX, posY )
+	moveCard: ( card, location ) ->
+		card.controller.move( location.left / $(window).width(), location.top / $(window).height() )
 
 	tapCard: ( card ) ->
 		card.controller.tap()
