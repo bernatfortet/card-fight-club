@@ -18,20 +18,14 @@ class CardController extends Spine.Controller
 
 	getLocation: ->
 		cardLocation =
-			x: this.el.offset().left / $(window).width() * 100
-			y: this.el.offset().top / $(window).height() * 100
+			x: this.el.offset().left / $(window).width()
+			y: this.el.offset().top / $(window).height()
 
 	tap: =>
-		if( this.el.attr("data-tapped") == "false" )
+		if( this.el.attr("data-tapped") != "true" )
 			this.el.attr("data-tapped", "true")
 		else
 			this.el.attr("data-tapped", "false")
-
-	flip: =>
-		if( this.el.attr("data-flipped") == "up" )
-			this.flipDown()
-		else
-			this.flipUp()
 
 	flipUp: =>
 		this.el.attr("data-flipped", "up")

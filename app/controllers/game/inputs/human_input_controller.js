@@ -58,6 +58,10 @@ HumanInputController = (function(_super) {
     });
     cardElement.on("dblclick", this.onDoubleClickCard);
     cardElement.on("contextmenu", this.onRightMouseClick);
+    return this.setCardHoverListener(cardElement);
+  };
+
+  HumanInputController.prototype.setCardHoverListener = function(cardElement) {
     cardElement.on("mouseover", this.onMouseOverCard);
     return cardElement.on("mouseout", this.onMouseOutCard);
   };
@@ -66,12 +70,18 @@ HumanInputController = (function(_super) {
     var RIGHT_MOUSE_BUTTON;
     RIGHT_MOUSE_BUTTON = 3;
     if (event.which === RIGHT_MOUSE_BUTTON) {
-      return this.onCardIsTapped(this.getCardId(event.currentTarget));
+      return this.onTapCard(this.getCardId(event.currentTarget));
     }
   };
 
   HumanInputController.prototype.onDoubleClickCard = function(event) {
-    return this.onCardIsFlipped(this.getCardId(event.currentTarget));
+    var flipState;
+    flipState = $(event.currentTarget).attr("data-flipped");
+    if (flipState === "up") {
+      return this.onFlipCardDown(this.getCardId(event.currentTarget));
+    } else {
+      return this.onFlipCardUp(this.getCardId(event.currentTarget));
+    }
   };
 
   HumanInputController.prototype.onDoubleClickDeck = function() {
@@ -79,9 +89,13 @@ HumanInputController = (function(_super) {
   };
 
   HumanInputController.prototype.onCardDragStops = function(event, ui) {
-    var cardPosition;
+    var cardPosition, location;
     cardPosition = ui.position;
-    return this.onMoveCard(this.getCardId(event.target), ui.position);
+    location = {
+      x: ui.position.left / $(window).width(),
+      y: ui.position.top / $(window).height()
+    };
+    return this.onMoveCard(this.getCardId(event.target), location);
   };
 
   HumanInputController.prototype.onDropCardOnArea = function(event, ui) {

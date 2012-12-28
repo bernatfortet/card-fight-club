@@ -10,17 +10,28 @@ Deck = (function(_super) {
     Deck.__super__.constructor.apply(this, arguments);
   }
 
-  Deck.configure('Deck', 'id', 'name', 'baseCards', 'controller');
+  Deck.configure('Deck', 'id', 'name', 'cards', 'controller');
 
   Deck.include({
-    createCard: function(cardId) {
-      var cardModel, realCardModel;
-      realCardModel = UserCard.find(cardId);
+    createCard: function(realCardId, image_url, name) {
+      var cardModel;
       cardModel = Card.create({
-        card_id: realCardModel.id,
-        image_url: realCardModel.data.image_url,
-        name: realCardModel.data.name,
-        deck: this,
+        card_id: realCardId,
+        image_url: image_url,
+        name: name,
+        deckId: this.id,
+        areaId: this.controller.item.id,
+        controller: null
+      });
+      return this.controller.addCard(cardModel);
+    },
+    createOponentCard: function(cardId, image_url, name) {
+      var cardModel;
+      cardModel = Card.create({
+        id: cardId,
+        image_url: image_url,
+        name: name,
+        deckId: this.id,
         areaId: this.controller.item.id,
         controller: null
       });
@@ -33,10 +44,21 @@ Deck = (function(_super) {
 })(Spine.Model);
 
 Deck.bind("create", function(deck) {
-  var cardIndex, _results;
-  _results = [];
-  for (cardIndex in deck.baseCards) {
-    _results.push(deck.createCard(deck.baseCards[cardIndex]));
+  var card, cardId, cardIndex, realCardModel, _results, _results2;
+  if (typeof deck.cards[0] === "string") {
+    _results = [];
+    for (cardIndex in deck.cards) {
+      cardId = deck.cards[cardIndex];
+      realCardModel = UserCard.find(cardId);
+      _results.push(deck.createCard(realCardModel.id, realCardModel.data.image_url, realCardModel.data.name));
+    }
+    return _results;
+  } else {
+    _results2 = [];
+    for (cardIndex in deck.cards) {
+      card = deck.cards[cardIndex];
+      _results2.push(deck.createOponentCard(card.id, card.image_url, card.name));
+    }
+    return _results2;
   }
-  return _results;
 });

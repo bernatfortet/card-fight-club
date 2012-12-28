@@ -1,22 +1,21 @@
 class PlayerController extends Spine.Controller
 	deck: null
+	multiplayerController: null
 
 	constructor: () ->
 		super
 
-	setDeck: ( deck ) ->
+		this.deckController = new DeckController( el: this.el.find(".Deck"), player: this )
+		this.handController = new BoardController( el: this.el.find(".Hand"), player: this )
+		this.boardController = new BoardController( el: this.el.find(".Board"), player: this )
+		this.graveyardController = new BoardController( el: this.el.find(".Graveyard"), player: this )
+		this.sideboardController = new BoardController( el: this.el.find(".Sideboard"), player: this )
 
-		deckController = new DeckController( el: this.el.find(".Deck"), player: this )
-		handController = new BoardController( el: this.el.find(".Hand"), player: this )
-		boardController = new BoardController( el: this.el.find(".Board"), player: this )
-		graveyardController = new BoardController( el: this.el.find(".Graveyard"), player: this )
-		sideboardController = new BoardController( el: this.el.find(".Sideboard"), player: this )
-
-		this.deckArea	= Area.create( name: "deck", controller: deckController )
-		this.hand 		= Area.create( name: "hand", controller: handController )
-		this.board 		= Area.create( name: "board", controller: boardController )
-		this.graveyard 	= Area.create( name: "graveyard", controller: graveyardController )
-		this.sideboard 	= Area.create( name: "sideboard", controller: sideboardController )
+		this.deckArea	= Area.create( name: "deck", controller: this.deckController )
+		this.hand 		= Area.create( name: "hand", controller: this.handController )
+		this.board 		= Area.create( name: "board", controller: this.boardController )
+		this.graveyard 	= Area.create( name: "graveyard", controller: this.graveyardController )
+		this.sideboard 	= Area.create( name: "sideboard", controller: this.sideboardController )
 
 		this.deckArea.setList()
 		this.hand.setList()
@@ -24,21 +23,25 @@ class PlayerController extends Spine.Controller
 		this.graveyard.setList()
 		this.sideboard.setList()
 
-		deckController.setItem( this.deckArea )
-		handController.setItem( this.hand )
-		boardController.setItem( this.board )
-		graveyardController.setItem( this.graveyard )
-		sideboardController.setItem( this.sideboard )
+		this.deckController.setItem( this.deckArea )
+		this.handController.setItem( this.hand )
+		this.boardController.setItem( this.board )
+		this.graveyardController.setItem( this.graveyard )
+		this.sideboardController.setItem( this.sideboard )
 
+	setDeck: ( deck ) ->
 		this.deck = Deck.create( 
 			name: deck.name, 
-			baseCards: deck.cards
-			controller: deckController
+			cards: deck.cards
+			controller: this.deckController
 		)
 
-		deckController.deck = this.deck
+		this.deckController.deck = this.deck
+		
+		this.multiplayerController.onCreateDeck( this.deck ) if this.multiplayerController?
 
 		this.shuffleArea( this.deckArea.id )
+
 
 	createCardFromTopOfDeck: () ->
 		topCard = this.deckArea.getTopCard()
@@ -48,10 +51,14 @@ class PlayerController extends Spine.Controller
 	addCard: ( cardModel ) ->
 		cardController = new CardController( item: cardModel )
 		cardModel.setController( cardController )
-		app.gameController.multiplayerController.onCreateCard( cardModel )
+
+		if ( this.isPlayerNetworked() )
+			this.multiplayerController.onCreateCard( cardModel )
+			this.setCardListeners( cardController.el )
+		else
+			this.setCardHoverListener( cardController.el )
 
 		this.renderCard( cardController.el )
-		this.setCardListeners( cardController.el )
 		this.moveToAreaLocation( cardModel, this.hand.id )
 		
 		this.onCardGoesToArea( cardModel, this.hand.id )
@@ -63,6 +70,9 @@ class PlayerController extends Spine.Controller
 	setCardListeners: ( cardEl ) ->
 		app.gameController.humanInputController.setCardListeners( cardEl )
 
+	setCardHoverListener: ( cardEl ) ->
+		app.gameController.humanInputController.setCardHoverListener( cardEl )
+
 	moveToAreaLocation: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
 		areaPosX = areaModel.controller.el.offset().left / $(window).width()
@@ -70,30 +80,34 @@ class PlayerController extends Spine.Controller
 		cardModel.controller.move( areaPosX, areaPosY )
 
 	moveCard: ( cardModel, location ) ->
-		cardModel.controller.move( location.left / $(window).width(), location.top / $(window).height() )
+		cardModel.controller.move( location.x, location.y )
+		this.multiplayerController.onMoveCard( cardModel ) if this.isPlayerNetworked()
 
 	tapCard: ( cardModel ) ->
 		cardModel.controller.tap()
+		this.multiplayerController.onTapCard( cardModel ) if this.isPlayerNetworked()
 
 	flipCard: ( cardModel ) ->
-		cardModel.controller.flip()
+		if( cardModel.controller.isFlippedUp  )
+			this.flipCardDown()
+		else
+			this.flipCardDown()
 
 	flipCardUp: ( cardModel ) ->
 		cardModel.controller.flipUp()
+		this.multiplayerController.onFlipCardUp( cardModel ) if this.isPlayerNetworked()
 
 	flipCardDown: ( cardModel ) ->
 		cardModel.controller.flipDown()
+		this.multiplayerController.onFlipCardDown( cardModel ) if this.isPlayerNetworked()
 
 	onCardGoesToArea: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
 		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
-			app.gameController.multiplayerController.onMoveCard( cardModel )
-			app.gameController.multiplayerController.onCardChangesArea( areaModel )
+			this.multiplayerController.onCardChangesArea( areaModel ) if this.isPlayerNetworked()
 			areaModel.controller.onCardDrops( cardModel )
 			cardModel.setArea( areaId )
-
-		else
-			app.gameController.multiplayerController.onMoveCard( cardModel )
+			#Put moveCard here again with else if cards dont move when created
 
 	checkIfCardComesFromSameArea: ( originArea, targetArea ) ->
 		if( originArea == targetArea )
@@ -104,12 +118,15 @@ class PlayerController extends Spine.Controller
 	shuffleArea: ( areaId ) ->
 		areaModel = Area.find( areaId )
 		areaModel.shuffle()
-		app.gameController.multiplayerController.onShuffle( areaModel )
+		this.multiplayerController.onShuffle( areaModel ) if this.isPlayerNetworked()
 
 	onDrawCard: () ->
 		this.createCardFromTopOfDeck()
 
 	showCardsFromArea: ( areaId ) ->
-		app.gameController.cardListerController.showCardsFromArea( Area.find( areaId ) )
+		this.cardListerController.showCardsFromArea( Area.find( areaId ) )
+
+	isPlayerNetworked: ->
+		return this.multiplayerController?
 
 	# getCardPercentPosX: ( cardModel ) ->

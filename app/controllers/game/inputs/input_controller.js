@@ -15,23 +15,36 @@ InputController = (function(_super) {
     this.onShuffleArea = __bind(this.onShuffleArea, this);
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
-    this.onCardGoesToArea = __bind(this.onCardGoesToArea, this);    InputController.__super__.constructor.apply(this, arguments);
+    this.onCardGoesToArea = __bind(this.onCardGoesToArea, this);
+    this.onCreateCard = __bind(this.onCreateCard, this);    InputController.__super__.constructor.apply(this, arguments);
   }
 
   InputController.prototype.setTargetPlayer = function(targetPlayer) {
     return this.targetPlayer = targetPlayer;
   };
 
-  InputController.prototype.onMoveCard = function(cardId, position) {
-    return this.targetPlayer.moveCard(Card.find(cardId), position);
+  InputController.prototype.onCreateCard = function(card) {
+    return this.targetPlayer.addCard(card);
   };
 
-  InputController.prototype.onCardIsTapped = function(cardId) {
+  InputController.prototype.onMoveCard = function(cardId, location) {
+    return this.targetPlayer.moveCard(Card.find(cardId), location);
+  };
+
+  InputController.prototype.onTapCard = function(cardId) {
     return this.targetPlayer.tapCard(Card.find(cardId));
   };
 
-  InputController.prototype.onCardIsFlipped = function(cardId) {
+  InputController.prototype.onFlipCard = function(cardId) {
     return this.targetPlayer.flipCard(Card.find(cardId));
+  };
+
+  InputController.prototype.onFlipCardUp = function(cardId) {
+    return this.targetPlayer.flipCardUp(Card.find(cardId));
+  };
+
+  InputController.prototype.onFlipCardDown = function(cardId) {
+    return this.targetPlayer.flipCardDown(Card.find(cardId));
   };
 
   InputController.prototype.onCardGoesToArea = function(cardId, areaId) {

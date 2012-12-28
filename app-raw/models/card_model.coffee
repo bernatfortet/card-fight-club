@@ -1,5 +1,5 @@
 class Card extends Spine.Model
-	@configure 'Card', 'id', 'card_id', "image_url", "name", "deck", "areaId", "controller"
+	@configure 'Card', 'id', 'card_id', "image_url", "name", "deckId", "areaId", "controller"
 
 	@include
 		setArea: ( areaId ) ->

@@ -50,6 +50,9 @@ class HumanInputController extends InputController
 		cardElement.on("dblclick", this.onDoubleClickCard )
 		cardElement.on("contextmenu", this.onRightMouseClick )
 
+		this.setCardHoverListener( cardElement )
+
+	setCardHoverListener: ( cardElement ) ->
 		cardElement.on("mouseover", this.onMouseOverCard )
 		cardElement.on("mouseout", this.onMouseOutCard )
 
@@ -57,17 +60,24 @@ class HumanInputController extends InputController
 		RIGHT_MOUSE_BUTTON = 3
 		if( event.which == RIGHT_MOUSE_BUTTON )
 			#event.preventDefault()
-			this.onCardIsTapped( this.getCardId( event.currentTarget ) )
+			this.onTapCard( this.getCardId( event.currentTarget ) )
 
 	onDoubleClickCard: ( event ) =>
-		this.onCardIsFlipped( this.getCardId( event.currentTarget ) )
+		flipState = $(event.currentTarget).attr("data-flipped")
+		if( flipState == "up")
+			this.onFlipCardDown( this.getCardId( event.currentTarget ) )
+		else
+			this.onFlipCardUp( this.getCardId( event.currentTarget ) )
 
 	onDoubleClickDeck: () =>
 		this.onDrawCard()
 
 	onCardDragStops: ( event, ui )  =>
 		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
-		this.onMoveCard( this.getCardId( event.target ), ui.position )	
+		location = 
+			x: ui.position.left / $(window).width()
+			y: ui.position.top / $(window).height()
+		this.onMoveCard( this.getCardId( event.target ), location )	
 
 	onDropCardOnArea: ( event, ui ) =>
 		areaId = $(event.target).data().areaId

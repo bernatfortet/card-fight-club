@@ -100,6 +100,7 @@ button{width:auto;overflow:visible;}
 .opponent .deck{top:0;bottom:none;}
 .opponent .graveyard{bottom:0;top:37%;}
 .opponent .hand{top:0;bottom:none;}
+.opponent .card{z-index:14;}
 .zoomed-card{width:223px;height:310px;position:fixed;right:0;top:35%;z-index:0;background-repeat:no-repeat;background-position:right center;border-radius:12px;-moz-border-radius:12px;-webkit-border-radius:12px;}.zoomed-card[data-isZooming="true"]{z-index:32;}
 .card-lister{position:absolute;left:40%;top:50px;padding:5px;background:white;z-index:32;}.card-lister .button{margin-bottom:3px;padding:4px;background:grey;color:white;border-radius:2px;-moz-border-radius:2px;-webkit-border-radius:2px;font-size:10px;line-height:1;letter-spacing:0;cursor:pointer;text-transform:uppercase;}.card-lister .button:hover{color:black;}
 .card-lister li{padding:0 10px;color:black;cursor:pointer;}.card-lister li:hover{background:grey;}

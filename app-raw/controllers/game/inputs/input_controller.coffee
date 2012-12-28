@@ -8,34 +8,36 @@ class InputController extends Spine.Controller
 	setTargetPlayer: ( targetPlayer ) ->
 		this.targetPlayer = targetPlayer
 
-	onMoveCard: ( cardId, position ) ->
-		this.targetPlayer.moveCard( Card.find( cardId ), position )
-		#console.log("onCardIsMoved ", Card.find( cardId ), position);
+	onCreateCard: ( card ) =>
+		this.targetPlayer.addCard( card );
+		
+	onMoveCard: ( cardId, location ) ->
+		this.targetPlayer.moveCard( Card.find( cardId ), location )
 
-	onCardIsTapped: ( cardId ) ->
+	onTapCard: ( cardId ) ->
 		this.targetPlayer.tapCard( Card.find( cardId ) )
-		#console.log("onCardIsTapped ", Card.find( cardId ) );
 
-	onCardIsFlipped: ( cardId ) ->
+	onFlipCard: ( cardId ) ->
 		this.targetPlayer.flipCard( Card.find( cardId ) )
-		#console.log( "onCardIsFlipped ", Card.find( cardId ) );
+
+	onFlipCardUp: ( cardId ) ->
+		this.targetPlayer.flipCardUp( Card.find( cardId ) )
+
+	onFlipCardDown: ( cardId ) ->
+		this.targetPlayer.flipCardDown( Card.find( cardId ) )
 
 	onCardGoesToArea: ( cardId, areaId ) =>
 		this.targetPlayer.onCardGoesToArea( Card.find( cardId ), areaId )
-		#console.log( "onCardGoesToArea ", Card.find( cardId ), "AreaId: " + areaId );
 
 	onZoomCardIn: ( cardId ) =>
 		app.gameController.zoomedCardController.zoomIn( Card.find( cardId ) )
-		#console.log( "onZoomCard", Deck.find( deckId ) );
 
 	onZoomCardOut: () =>
 		app.gameController.zoomedCardController.zoomOut()
-		#console.log( "onZoomCard", Deck.find( deckId ) );
 
 	onShuffleArea: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId
 		this.targetPlayer.shuffleArea( areaId )
-		#console.log( "onShuffleDeck", Deck.find( deckId ) );
 
 	onViewCardsFromArea: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId

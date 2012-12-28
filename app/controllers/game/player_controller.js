@@ -8,68 +8,72 @@ PlayerController = (function(_super) {
 
   PlayerController.prototype.deck = null;
 
+  PlayerController.prototype.multiplayerController = null;
+
   function PlayerController() {
     PlayerController.__super__.constructor.apply(this, arguments);
-  }
-
-  PlayerController.prototype.setDeck = function(deck) {
-    var boardController, deckController, graveyardController, handController, sideboardController;
-    deckController = new DeckController({
+    this.deckController = new DeckController({
       el: this.el.find(".Deck"),
       player: this
     });
-    handController = new BoardController({
+    this.handController = new BoardController({
       el: this.el.find(".Hand"),
       player: this
     });
-    boardController = new BoardController({
+    this.boardController = new BoardController({
       el: this.el.find(".Board"),
       player: this
     });
-    graveyardController = new BoardController({
+    this.graveyardController = new BoardController({
       el: this.el.find(".Graveyard"),
       player: this
     });
-    sideboardController = new BoardController({
+    this.sideboardController = new BoardController({
       el: this.el.find(".Sideboard"),
       player: this
     });
     this.deckArea = Area.create({
       name: "deck",
-      controller: deckController
+      controller: this.deckController
     });
     this.hand = Area.create({
       name: "hand",
-      controller: handController
+      controller: this.handController
     });
     this.board = Area.create({
       name: "board",
-      controller: boardController
+      controller: this.boardController
     });
     this.graveyard = Area.create({
       name: "graveyard",
-      controller: graveyardController
+      controller: this.graveyardController
     });
     this.sideboard = Area.create({
       name: "sideboard",
-      controller: sideboardController
+      controller: this.sideboardController
     });
     this.deckArea.setList();
     this.hand.setList();
     this.board.setList();
     this.graveyard.setList();
     this.sideboard.setList();
-    deckController.setItem(this.deckArea);
-    handController.setItem(this.hand);
-    boardController.setItem(this.board);
-    graveyardController.setItem(this.graveyard);
-    sideboardController.setItem(this.sideboard);
+    this.deckController.setItem(this.deckArea);
+    this.handController.setItem(this.hand);
+    this.boardController.setItem(this.board);
+    this.graveyardController.setItem(this.graveyard);
+    this.sideboardController.setItem(this.sideboard);
+  }
+
+  PlayerController.prototype.setDeck = function(deck) {
     this.deck = Deck.create({
       name: deck.name,
-      baseCards: deck.cards,
-      controller: deckController
+      cards: deck.cards,
+      controller: this.deckController
     });
-    deckController.deck = this.deck;
+    this.deckController.deck = this.deck;
+    if (this.multiplayerController != null) {
+      this.multiplayerController.onCreateDeck(this.deck);
+    }
     return this.shuffleArea(this.deckArea.id);
   };
 
@@ -85,9 +89,13 @@ PlayerController = (function(_super) {
       item: cardModel
     });
     cardModel.setController(cardController);
-    app.gameController.multiplayerController.onCreateCard(cardModel);
+    if (this.isPlayerNetworked()) {
+      this.multiplayerController.onCreateCard(cardModel);
+      this.setCardListeners(cardController.el);
+    } else {
+      this.setCardHoverListener(cardController.el);
+    }
     this.renderCard(cardController.el);
-    this.setCardListeners(cardController.el);
     this.moveToAreaLocation(cardModel, this.hand.id);
     this.onCardGoesToArea(cardModel, this.hand.id);
     return this.flipCardUp(cardModel);
@@ -101,6 +109,10 @@ PlayerController = (function(_super) {
     return app.gameController.humanInputController.setCardListeners(cardEl);
   };
 
+  PlayerController.prototype.setCardHoverListener = function(cardEl) {
+    return app.gameController.humanInputController.setCardHoverListener(cardEl);
+  };
+
   PlayerController.prototype.moveToAreaLocation = function(cardModel, areaId) {
     var areaModel, areaPosX, areaPosY;
     areaModel = Area.find(areaId);
@@ -110,35 +122,50 @@ PlayerController = (function(_super) {
   };
 
   PlayerController.prototype.moveCard = function(cardModel, location) {
-    return cardModel.controller.move(location.left / $(window).width(), location.top / $(window).height());
+    cardModel.controller.move(location.x, location.y);
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onMoveCard(cardModel);
+    }
   };
 
   PlayerController.prototype.tapCard = function(cardModel) {
-    return cardModel.controller.tap();
+    cardModel.controller.tap();
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onTapCard(cardModel);
+    }
   };
 
   PlayerController.prototype.flipCard = function(cardModel) {
-    return cardModel.controller.flip();
+    if (cardModel.controller.isFlippedUp) {
+      return this.flipCardDown();
+    } else {
+      return this.flipCardDown();
+    }
   };
 
   PlayerController.prototype.flipCardUp = function(cardModel) {
-    return cardModel.controller.flipUp();
+    cardModel.controller.flipUp();
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onFlipCardUp(cardModel);
+    }
   };
 
   PlayerController.prototype.flipCardDown = function(cardModel) {
-    return cardModel.controller.flipDown();
+    cardModel.controller.flipDown();
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onFlipCardDown(cardModel);
+    }
   };
 
   PlayerController.prototype.onCardGoesToArea = function(cardModel, areaId) {
     var areaModel;
     areaModel = Area.find(areaId);
     if (!this.checkIfCardComesFromSameArea(cardModel.areaId, areaModel.id)) {
-      app.gameController.multiplayerController.onMoveCard(cardModel);
-      app.gameController.multiplayerController.onCardChangesArea(areaModel);
+      if (this.isPlayerNetworked()) {
+        this.multiplayerController.onCardChangesArea(areaModel);
+      }
       areaModel.controller.onCardDrops(cardModel);
       return cardModel.setArea(areaId);
-    } else {
-      return app.gameController.multiplayerController.onMoveCard(cardModel);
     }
   };
 
@@ -154,7 +181,9 @@ PlayerController = (function(_super) {
     var areaModel;
     areaModel = Area.find(areaId);
     areaModel.shuffle();
-    return app.gameController.multiplayerController.onShuffle(areaModel);
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onShuffle(areaModel);
+    }
   };
 
   PlayerController.prototype.onDrawCard = function() {
@@ -162,7 +191,11 @@ PlayerController = (function(_super) {
   };
 
   PlayerController.prototype.showCardsFromArea = function(areaId) {
-    return app.gameController.cardListerController.showCardsFromArea(Area.find(areaId));
+    return this.cardListerController.showCardsFromArea(Area.find(areaId));
+  };
+
+  PlayerController.prototype.isPlayerNetworked = function() {
+    return this.multiplayerController != null;
   };
 
   return PlayerController;

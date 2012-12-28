@@ -12,22 +12,24 @@ class GameController extends Spine.Controller
 
 
 	initialize: ->
-
 		this.humanInputController = new HumanInputController()
 		this.networkInputController = new NetworkInputController()
 
-		this.multiplayerController = new MultiplayerController()
+		this.multiplayerController = new MultiplayerController( )
 
-		this.zoomedCardController = new ZoomedCardController({ el: $(".ZoomedCard")})
-		this.cardListerController = new CardListerController({ el: $(".CardLister")})
+		this.zoomedCardController = new ZoomedCardController( el: $(".ZoomedCard") )
+		this.cardListerController = new CardListerController( el: $(".CardLister") )
 
-		this.player = new PlayerController({ el: $(".Player")})
-		this.player.setDeck( User.first().deck )
+		this.player = new PlayerController( el: $(".Player"), multiplayerController: this.multiplayerController )
+		this.opponent = new PlayerController( el: $(".opponent") )
 
 		this.humanInputController.setTargetPlayer( this.player )
 		this.networkInputController.setTargetPlayer( this.opponent )
 
+		this.player.setDeck( User.first().deck )
+
 		this.humanInputController.setListeners()
+
 
 	getPlayerInfoOLD: ->
 		player:

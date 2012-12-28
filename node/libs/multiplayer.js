@@ -13,13 +13,18 @@ var Multiplayer = {
 
 		this.io.sockets.on('connection', function ( client ) {
 
-			client.join('testRoom');
+			//client.join('testRoom');
 
-			_this.io.sockets.in('testRoom').emit("test");
+			//_this.io.sockets.in('testRoom').emit("test");
 			
-			client.on('onMoveCard', function( data ) {
-				client.broadcast.emit( "onMoveCard", data );
-				console.log( "moving a Card ");
+			client.on('onCreateCard', function( data ) {
+				client.broadcast.emit( "onCardIsCreated", data );
+				console.log( "onCardIsCreated ");
+			});
+			
+			client.on('onCreateDeck', function( data ) {
+				client.broadcast.emit( "onDeckIsCreated", data );
+				console.log( "onDeckIsCreated ");
 			});
 
 		});

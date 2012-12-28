@@ -28,11 +28,15 @@ GameController = (function(_super) {
       el: $(".CardLister")
     });
     this.player = new PlayerController({
-      el: $(".Player")
+      el: $(".Player"),
+      multiplayerController: this.multiplayerController
     });
-    this.player.setDeck(User.first().deck);
+    this.opponent = new PlayerController({
+      el: $(".opponent")
+    });
     this.humanInputController.setTargetPlayer(this.player);
     this.networkInputController.setTargetPlayer(this.opponent);
+    this.player.setDeck(User.first().deck);
     return this.humanInputController.setListeners();
   };
 

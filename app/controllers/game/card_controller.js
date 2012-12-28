@@ -18,7 +18,6 @@ CardController = (function(_super) {
     this.zoomIn = __bind(this.zoomIn, this);
     this.flipDown = __bind(this.flipDown, this);
     this.flipUp = __bind(this.flipUp, this);
-    this.flip = __bind(this.flip, this);
     this.tap = __bind(this.tap, this);    CardController.__super__.constructor.apply(this, arguments);
     this.render();
     this.item.setController(this);
@@ -36,24 +35,16 @@ CardController = (function(_super) {
   CardController.prototype.getLocation = function() {
     var cardLocation;
     return cardLocation = {
-      x: this.el.offset().left / $(window).width() * 100,
-      y: this.el.offset().top / $(window).height() * 100
+      x: this.el.offset().left / $(window).width(),
+      y: this.el.offset().top / $(window).height()
     };
   };
 
   CardController.prototype.tap = function() {
-    if (this.el.attr("data-tapped") === "false") {
+    if (this.el.attr("data-tapped") !== "true") {
       return this.el.attr("data-tapped", "true");
     } else {
       return this.el.attr("data-tapped", "false");
-    }
-  };
-
-  CardController.prototype.flip = function() {
-    if (this.el.attr("data-flipped") === "up") {
-      return this.flipDown();
-    } else {
-      return this.flipUp();
     }
   };
 
