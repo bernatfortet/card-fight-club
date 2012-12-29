@@ -8,7 +8,7 @@ MultiplayerController = (function(_super) {
 
   MultiplayerController.prototype.server = null;
 
-  MultiplayerController.prototype.local = false;
+  MultiplayerController.prototype.local = true;
 
   function MultiplayerController() {
     MultiplayerController.__super__.constructor.apply(this, arguments);
@@ -81,7 +81,7 @@ MultiplayerController = (function(_super) {
     };
     this.sendEvent("onCardChangesArea", params);
     if (this.local) {
-      app.gameController.networkInputController.onCardChangesArea(params);
+      app.gameController.networkInputController.onCardAreaIsChanged(params);
     }
     return console.log("Card has changed area ", params);
   };

@@ -16,18 +16,19 @@
 		@graveyardImage: url("../images/graveyard.jpg");
 
 
-		.board{ width: 75%; height:65%; background:lighten(black, 20%);}
-		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8; .anchor; .br(7px); .anim;
+		.board{ width: 75%; height:65%; background:lighten(black, 20%); }
+		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim;
 			&:hover{ .fancyGreenGlow; .anim;}
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
-		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8; .br(7px);}
-		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable; z-index: 8;
+		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);}
+		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable;
 			&.Active{ background:lighten(black, 35%);}
 		}
 
-		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; .unselectable; z-index: 16; .anchor;
+		.cards{ z-index: 4;}
+		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; .unselectable; .anchor; z-index:2;
 			.tap-container{ .cover-all; .br(7px);}
 			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; .br(7px); }
 			.img{ .cover-all; .trans( rotateY(180deg) translateZ(1px) ); transform-origin: center center 0; background:black; .br(7px); }
@@ -50,7 +51,7 @@
 		.deck{ top: 0; bottom: none;}
 		.graveyard{ bottom: 0; top:37%;}
 		.hand{ top: 0; bottom: none;}
-		.card{ z-index:14; }
+		.card{ }
 	}
 
 	.zoomed-card{ width:223px; height:310px; .fixed; right:0; top:35%; z-index:0; background-repeat:no-repeat; background-position:right center; .br(12px);

@@ -1,6 +1,6 @@
 class MultiplayerController extends Spine.Controller
 	server: null
-	local: false
+	local: true
 
 	constructor: ->
 		super
@@ -60,7 +60,7 @@ class MultiplayerController extends Spine.Controller
 
 		this.sendEvent( "onCardChangesArea", params )
 
-		app.gameController.networkInputController.onCardChangesArea( params ) if this.local
+		app.gameController.networkInputController.onCardAreaIsChanged( params ) if this.local
 		console.log( "Card has changed area ", params );
 
 	onTapCard: ( cardModel ) ->
