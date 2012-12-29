@@ -6,10 +6,10 @@ class PlayerController extends Spine.Controller
 		super
 
 		this.deckController = new DeckController( el: this.el.find(".Deck"), player: this )
-		this.handController = new BoardController( el: this.el.find(".Hand"), player: this )
+		this.handController = new HandController( el: this.el.find(".Hand"), player: this )
 		this.boardController = new BoardController( el: this.el.find(".Board"), player: this )
-		this.graveyardController = new BoardController( el: this.el.find(".Graveyard"), player: this )
-		this.sideboardController = new BoardController( el: this.el.find(".Sideboard"), player: this )
+		this.graveyardController = new GraveyardController( el: this.el.find(".Graveyard"), player: this )
+		this.sideboardController = new SideboardController( el: this.el.find(".Sideboard"), player: this )
 
 		this.deckArea	= Area.create( name: "deck", controller: this.deckController )
 		this.hand 		= Area.create( name: "hand", controller: this.handController )
@@ -61,8 +61,8 @@ class PlayerController extends Spine.Controller
 		this.renderCard( cardController.el )
 		this.moveToAreaLocation( cardModel, this.hand.id )
 		
-		this.onCardChangesArea( cardModel, this.hand.id )
-		#this.flipCardUp( cardModel )
+		this.changeCardArea( cardModel, this.hand.id )
+		this.flipCardUp( cardModel )
 
 	renderCard: ( cardEl ) ->
 		this.el.find(".Cards").append( cardEl )
@@ -94,6 +94,8 @@ class PlayerController extends Spine.Controller
 			this.flipCardUp()
 
 	flipCardUp: ( cardModel ) ->
+		cardAreaModel = Area.find( cardModel.areaId )
+		return if( !this.isPlayerNetworked() && cardAreaModel.name == "hand" )
 		cardModel.controller.flipUp()
 		this.multiplayerController.onFlipCardUp( cardModel ) if this.isPlayerNetworked()
 
@@ -101,12 +103,18 @@ class PlayerController extends Spine.Controller
 		cardModel.controller.flipDown()
 		this.multiplayerController.onFlipCardDown( cardModel ) if this.isPlayerNetworked()
 
-	onCardChangesArea: ( cardModel, areaId ) ->
+	zoomCardIn: ( cardModel ) ->
+		app.gameController.zoomedCardController.zoomIn( cardModel )
+
+	zoomCardOut: () ->
+		app.gameController.zoomedCardController.zoomOut()
+
+	changeCardArea: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
 		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
 			this.multiplayerController.onCardChangesArea( cardModel, areaModel ) if this.isPlayerNetworked()
-			areaModel.controller.onCardDrops( cardModel )
 			cardModel.setArea( areaId )
+			areaModel.controller.onCardDrops( cardModel )
 			#Put moveCard here again with else if cards dont move when created
 
 	checkIfCardComesFromSameArea: ( originArea, targetArea ) ->

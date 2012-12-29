@@ -48,15 +48,15 @@ InputController = (function(_super) {
   };
 
   InputController.prototype.onCardChangesArea = function(cardId, areaId) {
-    return this.targetPlayer.onCardChangesArea(Card.find(cardId), areaId);
+    return this.targetPlayer.changeCardArea(Card.find(cardId), areaId);
   };
 
   InputController.prototype.onZoomCardIn = function(cardId) {
-    return app.gameController.zoomedCardController.zoomIn(Card.find(cardId));
+    return this.targetPlayer.zoomCardIn(Card.find(cardId));
   };
 
   InputController.prototype.onZoomCardOut = function() {
-    return app.gameController.zoomedCardController.zoomOut();
+    return this.targetPlayer.zoomCardOut();
   };
 
   InputController.prototype.onShuffleArea = function(key, opt) {

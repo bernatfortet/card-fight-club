@@ -4,4 +4,4 @@ class HandController extends AreaController
 
 	onCardDrops: ( card ) ->
 		this.player.flipCardUp( card )
-		this.onZoomCardIn( card.id )
+		this.player.zoomCardIn( card )

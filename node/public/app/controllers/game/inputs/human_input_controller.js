@@ -29,7 +29,8 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.setListeners = function() {
     $(".Player .Area").droppable({
-      drop: this.onDropCardOnArea
+      drop: this.onDropCardOnArea,
+      hoverClass: ".Active"
     });
     $(".Player .Deck").on("dblclick", this.onDoubleClickDeck);
     $.contextMenu({

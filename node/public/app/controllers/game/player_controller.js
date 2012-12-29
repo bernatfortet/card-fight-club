@@ -16,7 +16,7 @@ PlayerController = (function(_super) {
       el: this.el.find(".Deck"),
       player: this
     });
-    this.handController = new BoardController({
+    this.handController = new HandController({
       el: this.el.find(".Hand"),
       player: this
     });
@@ -24,11 +24,11 @@ PlayerController = (function(_super) {
       el: this.el.find(".Board"),
       player: this
     });
-    this.graveyardController = new BoardController({
+    this.graveyardController = new GraveyardController({
       el: this.el.find(".Graveyard"),
       player: this
     });
-    this.sideboardController = new BoardController({
+    this.sideboardController = new SideboardController({
       el: this.el.find(".Sideboard"),
       player: this
     });
@@ -97,7 +97,8 @@ PlayerController = (function(_super) {
     }
     this.renderCard(cardController.el);
     this.moveToAreaLocation(cardModel, this.hand.id);
-    return this.onCardChangesArea(cardModel, this.hand.id);
+    this.changeCardArea(cardModel, this.hand.id);
+    return this.flipCardUp(cardModel);
   };
 
   PlayerController.prototype.renderCard = function(cardEl) {
@@ -143,6 +144,9 @@ PlayerController = (function(_super) {
   };
 
   PlayerController.prototype.flipCardUp = function(cardModel) {
+    var cardAreaModel;
+    cardAreaModel = Area.find(cardModel.areaId);
+    if (!this.isPlayerNetworked() && cardAreaModel.name === "hand") return;
     cardModel.controller.flipUp();
     if (this.isPlayerNetworked()) {
       return this.multiplayerController.onFlipCardUp(cardModel);
@@ -156,15 +160,23 @@ PlayerController = (function(_super) {
     }
   };
 
-  PlayerController.prototype.onCardChangesArea = function(cardModel, areaId) {
+  PlayerController.prototype.zoomCardIn = function(cardModel) {
+    return app.gameController.zoomedCardController.zoomIn(cardModel);
+  };
+
+  PlayerController.prototype.zoomCardOut = function() {
+    return app.gameController.zoomedCardController.zoomOut();
+  };
+
+  PlayerController.prototype.changeCardArea = function(cardModel, areaId) {
     var areaModel;
     areaModel = Area.find(areaId);
     if (!this.checkIfCardComesFromSameArea(cardModel.areaId, areaModel.id)) {
       if (this.isPlayerNetworked()) {
         this.multiplayerController.onCardChangesArea(cardModel, areaModel);
       }
-      areaModel.controller.onCardDrops(cardModel);
-      return cardModel.setArea(areaId);
+      cardModel.setArea(areaId);
+      return areaModel.controller.onCardDrops(cardModel);
     }
   };
 

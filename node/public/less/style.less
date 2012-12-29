@@ -22,6 +22,8 @@
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
+		.hand.Active, .board.Active{ background:black; }
+
 		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);}
 		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable;
 			&.Active{ background:lighten(black, 35%);}

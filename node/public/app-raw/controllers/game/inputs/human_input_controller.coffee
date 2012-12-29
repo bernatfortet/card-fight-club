@@ -16,6 +16,7 @@ class HumanInputController extends InputController
 
 		$(".Player .Area").droppable({
 			drop: this.onDropCardOnArea
+			hoverClass: ".Active"
 		})
 
 		$(".Player .Deck").on("dblclick", this.onDoubleClickDeck )

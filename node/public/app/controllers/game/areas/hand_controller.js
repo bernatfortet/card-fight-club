@@ -12,7 +12,7 @@ HandController = (function(_super) {
 
   HandController.prototype.onCardDrops = function(card) {
     this.player.flipCardUp(card);
-    return this.onZoomCardIn(card.id);
+    return this.player.zoomCardIn(card);
   };
 
   return HandController;

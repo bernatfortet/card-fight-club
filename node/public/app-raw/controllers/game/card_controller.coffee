@@ -17,9 +17,11 @@ class CardController extends Spine.Controller
 		this.el.css("top", posY * 100 + "%" )
 
 	getLocation: ->
+		xCenterPoint = this.el.offset().left
+		yCenterPoint = this.el.offset().top + this.el.outerHeight()
 		cardLocation =
-			x: this.el.offset().left / $(window).width()
-			y: this.el.offset().top / $(window).height()
+			x: xCenterPoint / $(window).width()
+			y: yCenterPoint / $(window).height()
 
 	tap: =>
 		if( this.el.attr("data-tapped") != "true" )

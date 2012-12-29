@@ -33,10 +33,12 @@ CardController = (function(_super) {
   };
 
   CardController.prototype.getLocation = function() {
-    var cardLocation;
+    var cardLocation, xCenterPoint, yCenterPoint;
+    xCenterPoint = this.el.offset().left;
+    yCenterPoint = this.el.offset().top + this.el.outerHeight();
     return cardLocation = {
-      x: this.el.offset().left / $(window).width(),
-      y: this.el.offset().top / $(window).height()
+      x: xCenterPoint / $(window).width(),
+      y: yCenterPoint / $(window).height()
     };
   };
 

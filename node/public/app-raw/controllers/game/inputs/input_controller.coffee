@@ -27,13 +27,13 @@ class InputController extends Spine.Controller
 		this.targetPlayer.flipCardDown( Card.find( cardId ) )
 
 	onCardChangesArea: ( cardId, areaId ) =>
-		this.targetPlayer.onCardChangesArea( Card.find( cardId ), areaId )
+		this.targetPlayer.changeCardArea( Card.find( cardId ), areaId )
 
 	onZoomCardIn: ( cardId ) =>
-		app.gameController.zoomedCardController.zoomIn( Card.find( cardId ) )
+		this.targetPlayer.zoomCardIn(Card.find( cardId ) )
 
 	onZoomCardOut: () =>
-		app.gameController.zoomedCardController.zoomOut()
+		this.targetPlayer.zoomCardOut()
 
 	onShuffleArea: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId
