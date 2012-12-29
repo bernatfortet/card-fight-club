@@ -4,6 +4,12 @@
 	&:hover{ background:fade(red, 50%); }
 }
 
+.fancyGlow( @color1, @color2, @color3){
+	.bs( 0px 0px 2px 0px @color1, 0px 0px 8px 0px @color2, 0px 0px 10px 0px @color3 );
+}
+.fancyBlueGlow{ .fancyGlow( #fff, #00ccff,  #0072ff); }
+.fancyGreenGlow{ .fancyGlow( #fff, #8aff00,  #aeff00); }
+.fancyRedGlow{ .fancyGlow( #fff, #ff470e,  #ff003c); }
 
 .base-button{ .anchor; }
 

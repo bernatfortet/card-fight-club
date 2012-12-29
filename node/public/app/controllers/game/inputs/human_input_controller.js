@@ -54,7 +54,8 @@ HumanInputController = (function(_super) {
     cardElement.draggable({
       stop: this.onCardDragStops,
       snap: ".Hand, .Deck, .Graveyard",
-      snapMode: "inner"
+      snapMode: "inner",
+      stack: ".Card"
     });
     cardElement.on("dblclick", this.onDoubleClickCard);
     cardElement.on("contextmenu", this.onRightMouseClick);

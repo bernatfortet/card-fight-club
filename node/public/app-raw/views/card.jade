@@ -1,6 +1,11 @@
 | <script type="text/x-jquery-tmpl" id="CardTemplate">
 
 .card.Card( data-area="${area}", data-flipped="down", data-tapped="", data-zoom="false", data-id="${id}")
-	.img(style="background-image: url('${image_url}')")
+	.tap-container
+		.flip-container
+			.img
+				.loading
+				img( src="${image_url}" )
+			img.back( src="images/back.jpg")
 
 | </script>

@@ -46,6 +46,7 @@ class HumanInputController extends InputController
 			stop: this.onCardDragStops
 			snap: ".Hand, .Deck, .Graveyard"
 			snapMode: "inner"
+			stack: ".Card"
 		})
 		cardElement.on("dblclick", this.onDoubleClickCard )
 		cardElement.on("contextmenu", this.onRightMouseClick )
