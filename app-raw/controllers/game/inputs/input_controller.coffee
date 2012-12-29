@@ -26,8 +26,8 @@ class InputController extends Spine.Controller
 	onFlipCardDown: ( cardId ) ->
 		this.targetPlayer.flipCardDown( Card.find( cardId ) )
 
-	onCardGoesToArea: ( cardId, areaId ) =>
-		this.targetPlayer.onCardGoesToArea( Card.find( cardId ), areaId )
+	onCardChangesArea: ( cardId, areaId ) =>
+		this.targetPlayer.onCardChangesArea( Card.find( cardId ), areaId )
 
 	onZoomCardIn: ( cardId ) =>
 		app.gameController.zoomedCardController.zoomIn( Card.find( cardId ) )

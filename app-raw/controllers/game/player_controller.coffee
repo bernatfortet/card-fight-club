@@ -61,7 +61,7 @@ class PlayerController extends Spine.Controller
 		this.renderCard( cardController.el )
 		this.moveToAreaLocation( cardModel, this.hand.id )
 		
-		this.onCardGoesToArea( cardModel, this.hand.id )
+		this.onCardChangesArea( cardModel, this.hand.id )
 		this.flipCardUp( cardModel )
 
 	renderCard: ( cardEl ) ->
@@ -101,10 +101,10 @@ class PlayerController extends Spine.Controller
 		cardModel.controller.flipDown()
 		this.multiplayerController.onFlipCardDown( cardModel ) if this.isPlayerNetworked()
 
-	onCardGoesToArea: ( cardModel, areaId ) ->
+	onCardChangesArea: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
 		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
-			this.multiplayerController.onCardChangesArea( areaModel ) if this.isPlayerNetworked()
+			this.multiplayerController.onCardChangesArea( cardModel, areaModel ) if this.isPlayerNetworked()
 			areaModel.controller.onCardDrops( cardModel )
 			cardModel.setArea( areaId )
 			#Put moveCard here again with else if cards dont move when created

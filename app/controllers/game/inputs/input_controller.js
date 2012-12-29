@@ -15,7 +15,7 @@ InputController = (function(_super) {
     this.onShuffleArea = __bind(this.onShuffleArea, this);
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
-    this.onCardGoesToArea = __bind(this.onCardGoesToArea, this);
+    this.onCardChangesArea = __bind(this.onCardChangesArea, this);
     this.onCreateCard = __bind(this.onCreateCard, this);    InputController.__super__.constructor.apply(this, arguments);
   }
 
@@ -47,8 +47,8 @@ InputController = (function(_super) {
     return this.targetPlayer.flipCardDown(Card.find(cardId));
   };
 
-  InputController.prototype.onCardGoesToArea = function(cardId, areaId) {
-    return this.targetPlayer.onCardGoesToArea(Card.find(cardId), areaId);
+  InputController.prototype.onCardChangesArea = function(cardId, areaId) {
+    return this.targetPlayer.onCardChangesArea(Card.find(cardId), areaId);
   };
 
   InputController.prototype.onZoomCardIn = function(cardId) {

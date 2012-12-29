@@ -8,12 +8,25 @@ NetworkInputController = (function(_super) {
   __extends(NetworkInputController, _super);
 
   function NetworkInputController() {
+    this.onCardIsFlippedDown = __bind(this.onCardIsFlippedDown, this);
+    this.onCardIsFlippedUp = __bind(this.onCardIsFlippedUp, this);
+    this.onCardIsTapped = __bind(this.onCardIsTapped, this);
+    this.onCardAreaIsChanged = __bind(this.onCardAreaIsChanged, this);
+    this.onCardIsMoved = __bind(this.onCardIsMoved, this);
     this.onCardIsCreated = __bind(this.onCardIsCreated, this);
     this.onDeckIsCreated = __bind(this.onDeckIsCreated, this);    NetworkInputController.__super__.constructor.apply(this, arguments);
+    this.server = io.connect('http:localhost:8080');
     this.setListeners();
   }
 
-  NetworkInputController.prototype.setListeners = function() {};
+  NetworkInputController.prototype.setListeners = function() {
+    this.server.on('onDeckIsCreated', this.onDeckIsCreated);
+    this.server.on('onCardIsCreated', this.onCardIsCreated);
+    this.server.on('onCardIsMoved', this.onCardIsMoved);
+    this.server.on('onCardIsTapped', this.onCardIsTapped);
+    this.server.on('onCardIsFlippedUp', this.onCardIsFlippedUp);
+    return this.server.on('onCardIsFlippedDown', this.onCardIsFlippedDown);
+  };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deck) {
     return Deck.create({
@@ -38,8 +51,12 @@ NetworkInputController = (function(_super) {
     return this.onCreateCard(cardModel);
   };
 
-  NetworkInputController.prototype.onCardIsMoved = function(cardId, location) {
-    return this.onMoveCard(cardId, location);
+  NetworkInputController.prototype.onCardIsMoved = function(params) {
+    return this.onMoveCard(params.cardId, params.location);
+  };
+
+  NetworkInputController.prototype.onCardAreaIsChanged = function(params) {
+    return this.onCardChangesArea(params.cardId, params.areaId);
   };
 
   NetworkInputController.prototype.onCardIsTapped = function(cardId) {

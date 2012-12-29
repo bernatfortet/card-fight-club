@@ -97,7 +97,7 @@ PlayerController = (function(_super) {
     }
     this.renderCard(cardController.el);
     this.moveToAreaLocation(cardModel, this.hand.id);
-    this.onCardGoesToArea(cardModel, this.hand.id);
+    this.onCardChangesArea(cardModel, this.hand.id);
     return this.flipCardUp(cardModel);
   };
 
@@ -157,12 +157,12 @@ PlayerController = (function(_super) {
     }
   };
 
-  PlayerController.prototype.onCardGoesToArea = function(cardModel, areaId) {
+  PlayerController.prototype.onCardChangesArea = function(cardModel, areaId) {
     var areaModel;
     areaModel = Area.find(areaId);
     if (!this.checkIfCardComesFromSameArea(cardModel.areaId, areaModel.id)) {
       if (this.isPlayerNetworked()) {
-        this.multiplayerController.onCardChangesArea(areaModel);
+        this.multiplayerController.onCardChangesArea(cardModel, areaModel);
       }
       areaModel.controller.onCardDrops(cardModel);
       return cardModel.setArea(areaId);

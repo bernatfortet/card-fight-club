@@ -101,7 +101,7 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.onDropCardOnArea = function(event, ui) {
     var areaId;
     areaId = $(event.target).data().areaId;
-    return this.onCardGoesToArea(this.getCardId(ui.draggable), areaId);
+    return this.onCardChangesArea(this.getCardId(ui.draggable), areaId);
   };
 
   HumanInputController.prototype.onMouseOverCard = function(event) {

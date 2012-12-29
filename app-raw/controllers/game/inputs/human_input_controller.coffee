@@ -81,7 +81,7 @@ class HumanInputController extends InputController
 
 	onDropCardOnArea: ( event, ui ) =>
 		areaId = $(event.target).data().areaId
-		this.onCardGoesToArea( this.getCardId( ui.draggable ), areaId )	
+		this.onCardChangesArea( this.getCardId( ui.draggable ), areaId )	
 
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget
