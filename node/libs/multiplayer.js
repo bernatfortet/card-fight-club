@@ -25,6 +25,10 @@ var Multiplayer = {
 				client.broadcast.emit( "onCardIsCreated", data );
 				console.log( "onCardIsCreated ");
 			});
+			client.on('onRemoveCard', function( data ) {
+				client.broadcast.emit( "onCardIsRemoved", data );
+				console.log( "onCardIsRemoved ");
+			});
 			client.on('onMoveCard', function( data ) {
 				client.broadcast.emit( "onCardIsMoved", data );
 				console.log( "onCardIsMoved ");

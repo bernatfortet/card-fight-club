@@ -10,6 +10,8 @@ PlayerController = (function(_super) {
 
   PlayerController.prototype.multiplayerController = null;
 
+  PlayerController.prototype.cardListerController = null;
+
   function PlayerController() {
     PlayerController.__super__.constructor.apply(this, arguments);
     this.deckController = new DeckController({
@@ -77,6 +79,10 @@ PlayerController = (function(_super) {
     return this.shuffleArea(this.deckArea.id);
   };
 
+  PlayerController.prototype.onDrawCard = function() {
+    return this.createCardFromTopOfDeck();
+  };
+
   PlayerController.prototype.createCardFromTopOfDeck = function() {
     var topCard;
     topCard = this.deckArea.getTopCard();
@@ -101,16 +107,16 @@ PlayerController = (function(_super) {
     return this.flipCardUp(cardModel);
   };
 
+  PlayerController.prototype.removeCard = function(cardModel) {
+    cardModel.controller.el.remove();
+    cardModel.controller = null;
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onRemoveCard(cardModel);
+    }
+  };
+
   PlayerController.prototype.renderCard = function(cardEl) {
     return this.el.find(".Cards").append(cardEl);
-  };
-
-  PlayerController.prototype.setCardListeners = function(cardEl) {
-    return app.gameController.humanInputController.setCardListeners(cardEl);
-  };
-
-  PlayerController.prototype.setCardHoverListener = function(cardEl) {
-    return app.gameController.humanInputController.setCardHoverListener(cardEl);
   };
 
   PlayerController.prototype.moveToAreaLocation = function(cardModel, areaId) {
@@ -128,18 +134,30 @@ PlayerController = (function(_super) {
     }
   };
 
+  PlayerController.prototype.changeCardArea = function(cardModel, areaId) {
+    var areaModel;
+    areaModel = Area.find(areaId);
+    if (!this.checkIfCardComesFromSameArea(cardModel.areaId, areaModel.id)) {
+      if (this.isPlayerNetworked()) {
+        this.multiplayerController.onCardChangesArea(cardModel, areaModel);
+      }
+      cardModel.setArea(areaId);
+      return areaModel.controller.onCardDrops(cardModel);
+    }
+  };
+
+  PlayerController.prototype.checkIfCardComesFromSameArea = function(originArea, targetArea) {
+    if (originArea === targetArea) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   PlayerController.prototype.tapCard = function(cardModel) {
     cardModel.controller.tap();
     if (this.isPlayerNetworked()) {
       return this.multiplayerController.onTapCard(cardModel);
-    }
-  };
-
-  PlayerController.prototype.flipCard = function(cardModel) {
-    if (cardModel.controller.isFlippedUp) {
-      return this.flipCardDown();
-    } else {
-      return this.flipCardUp();
     }
   };
 
@@ -168,26 +186,6 @@ PlayerController = (function(_super) {
     return app.gameController.zoomedCardController.zoomOut();
   };
 
-  PlayerController.prototype.changeCardArea = function(cardModel, areaId) {
-    var areaModel;
-    areaModel = Area.find(areaId);
-    if (!this.checkIfCardComesFromSameArea(cardModel.areaId, areaModel.id)) {
-      if (this.isPlayerNetworked()) {
-        this.multiplayerController.onCardChangesArea(cardModel, areaModel);
-      }
-      cardModel.setArea(areaId);
-      return areaModel.controller.onCardDrops(cardModel);
-    }
-  };
-
-  PlayerController.prototype.checkIfCardComesFromSameArea = function(originArea, targetArea) {
-    if (originArea === targetArea) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
   PlayerController.prototype.shuffleArea = function(areaId) {
     var areaModel;
     areaModel = Area.find(areaId);
@@ -197,12 +195,16 @@ PlayerController = (function(_super) {
     }
   };
 
-  PlayerController.prototype.onDrawCard = function() {
-    return this.createCardFromTopOfDeck();
-  };
-
   PlayerController.prototype.showCardsFromArea = function(areaId) {
     return this.cardListerController.showCardsFromArea(Area.find(areaId));
+  };
+
+  PlayerController.prototype.setCardListeners = function(cardEl) {
+    return app.gameController.humanInputController.setCardListeners(cardEl);
+  };
+
+  PlayerController.prototype.setCardHoverListener = function(cardEl) {
+    return app.gameController.humanInputController.setCardHoverListener(cardEl);
   };
 
   PlayerController.prototype.isPlayerNetworked = function() {

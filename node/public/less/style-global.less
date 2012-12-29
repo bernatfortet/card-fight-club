@@ -171,18 +171,18 @@
 
 		/*== TRANSITIONS ==*/
 		.anim(@speed: 100ms, @speedHover: 0ms){
-			-webkit-transition-property:all;   -webkit-transition-duration: @speed;    -webkit-transition-timing-function: linear;
-		 	   -moz-transition-property:all;      -moz-transition-duration: @speed;       -moz-transition-timing-function: linear;
-		 	    -ms-transition-property:all;       -ms-transition-duration: @speed;        -ms-transition-timing-function: linear;
-		 	     -o-transition-property:all;        -o-transition-duration: @speed;         -o-transition-timing-function: linear;
-		 	        transition-property:all;           transition-duration: @speed;            transition-timing-function: linear;
+			-webkit-transition-property:all;   -webkit-transition-duration: @speed;    -webkit-transition-timing-function: ease-in-out;
+		 	   -moz-transition-property:all;      -moz-transition-duration: @speed;       -moz-transition-timing-function: ease-in-out;
+		 	    -ms-transition-property:all;       -ms-transition-duration: @speed;        -ms-transition-timing-function: ease-in-out;
+		 	     -o-transition-property:all;        -o-transition-duration: @speed;         -o-transition-timing-function: ease-in-out;
+		 	        transition-property:all;           transition-duration: @speed;            transition-timing-function: ease-in-out;
 
 			&:hover{
-				-webkit-transition-property:all; -webkit-transition-duration: @speed+@speedHover+50; -webkit-transition-timing-function: linear;
-				   -moz-transition-property:all; -webkit-transition-duration: @speed+@speedHover+50; -webkit-transition-timing-function: linear;
-					-ms-transition-property:all;     -ms-transition-duration: @speed+@speedHover+50;     -ms-transition-timing-function: linear;
-					 -o-transition-property:all;      -o-transition-duration: @speed+@speedHover+50;      -o-transition-timing-function: linear;
-						transition-property:all;         transition-duration: @speed+@speedHover+50;         transition-timing-function: linear;
+				-webkit-transition-property:all; -webkit-transition-duration: @speed+@speedHover+50; -webkit-transition-timing-function: ease-in-out;
+				   -moz-transition-property:all; -webkit-transition-duration: @speed+@speedHover+50; -webkit-transition-timing-function: ease-in-out;
+					-ms-transition-property:all;     -ms-transition-duration: @speed+@speedHover+50;     -ms-transition-timing-function: ease-in-out;
+					 -o-transition-property:all;      -o-transition-duration: @speed+@speedHover+50;      -o-transition-timing-function: ease-in-out;
+						transition-property:all;         transition-duration: @speed+@speedHover+50;         transition-timing-function: ease-in-out;
 			}
 		}
 

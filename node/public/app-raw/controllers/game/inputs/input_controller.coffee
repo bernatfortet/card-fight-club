@@ -10,6 +10,9 @@ class InputController extends Spine.Controller
 
 	onCreateCard: ( card ) =>
 		this.targetPlayer.addCard( card );
+
+	onRemoveCard: ( cardId ) ->
+		this.targetPlayer.removeCard( Card.find( cardId ) )
 		
 	onMoveCard: ( cardId, location ) ->
 		this.targetPlayer.moveCard( Card.find( cardId ), location )
@@ -26,7 +29,7 @@ class InputController extends Spine.Controller
 	onFlipCardDown: ( cardId ) ->
 		this.targetPlayer.flipCardDown( Card.find( cardId ) )
 
-	onCardChangesArea: ( cardId, areaId ) =>
+	onChangeCardArea: ( cardId, areaId ) =>
 		this.targetPlayer.changeCardArea( Card.find( cardId ), areaId )
 
 	onZoomCardIn: ( cardId ) =>

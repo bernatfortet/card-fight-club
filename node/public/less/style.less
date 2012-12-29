@@ -7,7 +7,7 @@
 #WebsiteApp{z-index:200}
 
 //Game ============================
-.game{ width:100%; height:100%; .abs; left:0; top:0;}
+.game{ width:100%; height:100%; .abs; left:0; top:0; .unselectable;}
 
 
 	.player{ width: 100%; height:50%; .abs; bottom:0; left:0; overflow: hidden;  background:lighten(black, 10%);}
@@ -16,17 +16,19 @@
 		@graveyardImage: url("../images/graveyard.jpg");
 
 
-		.board{ width: 75%; height:65%; background:lighten(black, 20%); }
+		.board{ width: 75%; height:65%; background:lighten(black, 20%);
+			&.Active{ .fancyGreenGlowInset; }
+		}
 		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim;
 			&:hover{ .fancyGreenGlow; .anim;}
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
-		.hand.Active, .board.Active{ background:black; }
-
-		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);}
+		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);
+			&.Active{ .fancyRedGlow; }
+		}
 		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable;
-			&.Active{ background:lighten(black, 35%);}
+			&.Active{ .fancyGreenGlowInset; }
 		}
 
 		.cards{ z-index: 4;}
@@ -53,7 +55,7 @@
 		.deck{ top: 0; bottom: none;}
 		.graveyard{ bottom: 0; top:37%;}
 		.hand{ top: 0; bottom: none;}
-		.card{ }
+		.card{ .anim; }
 	}
 
 	.zoomed-card{ width:223px; height:310px; .fixed; right:0; top:35%; z-index:0; background-repeat:no-repeat; background-position:right center; .br(12px);

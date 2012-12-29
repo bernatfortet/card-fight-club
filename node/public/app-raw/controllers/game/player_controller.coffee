@@ -1,6 +1,7 @@
 class PlayerController extends Spine.Controller
 	deck: null
 	multiplayerController: null
+	cardListerController: null
 
 	constructor: () ->
 		super
@@ -43,6 +44,9 @@ class PlayerController extends Spine.Controller
 		this.shuffleArea( this.deckArea.id )
 
 
+	onDrawCard: () ->
+		this.createCardFromTopOfDeck()
+
 	createCardFromTopOfDeck: () ->
 		topCard = this.deckArea.getTopCard()
 		if( topCard )
@@ -64,14 +68,13 @@ class PlayerController extends Spine.Controller
 		this.changeCardArea( cardModel, this.hand.id )
 		this.flipCardUp( cardModel )
 
+	removeCard: ( cardModel ) ->
+		cardModel.controller.el.remove()
+		cardModel.controller = null
+		this.multiplayerController.onRemoveCard( cardModel ) if this.isPlayerNetworked()
+
 	renderCard: ( cardEl ) ->
 		this.el.find(".Cards").append( cardEl )
-
-	setCardListeners: ( cardEl ) ->
-		app.gameController.humanInputController.setCardListeners( cardEl )
-
-	setCardHoverListener: ( cardEl ) ->
-		app.gameController.humanInputController.setCardHoverListener( cardEl )
 
 	moveToAreaLocation: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
@@ -83,15 +86,22 @@ class PlayerController extends Spine.Controller
 		cardModel.controller.move( location.x, location.y )
 		this.multiplayerController.onMoveCard( cardModel ) if this.isPlayerNetworked()
 
+	changeCardArea: ( cardModel, areaId ) ->
+		areaModel = Area.find( areaId )
+		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
+			this.multiplayerController.onCardChangesArea( cardModel, areaModel ) if this.isPlayerNetworked()
+			cardModel.setArea( areaId )
+			areaModel.controller.onCardDrops( cardModel )
+
+	checkIfCardComesFromSameArea: ( originArea, targetArea ) ->
+		if( originArea == targetArea )
+			return true
+		else
+			return false
+			
 	tapCard: ( cardModel ) ->
 		cardModel.controller.tap()
 		this.multiplayerController.onTapCard( cardModel ) if this.isPlayerNetworked()
-
-	flipCard: ( cardModel ) ->
-		if( cardModel.controller.isFlippedUp  )
-			this.flipCardDown()
-		else
-			this.flipCardUp()
 
 	flipCardUp: ( cardModel ) ->
 		cardAreaModel = Area.find( cardModel.areaId )
@@ -109,32 +119,20 @@ class PlayerController extends Spine.Controller
 	zoomCardOut: () ->
 		app.gameController.zoomedCardController.zoomOut()
 
-	changeCardArea: ( cardModel, areaId ) ->
-		areaModel = Area.find( areaId )
-		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
-			this.multiplayerController.onCardChangesArea( cardModel, areaModel ) if this.isPlayerNetworked()
-			cardModel.setArea( areaId )
-			areaModel.controller.onCardDrops( cardModel )
-			#Put moveCard here again with else if cards dont move when created
-
-	checkIfCardComesFromSameArea: ( originArea, targetArea ) ->
-		if( originArea == targetArea )
-			return true
-		else
-			return false
-
 	shuffleArea: ( areaId ) ->
 		areaModel = Area.find( areaId )
 		areaModel.shuffle()
 		this.multiplayerController.onShuffle( areaModel ) if this.isPlayerNetworked()
 
-	onDrawCard: () ->
-		this.createCardFromTopOfDeck()
-
 	showCardsFromArea: ( areaId ) ->
 		this.cardListerController.showCardsFromArea( Area.find( areaId ) )
 
+	setCardListeners: ( cardEl ) ->
+		app.gameController.humanInputController.setCardListeners( cardEl )
+
+	setCardHoverListener: ( cardEl ) ->
+		app.gameController.humanInputController.setCardHoverListener( cardEl )
+
 	isPlayerNetworked: ->
 		return this.multiplayerController?
-
 	# getCardPercentPosX: ( cardModel ) ->

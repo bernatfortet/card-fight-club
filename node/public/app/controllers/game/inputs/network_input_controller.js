@@ -13,6 +13,7 @@ NetworkInputController = (function(_super) {
     this.onCardIsTapped = __bind(this.onCardIsTapped, this);
     this.onCardAreaIsChanged = __bind(this.onCardAreaIsChanged, this);
     this.onCardIsMoved = __bind(this.onCardIsMoved, this);
+    this.onCardIsRemoved = __bind(this.onCardIsRemoved, this);
     this.onCardIsCreated = __bind(this.onCardIsCreated, this);
     this.onDeckIsCreated = __bind(this.onDeckIsCreated, this);    NetworkInputController.__super__.constructor.apply(this, arguments);
     this.server = io.connect('http:localhost:8080');
@@ -22,10 +23,12 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.setListeners = function() {
     this.server.on('onDeckIsCreated', this.onDeckIsCreated);
     this.server.on('onCardIsCreated', this.onCardIsCreated);
+    this.server.on('onCardIsRemoved', this.onCardIsRemoved);
     this.server.on('onCardIsMoved', this.onCardIsMoved);
     this.server.on('onCardIsTapped', this.onCardIsTapped);
     this.server.on('onCardIsFlippedUp', this.onCardIsFlippedUp);
-    return this.server.on('onCardIsFlippedDown', this.onCardIsFlippedDown);
+    this.server.on('onCardIsFlippedDown', this.onCardIsFlippedDown);
+    return this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deck) {
@@ -51,12 +54,24 @@ NetworkInputController = (function(_super) {
     return this.onCreateCard(cardModel);
   };
 
+  NetworkInputController.prototype.onCardIsRemoved = function(cardId) {
+    return this.onRemoveCard(cardId);
+  };
+
   NetworkInputController.prototype.onCardIsMoved = function(params) {
     return this.onMoveCard(params.cardId, params.location);
   };
 
   NetworkInputController.prototype.onCardAreaIsChanged = function(params) {
-    return this.onCardChangesArea(params.cardId, params.areaId);
+    var areaId,
+      _this = this;
+    areaId = null;
+    Area.each(function(area) {
+      if (params.areaName === area.name && area.controller.player === _this.targetPlayer) {
+        return areaId = area.id;
+      }
+    });
+    return this.onChangeCardArea(params.cardId, areaId);
   };
 
   NetworkInputController.prototype.onCardIsTapped = function(cardId) {

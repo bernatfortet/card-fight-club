@@ -36,9 +36,12 @@ class MultiplayerController extends Spine.Controller
 
 		console.log("Card is Created", cardModel );
 
-	onShuffle: ( area ) ->
-		#this.sendEvent( "onMoveCard", area )
-		console.log( "Area has shuffled ", area.name, area.id);
+	onRemoveCard: ( cardModel ) ->
+		opponentCardId = this.setIdForOpponent( cardModel.id )
+		this.sendEvent( "onRemoveCard", opponentCardId )
+
+		app.gameController.networkInputController.onCardIsRemoved( opponentCardId ) if this.local
+		console.log( "Card has been Removed ", opponentCardId );
 
 	onMoveCard: ( cardModel ) ->
 		invertedLocation = cardModel.controller.getLocation()
@@ -54,9 +57,10 @@ class MultiplayerController extends Spine.Controller
 		console.log( "Card has moved ", opponentCardId );
  
 	onCardChangesArea: ( cardModel, areaModel ) ->
+		opponentCardId = this.setIdForOpponent( cardModel.id )
 		params =
-			cardId: cardModel.id
-			areaId: areaModel.id
+			cardId: opponentCardId
+			areaName: areaModel.name
 
 		this.sendEvent( "onCardChangesArea", params )
 
@@ -86,6 +90,10 @@ class MultiplayerController extends Spine.Controller
 
 		app.gameController.networkInputController.onCardIsFlippedDown( opponentCardId ) if this.local
 		console.log( "Card has flipped Down ", opponentCardId );
+
+	onShuffle: ( area ) ->
+		#this.sendEvent( "onMoveCard", area )
+		console.log( "Area has shuffled ", area.name, area.id);
 
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")

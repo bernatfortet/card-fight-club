@@ -29,7 +29,8 @@ GameController = (function(_super) {
     });
     this.player = new PlayerController({
       el: $(".Player"),
-      multiplayerController: this.multiplayerController
+      multiplayerController: this.multiplayerController,
+      cardListerController: this.cardListerController
     });
     this.opponent = new PlayerController({
       el: $(".opponent")

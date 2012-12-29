@@ -10,10 +10,12 @@ class NetworkInputController extends InputController
 	setListeners: () ->
 		this.server.on 'onDeckIsCreated', 		this.onDeckIsCreated
 		this.server.on 'onCardIsCreated', 		this.onCardIsCreated
+		this.server.on 'onCardIsRemoved', 		this.onCardIsRemoved
 		this.server.on 'onCardIsMoved', 		this.onCardIsMoved
 		this.server.on 'onCardIsTapped',		this.onCardIsTapped
 		this.server.on 'onCardIsFlippedUp', 	this.onCardIsFlippedUp
 		this.server.on 'onCardIsFlippedDown', 	this.onCardIsFlippedDown
+		this.server.on 'onCardAreaIsChanged', 	this.onCardAreaIsChanged
 
 	onDeckIsCreated: ( deck ) =>
 		Deck.create(
@@ -28,11 +30,19 @@ class NetworkInputController extends InputController
 		cardModel = Card.create( id: cardId, image_url: realModel.image_url, name: realModel.name, deck: realModel.deckId, areaId: this.targetPlayer.deckController.item.id, controller: null  )
 		this.onCreateCard( cardModel )
 
+	onCardIsRemoved: ( cardId ) =>
+		this.onRemoveCard( cardId )
+
 	onCardIsMoved: ( params ) =>
 		this.onMoveCard( params.cardId, params.location )
 
 	onCardAreaIsChanged: ( params ) =>
-		this.onCardChangesArea( params.cardId, params.areaId )
+		areaId = null
+		Area.each ( area ) =>
+			if( params.areaName == area.name && area.controller.player  == this.targetPlayer )
+				return areaId = area.id
+
+		this.onChangeCardArea( params.cardId, areaId )
 
 	onCardIsTapped: ( cardId ) =>
 		this.onTapCard( cardId )

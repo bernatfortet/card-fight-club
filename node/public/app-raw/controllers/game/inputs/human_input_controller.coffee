@@ -15,8 +15,8 @@ class HumanInputController extends InputController
 	setListeners: ->
 
 		$(".Player .Area").droppable({
-			drop: this.onDropCardOnArea
-			hoverClass: ".Active"
+			drop: this.onCardChangesArea
+			hoverClass: "Active"
 		})
 
 		$(".Player .Deck").on("dblclick", this.onDoubleClickDeck )
@@ -81,9 +81,9 @@ class HumanInputController extends InputController
 			y: ui.position.top / $(window).height()
 		this.onMoveCard( this.getCardId( event.target ), location )	
 
-	onDropCardOnArea: ( event, ui ) =>
+	onCardChangesArea: ( event, ui ) =>
 		areaId = $(event.target).data().areaId
-		this.onCardChangesArea( this.getCardId( ui.draggable ), areaId )	
+		this.onChangeCardArea( this.getCardId( ui.draggable ), areaId )	
 
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget

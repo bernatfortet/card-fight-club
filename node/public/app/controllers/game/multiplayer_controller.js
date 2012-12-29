@@ -53,8 +53,14 @@ MultiplayerController = (function(_super) {
     return console.log("Card is Created", cardModel);
   };
 
-  MultiplayerController.prototype.onShuffle = function(area) {
-    return console.log("Area has shuffled ", area.name, area.id);
+  MultiplayerController.prototype.onRemoveCard = function(cardModel) {
+    var opponentCardId;
+    opponentCardId = this.setIdForOpponent(cardModel.id);
+    this.sendEvent("onRemoveCard", opponentCardId);
+    if (this.local) {
+      app.gameController.networkInputController.onCardIsRemoved(opponentCardId);
+    }
+    return console.log("Card has been Removed ", opponentCardId);
   };
 
   MultiplayerController.prototype.onMoveCard = function(cardModel) {
@@ -74,10 +80,11 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.onCardChangesArea = function(cardModel, areaModel) {
-    var params;
+    var opponentCardId, params;
+    opponentCardId = this.setIdForOpponent(cardModel.id);
     params = {
-      cardId: cardModel.id,
-      areaId: areaModel.id
+      cardId: opponentCardId,
+      areaName: areaModel.name
     };
     this.sendEvent("onCardChangesArea", params);
     if (this.local) {
@@ -115,6 +122,10 @@ MultiplayerController = (function(_super) {
       app.gameController.networkInputController.onCardIsFlippedDown(opponentCardId);
     }
     return console.log("Card has flipped Down ", opponentCardId);
+  };
+
+  MultiplayerController.prototype.onShuffle = function(area) {
+    return console.log("Area has shuffled ", area.name, area.id);
   };
 
   MultiplayerController.prototype.setIdForOpponent = function(id) {

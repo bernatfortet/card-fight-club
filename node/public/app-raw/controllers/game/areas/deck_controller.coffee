@@ -4,17 +4,15 @@ class DeckController extends AreaController
 	constructor: ->
 		super
 
-	addCard: ( card, targetArea ) ->
-		this.item.addCard( card, targetArea )
-		if( card.controller != null)
-			card.controller.el.remove()
-			card.controller = null
+	addCard: ( cardModel, targetArea ) ->
+		this.item.addCard( cardModel, targetArea )
 		this.checkCardsEmpty()
 
-	removeCard: ( card ) ->
-		this.item.removeCard( card )
+	removeCard: ( cardModel ) ->
+		this.item.removeCard( cardModel )
 		this.checkCardsEmpty()
 
-	onCardDrops: ( card ) ->
-		this.player.flipCardDown( card )
+	onCardDrops: ( cardModel ) ->
+		this.player.flipCardDown( cardModel )
+		this.player.removeCard( cardModel )
 		#Remove Card Element

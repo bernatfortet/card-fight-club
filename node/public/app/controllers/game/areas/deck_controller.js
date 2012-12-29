@@ -12,22 +12,19 @@ DeckController = (function(_super) {
     DeckController.__super__.constructor.apply(this, arguments);
   }
 
-  DeckController.prototype.addCard = function(card, targetArea) {
-    this.item.addCard(card, targetArea);
-    if (card.controller !== null) {
-      card.controller.el.remove();
-      card.controller = null;
-    }
+  DeckController.prototype.addCard = function(cardModel, targetArea) {
+    this.item.addCard(cardModel, targetArea);
     return this.checkCardsEmpty();
   };
 
-  DeckController.prototype.removeCard = function(card) {
-    this.item.removeCard(card);
+  DeckController.prototype.removeCard = function(cardModel) {
+    this.item.removeCard(cardModel);
     return this.checkCardsEmpty();
   };
 
-  DeckController.prototype.onCardDrops = function(card) {
-    return this.player.flipCardDown(card);
+  DeckController.prototype.onCardDrops = function(cardModel) {
+    this.player.flipCardDown(cardModel);
+    return this.player.removeCard(cardModel);
   };
 
   return DeckController;

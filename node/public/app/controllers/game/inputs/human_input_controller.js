@@ -18,7 +18,7 @@ HumanInputController = (function(_super) {
   function HumanInputController() {
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
-    this.onDropCardOnArea = __bind(this.onDropCardOnArea, this);
+    this.onCardChangesArea = __bind(this.onCardChangesArea, this);
     this.onCardDragStops = __bind(this.onCardDragStops, this);
     this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
@@ -29,8 +29,8 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.setListeners = function() {
     $(".Player .Area").droppable({
-      drop: this.onDropCardOnArea,
-      hoverClass: ".Active"
+      drop: this.onCardChangesArea,
+      hoverClass: "Active"
     });
     $(".Player .Deck").on("dblclick", this.onDoubleClickDeck);
     $.contextMenu({
@@ -100,10 +100,10 @@ HumanInputController = (function(_super) {
     return this.onMoveCard(this.getCardId(event.target), location);
   };
 
-  HumanInputController.prototype.onDropCardOnArea = function(event, ui) {
+  HumanInputController.prototype.onCardChangesArea = function(event, ui) {
     var areaId;
     areaId = $(event.target).data().areaId;
-    return this.onCardChangesArea(this.getCardId(ui.draggable), areaId);
+    return this.onChangeCardArea(this.getCardId(ui.draggable), areaId);
   };
 
   HumanInputController.prototype.onMouseOverCard = function(event) {
