@@ -1,0 +1,59 @@
+!!! 5
+html(lange="en")
+
+	head
+		include meta
+
+		//Favicon
+		link( rel="shortcut icon", href="../public//favicon.ico")
+		link( rel="apple-touch-icon", href="../public//apple-touch-icon.png")
+
+		//Css 
+		link( rel="stylesheet", type="text/css", media="screen", href="/css/style.css")
+
+		//App Javascript
+		script( data-main="/app/main.js", src="/app/libs/require-jquery.min.js")
+		
+		//Socket IO Client
+		script( src="http://localhost:8080/socket.io/socket.io.js")
+
+		//Other Javascript
+		//script( src="/app/libs/ga.js")
+
+		//RSS TODO
+
+	body.home
+		#Scripts
+		#WebsiteApp
+			#Views
+				include ../public/app-raw/views/views
+			.section#Login
+			.section.game#Game.active
+
+				.zoomed-card.ZoomedCard
+
+				.card-lister.CardLister(data-state="hidden")
+					.button.MoveTopTop move To Top
+					.button.MoveUp move Up
+					.list.List
+					.button.MoveDown move Down
+					.button.MoveToBottom move To Bottom
+
+					.close.Close
+
+				.player.Player
+					.cards.Cards
+					.deck.Deck.Area.CardPile(data-isEmpty="true")
+					.hand.Hand.Area(data-isEmpty="true")
+					.board.Board.Area(data-isEmpty="true")
+					.graveyard.Graveyard.Area.CardPile(data-isEmpty="true")
+					.sideboard.Sideboard.Area.CardPile(data-isEmpty="true")
+
+
+				.player.opponent.Opponent
+					.cards.Cards
+					.deck.Deck(data-isEmpty="true")
+					.hand.Hand(data-isEmpty="true")
+					.board.Board(data-isEmpty="true")
+					.graveyard.Graveyard(data-isEmpty="true")
+					.sideboard.Sideboard(data-isEmpty="true")

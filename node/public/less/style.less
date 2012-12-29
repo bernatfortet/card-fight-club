@@ -1,0 +1,66 @@
+@import "style-magic.less";
+
+// Website ==========================
+.section{ .hidden;
+	&.active{ .shown;}
+}
+
+//Game ============================
+.game{ width:100%; height:100%; .abs; left:0; top:0;}
+
+
+	.player{ width: 100%; height:50%; .abs; bottom:0; left:0; overflow: hidden;  background:lighten(black, 10%);}
+		@backCardImage: url("../images/back.jpg");
+		@emtyCardImage: url("../images/empty.jpg");
+		@graveyardImage: url("../images/graveyard.jpg");
+
+
+		.board{ width: 75%; height:65%; background:lighten(black, 20%);}
+		.deck{ width:126px; height:35%; .abs; right:0; bottom:0; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8; .anchor;
+			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
+		}
+
+		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:0; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; z-index: 8;}
+		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable; z-index: 8;
+			&.Active{ background:lighten(black, 35%);}
+		}
+
+		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; background: no-repeat 0 0; background-image:@backCardImage; background-size: contain; .br(7px); .unselectable; z-index: 16; .anchor;
+			.img{ width:100%; height:100%; .rel; display:block; background-image:@backCardImage; background-size: contain; .br(7px); background-repeat:no-repeat;}
+			&:hover .img{ .bs( 0px 0px 10px 0px fade(black, 70%) ); left:-2px; top:-2px; .anim;}
+			&[data-zoom="true"] .img{ width:300%; height:300%; left:-50%; top:-50%; .br(15px); }
+			&[data-tapped="true"]{ background-image: none;
+				.img{ .trans( rotate( 90deg ) ); }
+			}
+			&[data-tapped="false"]{ background-image: none; }
+			&[data-flipped="down"] .img{ .trans( rotateY( 90deg ) ); background-image:@backCardImage !important; }
+		}
+
+	.opponent{  top:0;
+		.board{ .abs; bottom: 0;}
+		.deck{ top: 0; bottom: none;}
+		.graveyard{ bottom: 0; top:37%;}
+		.hand{ top: 0; bottom: none;}
+		.card{ z-index:14; }
+	}
+
+	.zoomed-card{ width:223px; height:310px; .fixed; right:0; top:35%; z-index:0; background-repeat:no-repeat; background-position:right center; .br(12px);
+		&[data-isZooming="true"]{ z-index:32; }
+	}
+
+	.card-lister{ .abs; left:40%; top:50px; padding:5px; background:white; z-index:32;
+		.button{ margin-bottom:3px; padding:4px; background:grey; color:white; .br(2px); .ingame-button; } 
+
+		li{ padding:0 10px; color:black; .anchor;
+			&:hover{ background:grey;}
+			&[data-state="selected"]{ background:green;}
+		}
+		&[data-state="visible"]{ .shown; }
+		&[data-state="hidden"]{ .hidden; }
+	}
+
+	.context-menu-list{ min-width:60px; .abs; background:white; .br(3px); .bs( 0px 0px 15px 0px #000 ); .unselectable;
+		.context-menu-item{ padding:7px 10px; color:black; .anchor;
+			&:hover{ background:black; color:white;}
+		}
+	}
