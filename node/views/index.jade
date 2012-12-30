@@ -34,21 +34,13 @@ html(lange="en")
 				.zoomed-card.ZoomedCard
 
 				.card-lister.CardLister(data-state="hidden")
+					.close.Close
+						
 					.button.MoveToTop move To Top
 					.button.MoveUp move Up
 					.list.List
 					.button.MoveDown move Down
 					.button.MoveToBottom move To Bottom
-
-					.close.Close
-
-				.player.Player
-					.cards.area.Cards
-					.deck.area.Deck.Area.CardPile(data-isEmpty="true")
-					.hand.area.Hand.Area(data-isEmpty="true")
-					.board.area.Board.Area(data-isEmpty="true")
-					.graveyard.area.Graveyard.Area.CardPile(data-isEmpty="true")
-					.sideboard.area.Sideboard.Area.CardPile(data-isEmpty="true")
 
 
 				.player.opponent.Opponent
@@ -56,5 +48,13 @@ html(lange="en")
 					.deck.area.Deck.Area.CardPile(data-isEmpty="true")
 					.hand.area.Hand(data-isEmpty="true")
 					.board.area.Board(data-isEmpty="true")
+					.graveyard.area.Graveyard.Area.CardPile(data-isEmpty="true")
+					.sideboard.area.Sideboard.Area.CardPile(data-isEmpty="true")
+
+				.player.Player
+					.cards.area.Cards
+					.deck.area.Deck.Area.CardPile(data-isEmpty="true")
+					.hand.area.Hand.Area(data-isEmpty="true")
+					.board.area.Board.Area(data-isEmpty="true")
 					.graveyard.area.Graveyard.Area.CardPile(data-isEmpty="true")
 					.sideboard.area.Sideboard.Area.CardPile(data-isEmpty="true")

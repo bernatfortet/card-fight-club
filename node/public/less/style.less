@@ -8,16 +8,16 @@ body{ z-index: -2;}
 #WebsiteApp{z-index:200}
 
 //Game ============================
-.game{ width:100%; height:100%; .abs; left:0; top:0; .unselectable; z-index:-2;}
+.game{ width:100%; height:100%; .abs; left:0; top:0; .unselectable; z-index:-2; background:lighten(black, 10%);}
 
 
-	.player{ width: 100%; height:50%; .abs; bottom:0; left:0; overflow: hidden;  background:lighten(black, 10%); z-index:-2;}
+	.player{ width: 100%; height:50%; .abs; bottom:0; left:0;}
 		@backCardImage: url("../images/back.jpg");
 		@emtyCardImage: url("../images/empty.jpg");
 		@graveyardImage: url("../images/graveyard.jpg");
 
 
-		.area{ z-index: -1;}
+		.area{}
 		.board{ width: 75%; height:65%; background:lighten(black, 20%);
 			&.Active{ .fancyGreenGlowInset; }
 		}
@@ -34,7 +34,7 @@ body{ z-index: -2;}
 		}
 
 
-		.cards{ z-index: 4;}
+		.cards{ .rel; z-index: 4;}
 		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; .unselectable; .anchor; z-index:2;
 			.tap-container{ .cover-all; .br(7px);}
 			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; .br(7px); }
