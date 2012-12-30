@@ -11,7 +11,11 @@ BoardController = (function(_super) {
   }
 
   BoardController.prototype.onCardDrops = function(card) {
-    return this.player.flipCardDown(card);
+    if (!card.controller.isFlippedUp && !this.player.isPlayerNetworked()) {
+      return this.player.flipCardUp(card);
+    } else if (card.controller.isFlippedUp) {
+      return this.player.flipCardUp(card);
+    }
   };
 
   return BoardController;

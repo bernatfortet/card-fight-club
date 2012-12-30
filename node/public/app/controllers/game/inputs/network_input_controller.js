@@ -8,6 +8,7 @@ NetworkInputController = (function(_super) {
   __extends(NetworkInputController, _super);
 
   function NetworkInputController() {
+    this.onCardFromAreaIsRevealedToggle = __bind(this.onCardFromAreaIsRevealedToggle, this);
     this.onCardIsFlippedDown = __bind(this.onCardIsFlippedDown, this);
     this.onCardIsFlippedUp = __bind(this.onCardIsFlippedUp, this);
     this.onCardIsTapped = __bind(this.onCardIsTapped, this);
@@ -16,7 +17,7 @@ NetworkInputController = (function(_super) {
     this.onCardIsRemoved = __bind(this.onCardIsRemoved, this);
     this.onCardIsCreated = __bind(this.onCardIsCreated, this);
     this.onDeckIsCreated = __bind(this.onDeckIsCreated, this);    NetworkInputController.__super__.constructor.apply(this, arguments);
-    this.server = io.connect('http:localhost:8080');
+    this.server = io.connect('http:25.175.254.163:8080');
     this.setListeners();
   }
 
@@ -63,14 +64,8 @@ NetworkInputController = (function(_super) {
   };
 
   NetworkInputController.prototype.onCardAreaIsChanged = function(params) {
-    var areaId,
-      _this = this;
-    areaId = null;
-    Area.each(function(area) {
-      if (params.areaName === area.name && area.controller.player === _this.targetPlayer) {
-        return areaId = area.id;
-      }
-    });
+    var areaId;
+    areaId = this.getPlayersAreaIdFromName(params.areaName, this.targetPlayer);
     return this.onChangeCardArea(params.cardId, areaId);
   };
 
@@ -84,6 +79,24 @@ NetworkInputController = (function(_super) {
 
   NetworkInputController.prototype.onCardIsFlippedDown = function(cardId) {
     return this.onFlipCardDown(cardId);
+  };
+
+  NetworkInputController.prototype.onCardFromAreaIsRevealedToggle = function(params) {
+    var areaId;
+    areaId = this.getPlayersAreaIdFromName(params.areaName, this.targetPlayer);
+    return this.onToggleRevealCardFromArea(params.cardId, areaId);
+  };
+
+  NetworkInputController.prototype.getPlayersAreaIdFromName = function(areaName, player) {
+    var areaId,
+      _this = this;
+    areaId = null;
+    Area.each(function(area) {
+      if (areaName === area.name && area.controller.player === player) {
+        return areaId = area.id;
+      }
+    });
+    return areaId;
   };
 
   NetworkInputController.prototype.getRealId = function(id) {

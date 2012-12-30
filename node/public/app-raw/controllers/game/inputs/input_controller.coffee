@@ -42,6 +42,12 @@ class InputController extends Spine.Controller
 		areaId = opt.$trigger.data().areaId
 		this.targetPlayer.shuffleArea( areaId )
 
+	onToggleRevealTopCardFromArea: ( areaId ) =>
+		this.targetPlayer.toogleRevealTopCardFromArea( Area.find( areaId ) )
+
+	onToggleRevealCardFromArea: ( cardId, areaId ) =>
+		this.targetPlayer.toggleRevealCardFromArea( Card.find( cardId ), Area.find( areaId ) )
+
 	onViewCardsFromArea: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId
 		this.targetPlayer.showCardsFromArea( areaId )

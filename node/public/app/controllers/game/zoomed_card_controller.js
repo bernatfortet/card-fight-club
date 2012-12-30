@@ -12,10 +12,10 @@ ZoomedCardController = (function(_super) {
     this.zoomIn = __bind(this.zoomIn, this);    ZoomedCardController.__super__.constructor.apply(this, arguments);
   }
 
-  ZoomedCardController.prototype.zoomIn = function(card) {
-    if (card.controller.isFlippedUp) {
+  ZoomedCardController.prototype.zoomIn = function(cardModel) {
+    if (cardModel.controller === null || cardModel.controller.isFlippedUp) {
       this.el.attr("data-isZooming", "true");
-      return this.el.css("background-image", "url('" + card.controller.item.image_url + "')");
+      return this.el.css("background-image", "url('" + cardModel.image_url + "')");
     }
   };
 

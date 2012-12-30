@@ -1,4 +1,5 @@
 class PlayerController extends Spine.Controller
+	 
 	deck: null
 	multiplayerController: null
 	cardListerController: null
@@ -46,9 +47,10 @@ class PlayerController extends Spine.Controller
 
 	onDrawCard: () ->
 		this.createCardFromTopOfDeck()
+		this.deckController.onDrawCard()
 
 	createCardFromTopOfDeck: () ->
-		topCard = this.deckArea.getTopCard()
+		topCard = this.deckArea.getAndRemoveTopCard()
 		if( topCard )
 			this.addCard( topCard )
 
@@ -77,10 +79,23 @@ class PlayerController extends Spine.Controller
 		this.el.find(".Cards").append( cardEl )
 
 	moveToAreaLocation: ( cardModel, areaId ) ->
+		#TODO Rethink this methods
 		areaModel = Area.find( areaId )
-		areaPosX = areaModel.controller.el.offset().left / $(window).width()
+		if( areaModel.name == "hand" )
+			areaPosX = this.getCardPositionInHand( areaModel )
+		else
+			areaPosX = areaModel.controller.el.offset().left / $(window).width()
+
 		areaPosY = areaModel.controller.el.offset().top / $(window).height()
 		cardModel.controller.move( areaPosX, areaPosY )
+
+	getCardPositionInHand: ( areaModel ) ->
+		
+		cardWidth = 120 #TODO Unharcode this number
+		cardsInHand = areaModel.cards.Count()
+		return ( areaModel.controller.el.offset().left + ( cardsInHand * cardWidth ) ) / $(window).width()
+
+
 
 	moveCard: ( cardModel, location ) ->
 		cardModel.controller.move( location.x, location.y )
@@ -123,6 +138,14 @@ class PlayerController extends Spine.Controller
 		areaModel = Area.find( areaId )
 		areaModel.shuffle()
 		this.multiplayerController.onShuffle( areaModel ) if this.isPlayerNetworked()
+
+	toogleRevealTopCardFromArea: ( areaModel ) ->
+		cardModel = areaModel.getTopCard()
+		this.toggleRevealCardFromArea( cardModel, areaModel )
+
+	toggleRevealCardFromArea: ( cardModel, areaModel ) ->
+		areaModel.controller.toggleRevealTopCard( cardModel )
+		this.multiplayerController.onToggleRevealCardFromArea( cardModel, areaModel ) if this.isPlayerNetworked()
 
 	showCardsFromArea: ( areaId ) ->
 		this.cardListerController.showCardsFromArea( Area.find( areaId ) )

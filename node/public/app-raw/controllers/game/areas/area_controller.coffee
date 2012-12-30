@@ -1,6 +1,7 @@
 class AreaController extends Spine.Controller
 
 	player: null
+	isTopCardRevealed: false
 
 	constructor: ->
 		super
@@ -9,11 +10,20 @@ class AreaController extends Spine.Controller
 		this.item = areaModel
 		this.el.data().areaId = areaModel.id
 
-	addCard: ( card ) ->
-		this.item.addCard( card )
+	addCard: ( cardModel ) ->
+		this.item.addCard( cardModel )
 
-	removeCard: ( card ) ->
-		this.item.removeCard( card )
+	removeCard: ( cardModel ) ->
+		this.item.removeCard( cardModel )
+		this.player.zoomCardOut()
+
+	toggleRevealTopCard: ( cardModel ) ->
+		if( this.isTopCardRevealed )
+			this.el.css("background-image", 'url("../images/back.jpg")')
+			this.isTopCardRevealed = false
+		else 
+			this.el.css("background-image", 'url("'+cardModel.image_url+'")')
+			this.isTopCardRevealed = true
 
 	checkCardsEmpty: ->
 		if( this.item.isEmpty() )
@@ -22,3 +32,11 @@ class AreaController extends Spine.Controller
 			this.el.attr("data-isEmpty", false )
 
 	onCardDrops: ( card ) ->
+
+	onMouseOver: () ->
+		if( this.isTopCardRevealed )
+			this.player.zoomCardIn( this.item.getTopCard() )
+
+	onMouseOut: () ->
+		if( this.isTopCardRevealed )
+			this.player.zoomCardOut()

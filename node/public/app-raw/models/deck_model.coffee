@@ -15,7 +15,7 @@ Deck.bind "create", ( deck ) ->
 		for cardIndex of deck.cards
 			cardId = deck.cards[cardIndex]
 			realCardModel = UserCard.find( cardId )
-			deck.createCard( realCardModel.id, realCardModel.data.image_url, realCardModel.data.name  )
+			deck.createCard( realCardModel.id, realCardModel.image_url, realCardModel.name  )
 	else
 		for cardIndex of deck.cards
 			card = deck.cards[cardIndex]

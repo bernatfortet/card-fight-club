@@ -80,12 +80,13 @@ PlayerController = (function(_super) {
   };
 
   PlayerController.prototype.onDrawCard = function() {
-    return this.createCardFromTopOfDeck();
+    this.createCardFromTopOfDeck();
+    return this.deckController.onDrawCard();
   };
 
   PlayerController.prototype.createCardFromTopOfDeck = function() {
     var topCard;
-    topCard = this.deckArea.getTopCard();
+    topCard = this.deckArea.getAndRemoveTopCard();
     if (topCard) return this.addCard(topCard);
   };
 
@@ -122,9 +123,20 @@ PlayerController = (function(_super) {
   PlayerController.prototype.moveToAreaLocation = function(cardModel, areaId) {
     var areaModel, areaPosX, areaPosY;
     areaModel = Area.find(areaId);
-    areaPosX = areaModel.controller.el.offset().left / $(window).width();
+    if (areaModel.name === "hand") {
+      areaPosX = this.getCardPositionInHand(areaModel);
+    } else {
+      areaPosX = areaModel.controller.el.offset().left / $(window).width();
+    }
     areaPosY = areaModel.controller.el.offset().top / $(window).height();
     return cardModel.controller.move(areaPosX, areaPosY);
+  };
+
+  PlayerController.prototype.getCardPositionInHand = function(areaModel) {
+    var cardWidth, cardsInHand;
+    cardWidth = 120;
+    cardsInHand = areaModel.cards.Count();
+    return (areaModel.controller.el.offset().left + (cardsInHand * cardWidth)) / $(window).width();
   };
 
   PlayerController.prototype.moveCard = function(cardModel, location) {
@@ -192,6 +204,19 @@ PlayerController = (function(_super) {
     areaModel.shuffle();
     if (this.isPlayerNetworked()) {
       return this.multiplayerController.onShuffle(areaModel);
+    }
+  };
+
+  PlayerController.prototype.toogleRevealTopCardFromArea = function(areaModel) {
+    var cardModel;
+    cardModel = areaModel.getTopCard();
+    return this.toggleRevealCardFromArea(cardModel, areaModel);
+  };
+
+  PlayerController.prototype.toggleRevealCardFromArea = function(cardModel, areaModel) {
+    areaModel.controller.toggleRevealTopCard(cardModel);
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onToggleRevealCardFromArea(cardModel, areaModel);
     }
   };
 

@@ -34,7 +34,7 @@ html(lange="en")
 				.zoomed-card.ZoomedCard
 
 				.card-lister.CardLister(data-state="hidden")
-					.button.MoveTopTop move To Top
+					.button.MoveToTop move To Top
 					.button.MoveUp move Up
 					.list.List
 					.button.MoveDown move Down
@@ -53,8 +53,8 @@ html(lange="en")
 
 				.player.opponent.Opponent
 					.cards.area.Cards
-					.deck.area.Deck(data-isEmpty="true")
+					.deck.area.Deck.Area.CardPile(data-isEmpty="true")
 					.hand.area.Hand(data-isEmpty="true")
 					.board.area.Board(data-isEmpty="true")
-					.graveyard.area.Graveyard(data-isEmpty="true")
-					.sideboard.area.Sideboard(data-isEmpty="true")
+					.graveyard.area.Graveyard.Area.CardPile(data-isEmpty="true")
+					.sideboard.area.Sideboard.Area.CardPile(data-isEmpty="true")

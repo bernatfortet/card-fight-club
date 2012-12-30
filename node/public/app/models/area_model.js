@@ -25,6 +25,13 @@ Area = (function(_super) {
       var topCard;
       if (!this.cards.isEmpty()) {
         topCard = this.cards.list[0];
+        return Card.find(topCard);
+      }
+    },
+    getAndRemoveTopCard: function() {
+      var topCard;
+      if (!this.cards.isEmpty()) {
+        topCard = this.cards.list[0];
         this.cards.Remove(topCard);
         return Card.find(topCard);
       }

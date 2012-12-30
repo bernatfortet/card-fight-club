@@ -5,42 +5,53 @@ class DBController extends Spine.Controller
 	apiKey: "apiKey=50b9ed0fe4b0afba6ecc5836"
 
 	#Tutor Server
-	tutorServerUrl: "http://localhost:3000/card/"
+	tutorServerUrl: "http://"+serverIp+":3000/card/"
 
 	deckId: "50dcf268e4b0b7b39972bf5f"
 	userId: "50dcf675e4b0876155f7f7c8"
 
 	userInfo: null
 
+	mongolabDeckData: null
+
 	cardsToLoad: 0
 
 	constructor: ->
 		super
 
-	getUserInfo: ->
+	getDeckFromMongoLab: ( deckId ) ->
 		UserCard.fetch =>
-			this.getUser( this.userId, this.buildUserInfo )
+			this.getDeck( deckId, this.buildDeckInfo )
 		UserCard.fetch()
 
-	buildUserInfo: ( JSON ) =>
-		for index of JSON.cards
-			cardId = JSON.cards[index]
-			if( !UserCard.exists( cardId) )
-				this.getCard( cardId, this.onLoadCard, cardId )
+	buildDeckInfo: ( mongolabDeckData ) =>
+		this.mongolabDeckData = mongolabDeckData
+
+		for index of mongolabDeckData.cards
+			cardId = mongolabDeckData.cards[index]
+			if( !UserCard.exists( cardId ) )
+				this.getCardFromTutor( cardId, this.onLoadCard, cardId )
 				this.cardsToLoad = index
-		app.createUser( this.userInfo, JSON )
 
-	onLoadCard: ( JSON, cardId ) ->
+
+		this.finishLoadinUserInfo( this.mongolabDeckData )
+
+	onLoadCard: ( tutorCardData, cardId ) ->
 		this.cardsToLoad--
-		card = UserCard.create({ id: cardId, data: JSON })
+		card = UserCard.create({
+			id: cardId,
+			name: tutorCardData.name,
+			image_url: tutorCardData.image_url,
+			type: tutorCardData.type
+		})
 		console.log( card );
-		this.finishLoadinUserInfo()
+		this.finishLoadinUserInfo( this.mongolabDeckData )
 
-	finishLoadinUserInfo: ->
+	finishLoadinUserInfo: ( mongolabDeckData ) ->
 		console.log( this.cardsToLoad, this.cardsToLoad <= 0 );
 		if( this.cardsToLoad <= 0 )
 			console.log( "finished ");
-			app.createUser( this.userInfo, JSON )
+			app.createUser( "pepito", mongolabDeckData )
 
 	getUser: ( userId, callback ) ->
 		collection = "users/"+userId
@@ -56,7 +67,7 @@ class DBController extends Spine.Controller
 				callback ( JSON )
 		)
 
-	getCard: ( cardId ) ->
+	getCardFromTutor: ( cardId ) ->
 		$.ajax({
 			url: this.tutorServerUrl + cardId,
 			type: "GET",

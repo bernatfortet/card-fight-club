@@ -10,7 +10,12 @@ class Area extends Spine.Model
 			this.cards = new List()
 			this.save()
 
-		getTopCard: -> 
+		getTopCard: ->
+			if( !this.cards.isEmpty() )
+				topCard = this.cards.list[0]
+				return Card.find( topCard )
+
+		getAndRemoveTopCard: -> 
 			if( !this.cards.isEmpty() )
 				topCard = this.cards.list[0]
 				this.cards.Remove( topCard )

@@ -8,7 +8,7 @@ NetworkController = (function(_super) {
 
   function NetworkController() {
     NetworkController.__super__.constructor.apply(this, arguments);
-    this.server = io.connect('http:localhost:8080');
+    this.server = io.connect('http:' + serverIp + ':8080');
   }
 
   return NetworkController;

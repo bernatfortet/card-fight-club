@@ -10,7 +10,7 @@ UserCard = (function(_super) {
     UserCard.__super__.constructor.apply(this, arguments);
   }
 
-  UserCard.configure('UserCard', 'id', 'data');
+  UserCard.configure('UserCard', 'id', 'name', 'image_url', "type");
 
   UserCard.extend(Spine.Model.Local);
 

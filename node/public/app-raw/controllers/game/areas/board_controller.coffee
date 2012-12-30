@@ -3,4 +3,7 @@ class BoardController extends AreaController
 		super
 
 	onCardDrops: ( card ) ->
-		this.player.flipCardDown( card )
+		if( !card.controller.isFlippedUp && !this.player.isPlayerNetworked() )
+			this.player.flipCardUp( card )
+		else if( card.controller.isFlippedUp )
+			this.player.flipCardUp( card )

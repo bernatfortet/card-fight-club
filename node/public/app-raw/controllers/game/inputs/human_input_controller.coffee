@@ -19,6 +19,9 @@ class HumanInputController extends InputController
 			hoverClass: "Active"
 		})
 
+		$(".Area").on("mouseover", this.onMouseOverArea )
+		$(".Area").on("mouseout", this.onMouseOutArea )
+
 		$(".Player .Deck").on("dblclick", this.onDoubleClickDeck )
 
 		$.contextMenu({
@@ -30,17 +33,16 @@ class HumanInputController extends InputController
 				view:
 					name: "View Cards"
 					callback: this.onViewCardsFromArea
-				#reveal:
-				#	name: "Reveal Top Card"
+				reveal:
+					name: "Reveal / Unreveal Top Card"
+					callback: this.onTopCardFromAreaIsRevealedToggle
 				#topToBottom:
 				#	name: "Put Top Card to Bottom"
 				#bottomToTop:
 				#	name: "Put Bottom Card to Top"
 		})
 
-		$(".Player .Graveyard").droppable({
-			drop: this.onDropCardOnGraveyard
-		})
+		this.setKeyboardListeners()
 
 	setCardListeners: ( cardElement ) ->
 		cardElement.draggable({
@@ -58,6 +60,19 @@ class HumanInputController extends InputController
 		cardElement.on("mouseover", this.onMouseOverCard )
 		cardElement.on("mouseout", this.onMouseOutCard )
 
+	setKeyboardListeners: () =>
+		jwerty.key( '1', => this.onAddNCards(1) )
+		jwerty.key( '2', => this.onAddNCards(2) )
+		jwerty.key( '3', => this.onAddNCards(3) )
+		jwerty.key( '4', => this.onAddNCards(4) )
+		jwerty.key( '5', => this.onAddNCards(5) )
+		jwerty.key( '6', => this.onAddNCards(6) )
+		jwerty.key( '7', => this.onAddNCards(7) )
+
+	onAddNCards: ( numCards ) =>
+		for iCounter in [0...numCards]
+			this.onDrawCard()
+
 	onRightMouseClick: ( event ) =>
 		RIGHT_MOUSE_BUTTON = 3
 		if( event.which == RIGHT_MOUSE_BUTTON )
@@ -74,6 +89,14 @@ class HumanInputController extends InputController
 	onDoubleClickDeck: () =>
 		this.onDrawCard()
 
+	onMouseOverArea: ( event ) =>
+		areaId = $(event.target).data().areaId
+		Area.find( areaId ).controller.onMouseOver()
+
+	onMouseOutArea: ( event ) =>
+		areaId = $(event.target).data().areaId
+		Area.find( areaId ).controller.onMouseOut()
+
 	onCardDragStops: ( event, ui )  =>
 		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
 		location = 
@@ -83,17 +106,19 @@ class HumanInputController extends InputController
 
 	onCardChangesArea: ( event, ui ) =>
 		areaId = $(event.target).data().areaId
-		this.onChangeCardArea( this.getCardId( ui.draggable ), areaId )	
+		this.onChangeCardArea( this.getCardId( ui.draggable ), areaId )
+
+	onTopCardFromAreaIsRevealedToggle: ( key, opt ) =>
+		areaId = opt.$trigger.data().areaId
+		this.onToggleRevealTopCardFromArea( areaId )
 
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget
 		this.onZoomCardIn( this.getCardId( this.activeCard ))
-		#console.log( "onMouseOverCard", this.activeCard);
 
 	onMouseOutCard: ( event ) =>
 		this.activeCard = null
 		this.onZoomCardOut()
-		#console.log( "onMouseOutCard");
 
 	getCardId: ( cardTarget ) ->
 		card = $(cardTarget)

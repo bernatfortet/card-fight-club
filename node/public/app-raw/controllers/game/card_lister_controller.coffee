@@ -1,8 +1,5 @@
 class CardListerController extends Spine.Controller
 
-	template:
-		'<li>${card.name}<li>'
-
 	currentList: null
 	selectedItem: null
 	currentArea: null
@@ -12,7 +9,11 @@ class CardListerController extends Spine.Controller
 		super
 
 		this.el.find(".Close").on("click", this.closeLister )
+
 		this.el.on("click", "li", this.onClickItem )
+		this.el.on("mouseover", "li", this.onMouseOverItem )
+
+
 		this.el.find(".MoveToTop").on("click", this.moveCardToTop )
 		this.el.find(".MoveUp").on("click", this.moveCardUp )
 		this.el.find(".MoveDown").on("click", this.moveCardDown )
@@ -24,12 +25,18 @@ class CardListerController extends Spine.Controller
 		this.selectedItem = clickedItem
 		clickedItem.attr("data-state", "selected")
 
+	onMouseOverItem: ( event ) =>
+		mouseOverItem = $(event.currentTarget)
+		cardId = mouseOverItem.attr("data-card-id")
+		app.gameController.humanInputController.onZoomCardIn( cardId )
+
 	cleanSelectedItem: ->
 		this.el.find("li[data-state='selected']").attr("data-state", "")
 
 	closeLister: =>
 		this.el.find(".List").html("")
 		this.el.attr("data-state","hidden")
+		app.gameController.humanInputController.onZoomCardOut()
 
 	showCardsFromArea: ( area ) ->
 		this.closeLister()
@@ -44,7 +51,8 @@ class CardListerController extends Spine.Controller
 		this.renderCard( cards[objectIndex] ) for objectIndex of cards
 
 	renderCard: ( card ) ->
-		this.el.find(".List").append( "<li>#{card.name}</li>" )
+
+		this.el.find(".List").append( "<li data-card-id='#{card.id}'>#{card.name}</li>" ) #TODO use tempalte
 
 	refresh: ->
 		this.showCardsFromArea( this.currentArea )

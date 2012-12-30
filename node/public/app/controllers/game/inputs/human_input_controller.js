@@ -18,11 +18,16 @@ HumanInputController = (function(_super) {
   function HumanInputController() {
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
+    this.onTopCardFromAreaIsRevealedToggle = __bind(this.onTopCardFromAreaIsRevealedToggle, this);
     this.onCardChangesArea = __bind(this.onCardChangesArea, this);
     this.onCardDragStops = __bind(this.onCardDragStops, this);
+    this.onMouseOutArea = __bind(this.onMouseOutArea, this);
+    this.onMouseOverArea = __bind(this.onMouseOverArea, this);
     this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
-    this.onRightMouseClick = __bind(this.onRightMouseClick, this);    HumanInputController.__super__.constructor.apply(this, arguments);
+    this.onRightMouseClick = __bind(this.onRightMouseClick, this);
+    this.onAddNCards = __bind(this.onAddNCards, this);
+    this.setKeyboardListeners = __bind(this.setKeyboardListeners, this);    HumanInputController.__super__.constructor.apply(this, arguments);
     this.originalWidth = $(window).width();
     this.originalHeight = $(window).height();
   }
@@ -32,6 +37,8 @@ HumanInputController = (function(_super) {
       drop: this.onCardChangesArea,
       hoverClass: "Active"
     });
+    $(".Area").on("mouseover", this.onMouseOverArea);
+    $(".Area").on("mouseout", this.onMouseOutArea);
     $(".Player .Deck").on("dblclick", this.onDoubleClickDeck);
     $.contextMenu({
       selector: ".Player .CardPile",
@@ -43,12 +50,14 @@ HumanInputController = (function(_super) {
         view: {
           name: "View Cards",
           callback: this.onViewCardsFromArea
+        },
+        reveal: {
+          name: "Reveal / Unreveal Top Card",
+          callback: this.onTopCardFromAreaIsRevealedToggle
         }
       }
     });
-    return $(".Player .Graveyard").droppable({
-      drop: this.onDropCardOnGraveyard
-    });
+    return this.setKeyboardListeners();
   };
 
   HumanInputController.prototype.setCardListeners = function(cardElement) {
@@ -66,6 +75,40 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.setCardHoverListener = function(cardElement) {
     cardElement.on("mouseover", this.onMouseOverCard);
     return cardElement.on("mouseout", this.onMouseOutCard);
+  };
+
+  HumanInputController.prototype.setKeyboardListeners = function() {
+    var _this = this;
+    jwerty.key('1', function() {
+      return _this.onAddNCards(1);
+    });
+    jwerty.key('2', function() {
+      return _this.onAddNCards(2);
+    });
+    jwerty.key('3', function() {
+      return _this.onAddNCards(3);
+    });
+    jwerty.key('4', function() {
+      return _this.onAddNCards(4);
+    });
+    jwerty.key('5', function() {
+      return _this.onAddNCards(5);
+    });
+    jwerty.key('6', function() {
+      return _this.onAddNCards(6);
+    });
+    return jwerty.key('7', function() {
+      return _this.onAddNCards(7);
+    });
+  };
+
+  HumanInputController.prototype.onAddNCards = function(numCards) {
+    var iCounter, _results;
+    _results = [];
+    for (iCounter = 0; 0 <= numCards ? iCounter < numCards : iCounter > numCards; 0 <= numCards ? iCounter++ : iCounter--) {
+      _results.push(this.onDrawCard());
+    }
+    return _results;
   };
 
   HumanInputController.prototype.onRightMouseClick = function(event) {
@@ -90,6 +133,18 @@ HumanInputController = (function(_super) {
     return this.onDrawCard();
   };
 
+  HumanInputController.prototype.onMouseOverArea = function(event) {
+    var areaId;
+    areaId = $(event.target).data().areaId;
+    return Area.find(areaId).controller.onMouseOver();
+  };
+
+  HumanInputController.prototype.onMouseOutArea = function(event) {
+    var areaId;
+    areaId = $(event.target).data().areaId;
+    return Area.find(areaId).controller.onMouseOut();
+  };
+
   HumanInputController.prototype.onCardDragStops = function(event, ui) {
     var cardPosition, location;
     cardPosition = ui.position;
@@ -104,6 +159,12 @@ HumanInputController = (function(_super) {
     var areaId;
     areaId = $(event.target).data().areaId;
     return this.onChangeCardArea(this.getCardId(ui.draggable), areaId);
+  };
+
+  HumanInputController.prototype.onTopCardFromAreaIsRevealedToggle = function(key, opt) {
+    var areaId;
+    areaId = opt.$trigger.data().areaId;
+    return this.onToggleRevealTopCardFromArea(areaId);
   };
 
   HumanInputController.prototype.onMouseOverCard = function(event) {

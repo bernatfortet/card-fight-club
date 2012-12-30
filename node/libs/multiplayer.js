@@ -49,6 +49,10 @@ var Multiplayer = {
 				client.broadcast.emit( "onCardAreaIsChanged", data );
 				console.log( "onCardAreaIsChanged ");
 			});
+			client.on('onToggleRevealCardFromArea', function( data ) {
+				client.broadcast.emit( "onCardFromAreaIsRevealedToggle", data );
+				console.log( "onCardFromAreaIsRevealedToggle ");
+			});
 
 		});
 

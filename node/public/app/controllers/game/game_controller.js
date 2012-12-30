@@ -41,35 +41,6 @@ GameController = (function(_super) {
     return this.humanInputController.setListeners();
   };
 
-  GameController.prototype.getPlayerInfoOLD = function() {
-    return {
-      player: {
-        name: "Socra",
-        deck: {
-          deck_id: 1,
-          name: "deck1",
-          cardList: {
-            0: {
-              card_id: 1,
-              img: "1.jpg",
-              name: "name1"
-            },
-            1: {
-              card_id: 2,
-              img: "2.jpg",
-              name: "name2"
-            },
-            2: {
-              card_id: 3,
-              img: "3.jpg",
-              name: "name3"
-            }
-          }
-        }
-      }
-    };
-  };
-
   return GameController;
 
 })(Spine.Controller);

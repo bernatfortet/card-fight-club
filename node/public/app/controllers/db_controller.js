@@ -11,7 +11,7 @@ DBController = (function(_super) {
 
   DBController.prototype.apiKey = "apiKey=50b9ed0fe4b0afba6ecc5836";
 
-  DBController.prototype.tutorServerUrl = "http://localhost:3000/card/";
+  DBController.prototype.tutorServerUrl = "http://" + serverIp + ":3000/card/";
 
   DBController.prototype.deckId = "50dcf268e4b0b7b39972bf5f";
 
@@ -19,48 +19,53 @@ DBController = (function(_super) {
 
   DBController.prototype.userInfo = null;
 
+  DBController.prototype.mongolabDeckData = null;
+
   DBController.prototype.cardsToLoad = 0;
 
   function DBController() {
-    this.buildUserInfo = __bind(this.buildUserInfo, this);    DBController.__super__.constructor.apply(this, arguments);
+    this.buildDeckInfo = __bind(this.buildDeckInfo, this);    DBController.__super__.constructor.apply(this, arguments);
   }
 
-  DBController.prototype.getUserInfo = function() {
+  DBController.prototype.getDeckFromMongoLab = function(deckId) {
     var _this = this;
     UserCard.fetch(function() {
-      return _this.getUser(_this.userId, _this.buildUserInfo);
+      return _this.getDeck(deckId, _this.buildDeckInfo);
     });
     return UserCard.fetch();
   };
 
-  DBController.prototype.buildUserInfo = function(JSON) {
+  DBController.prototype.buildDeckInfo = function(mongolabDeckData) {
     var cardId, index;
-    for (index in JSON.cards) {
-      cardId = JSON.cards[index];
+    this.mongolabDeckData = mongolabDeckData;
+    for (index in mongolabDeckData.cards) {
+      cardId = mongolabDeckData.cards[index];
       if (!UserCard.exists(cardId)) {
-        this.getCard(cardId, this.onLoadCard, cardId);
+        this.getCardFromTutor(cardId, this.onLoadCard, cardId);
         this.cardsToLoad = index;
       }
     }
-    return app.createUser(this.userInfo, JSON);
+    return this.finishLoadinUserInfo(this.mongolabDeckData);
   };
 
-  DBController.prototype.onLoadCard = function(JSON, cardId) {
+  DBController.prototype.onLoadCard = function(tutorCardData, cardId) {
     var card;
     this.cardsToLoad--;
     card = UserCard.create({
       id: cardId,
-      data: JSON
+      name: tutorCardData.name,
+      image_url: tutorCardData.image_url,
+      type: tutorCardData.type
     });
     console.log(card);
-    return this.finishLoadinUserInfo();
+    return this.finishLoadinUserInfo(this.mongolabDeckData);
   };
 
-  DBController.prototype.finishLoadinUserInfo = function() {
+  DBController.prototype.finishLoadinUserInfo = function(mongolabDeckData) {
     console.log(this.cardsToLoad, this.cardsToLoad <= 0);
     if (this.cardsToLoad <= 0) {
       console.log("finished ");
-      return app.createUser(this.userInfo, JSON);
+      return app.createUser("pepito", mongolabDeckData);
     }
   };
 
@@ -83,7 +88,7 @@ DBController = (function(_super) {
     });
   };
 
-  DBController.prototype.getCard = function(cardId) {
+  DBController.prototype.getCardFromTutor = function(cardId) {
     var _this = this;
     return $.ajax({
       url: this.tutorServerUrl + cardId,

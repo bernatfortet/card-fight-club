@@ -50,7 +50,7 @@ Deck.bind("create", function(deck) {
     for (cardIndex in deck.cards) {
       cardId = deck.cards[cardIndex];
       realCardModel = UserCard.find(cardId);
-      _results.push(deck.createCard(realCardModel.id, realCardModel.data.image_url, realCardModel.data.name));
+      _results.push(deck.createCard(realCardModel.id, realCardModel.image_url, realCardModel.name));
     }
     return _results;
   } else {

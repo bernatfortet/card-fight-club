@@ -5,7 +5,7 @@ class MultiplayerController extends Spine.Controller
 	constructor: ->
 		super
 
-		this.server = io.connect('http:localhost:8080')
+		this.server = io.connect('http:'+serverIp+':8080')
 
 	onCreateDeck: ( deckModel ) ->
 		cards = new Object
@@ -94,6 +94,16 @@ class MultiplayerController extends Spine.Controller
 	onShuffle: ( area ) ->
 		#this.sendEvent( "onMoveCard", area )
 		console.log( "Area has shuffled ", area.name, area.id);
+
+	onToggleRevealCardFromArea: ( cardModel, areaModel ) ->
+		opponentCardId = this.setIdForOpponent( cardModel.id )
+		params =
+			cardId: opponentCardId
+			areaName: areaModel.name
+		this.sendEvent( "onToggleRevealCardFromArea", params )
+
+		app.gameController.networkInputController.onCardFromAreaIsRevealedToggle( params ) if this.local
+		console.log( "Area has revealed top card ", params );
 
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")

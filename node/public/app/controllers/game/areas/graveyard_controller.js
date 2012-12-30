@@ -10,7 +10,9 @@ GraveyardController = (function(_super) {
     GraveyardController.__super__.constructor.apply(this, arguments);
   }
 
-  GraveyardController.prototype.onCardDrops = function(card) {};
+  GraveyardController.prototype.onCardDrops = function(cardModel) {
+    return this.player.removeCard(cardModel);
+  };
 
   return GraveyardController;
 

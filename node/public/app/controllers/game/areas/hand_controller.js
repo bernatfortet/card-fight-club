@@ -11,8 +11,12 @@ HandController = (function(_super) {
   }
 
   HandController.prototype.onCardDrops = function(card) {
-    this.player.flipCardUp(card);
-    return this.player.zoomCardIn(card);
+    if (!this.player.isPlayerNetworked()) {
+      return this.player.flipCardDown(card);
+    } else {
+      this.player.flipCardUp(card);
+      return this.player.zoomCardIn(card);
+    }
   };
 
   return HandController;

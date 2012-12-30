@@ -3,7 +3,7 @@ class NetworkInputController extends InputController
 	constructor: ->
 		super
 
-		this.server = io.connect('http:localhost:8080')
+		this.server = io.connect('http:25.175.254.163:8080')
 
 		this.setListeners()
 
@@ -37,11 +37,7 @@ class NetworkInputController extends InputController
 		this.onMoveCard( params.cardId, params.location )
 
 	onCardAreaIsChanged: ( params ) =>
-		areaId = null
-		Area.each ( area ) =>
-			if( params.areaName == area.name && area.controller.player  == this.targetPlayer )
-				return areaId = area.id
-
+		areaId = this.getPlayersAreaIdFromName( params.areaName, this.targetPlayer )
 		this.onChangeCardArea( params.cardId, areaId )
 
 	onCardIsTapped: ( cardId ) =>
@@ -52,6 +48,18 @@ class NetworkInputController extends InputController
 
 	onCardIsFlippedDown: ( cardId ) =>
 		this.onFlipCardDown( cardId )
+
+	onCardFromAreaIsRevealedToggle: ( params ) =>
+		areaId = this.getPlayersAreaIdFromName( params.areaName, this.targetPlayer )
+		this.onToggleRevealCardFromArea( params.cardId, areaId )
+
+	getPlayersAreaIdFromName: ( areaName, player ) ->
+		areaId = null
+		Area.each ( area ) =>
+			if( areaName == area.name && area.controller.player  == player )
+				areaId = area.id
+
+		return areaId
 
 	getRealId: ( id ) ->
 		if( id[0] == "o")

@@ -12,7 +12,7 @@ MultiplayerController = (function(_super) {
 
   function MultiplayerController() {
     MultiplayerController.__super__.constructor.apply(this, arguments);
-    this.server = io.connect('http:localhost:8080');
+    this.server = io.connect('http:' + serverIp + ':8080');
   }
 
   MultiplayerController.prototype.onCreateDeck = function(deckModel) {
@@ -126,6 +126,20 @@ MultiplayerController = (function(_super) {
 
   MultiplayerController.prototype.onShuffle = function(area) {
     return console.log("Area has shuffled ", area.name, area.id);
+  };
+
+  MultiplayerController.prototype.onToggleRevealCardFromArea = function(cardModel, areaModel) {
+    var opponentCardId, params;
+    opponentCardId = this.setIdForOpponent(cardModel.id);
+    params = {
+      cardId: opponentCardId,
+      areaName: areaModel.name
+    };
+    this.sendEvent("onToggleRevealCardFromArea", params);
+    if (this.local) {
+      app.gameController.networkInputController.onCardFromAreaIsRevealedToggle(params);
+    }
+    return console.log("Area has revealed top card ", params);
   };
 
   MultiplayerController.prototype.setIdForOpponent = function(id) {

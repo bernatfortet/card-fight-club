@@ -12,6 +12,8 @@ InputController = (function(_super) {
   function InputController() {
     this.onDrawCard = __bind(this.onDrawCard, this);
     this.onViewCardsFromArea = __bind(this.onViewCardsFromArea, this);
+    this.onToggleRevealCardFromArea = __bind(this.onToggleRevealCardFromArea, this);
+    this.onToggleRevealTopCardFromArea = __bind(this.onToggleRevealTopCardFromArea, this);
     this.onShuffleArea = __bind(this.onShuffleArea, this);
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
@@ -67,6 +69,14 @@ InputController = (function(_super) {
     var areaId;
     areaId = opt.$trigger.data().areaId;
     return this.targetPlayer.shuffleArea(areaId);
+  };
+
+  InputController.prototype.onToggleRevealTopCardFromArea = function(areaId) {
+    return this.targetPlayer.toogleRevealTopCardFromArea(Area.find(areaId));
+  };
+
+  InputController.prototype.onToggleRevealCardFromArea = function(cardId, areaId) {
+    return this.targetPlayer.toggleRevealCardFromArea(Card.find(cardId), Area.find(areaId));
   };
 
   InputController.prototype.onViewCardsFromArea = function(key, opt) {

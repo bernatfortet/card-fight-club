@@ -8,20 +8,23 @@ App = (function(_super) {
 
   App.prototype.userInfo = null;
 
+  App.prototype.serverIp = "25.175.254.163";
+
   function App() {
     App.__super__.constructor.apply(this, arguments);
-    this.gameController = new GameController();
-    this.dbController = new DBController();
-    this.initialize();
   }
 
   App.prototype.initialize = function() {
-    return this.dbController.getUserInfo();
+    var deckId;
+    this.gameController = new GameController();
+    this.dbController = new DBController();
+    deckId = "50df4fe8e4b0d84e5fee60ad";
+    return this.dbController.getDeckFromMongoLab(deckId);
   };
 
   App.prototype.createUser = function(userData, deckData) {
     User.create({
-      name: userData.name,
+      name: "pepito",
       deck: deckData
     });
     return this.gameController.initialize();

@@ -8,6 +8,8 @@ AreaController = (function(_super) {
 
   AreaController.prototype.player = null;
 
+  AreaController.prototype.isTopCardRevealed = false;
+
   function AreaController() {
     AreaController.__super__.constructor.apply(this, arguments);
   }
@@ -17,12 +19,23 @@ AreaController = (function(_super) {
     return this.el.data().areaId = areaModel.id;
   };
 
-  AreaController.prototype.addCard = function(card) {
-    return this.item.addCard(card);
+  AreaController.prototype.addCard = function(cardModel) {
+    return this.item.addCard(cardModel);
   };
 
-  AreaController.prototype.removeCard = function(card) {
-    return this.item.removeCard(card);
+  AreaController.prototype.removeCard = function(cardModel) {
+    this.item.removeCard(cardModel);
+    return this.player.zoomCardOut();
+  };
+
+  AreaController.prototype.toggleRevealTopCard = function(cardModel) {
+    if (this.isTopCardRevealed) {
+      this.el.css("background-image", 'url("../images/back.jpg")');
+      return this.isTopCardRevealed = false;
+    } else {
+      this.el.css("background-image", 'url("' + cardModel.image_url + '")');
+      return this.isTopCardRevealed = true;
+    }
   };
 
   AreaController.prototype.checkCardsEmpty = function() {
@@ -34,6 +47,16 @@ AreaController = (function(_super) {
   };
 
   AreaController.prototype.onCardDrops = function(card) {};
+
+  AreaController.prototype.onMouseOver = function() {
+    if (this.isTopCardRevealed) {
+      return this.player.zoomCardIn(this.item.getTopCard());
+    }
+  };
+
+  AreaController.prototype.onMouseOut = function() {
+    if (this.isTopCardRevealed) return this.player.zoomCardOut();
+  };
 
   return AreaController;
 

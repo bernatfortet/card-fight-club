@@ -7,8 +7,6 @@ CardListerController = (function(_super) {
 
   __extends(CardListerController, _super);
 
-  CardListerController.prototype.template = '<li>${card.name}<li>';
-
   CardListerController.prototype.currentList = null;
 
   CardListerController.prototype.selectedItem = null;
@@ -23,9 +21,11 @@ CardListerController = (function(_super) {
     this.moveCardDown = __bind(this.moveCardDown, this);
     this.moveCardUp = __bind(this.moveCardUp, this);
     this.closeLister = __bind(this.closeLister, this);
+    this.onMouseOverItem = __bind(this.onMouseOverItem, this);
     this.onClickItem = __bind(this.onClickItem, this);    CardListerController.__super__.constructor.apply(this, arguments);
     this.el.find(".Close").on("click", this.closeLister);
     this.el.on("click", "li", this.onClickItem);
+    this.el.on("mouseover", "li", this.onMouseOverItem);
     this.el.find(".MoveToTop").on("click", this.moveCardToTop);
     this.el.find(".MoveUp").on("click", this.moveCardUp);
     this.el.find(".MoveDown").on("click", this.moveCardDown);
@@ -40,13 +40,21 @@ CardListerController = (function(_super) {
     return clickedItem.attr("data-state", "selected");
   };
 
+  CardListerController.prototype.onMouseOverItem = function(event) {
+    var cardId, mouseOverItem;
+    mouseOverItem = $(event.currentTarget);
+    cardId = mouseOverItem.attr("data-card-id");
+    return app.gameController.humanInputController.onZoomCardIn(cardId);
+  };
+
   CardListerController.prototype.cleanSelectedItem = function() {
     return this.el.find("li[data-state='selected']").attr("data-state", "");
   };
 
   CardListerController.prototype.closeLister = function() {
     this.el.find(".List").html("");
-    return this.el.attr("data-state", "hidden");
+    this.el.attr("data-state", "hidden");
+    return app.gameController.humanInputController.onZoomCardOut();
   };
 
   CardListerController.prototype.showCardsFromArea = function(area) {
@@ -70,7 +78,7 @@ CardListerController = (function(_super) {
   };
 
   CardListerController.prototype.renderCard = function(card) {
-    return this.el.find(".List").append("<li>" + card.name + "</li>");
+    return this.el.find(".List").append("<li data-card-id='" + card.id + "'>" + card.name + "</li>");
   };
 
   CardListerController.prototype.refresh = function() {

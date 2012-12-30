@@ -2,10 +2,10 @@ class ZoomedCardController extends Spine.Controller
 	constructor: ->
 		super
 
-	zoomIn: ( card ) =>
-		if( card.controller.isFlippedUp )
+	zoomIn: ( cardModel ) =>
+		if( cardModel.controller == null || cardModel.controller.isFlippedUp )
 			this.el.attr("data-isZooming", "true")
-			this.el.css("background-image", "url('"+card.controller.item.image_url+"')")
+			this.el.css("background-image", "url('"+cardModel.image_url+"')")
 			#console.log( "Zooming In" );
 
 	zoomOut: =>

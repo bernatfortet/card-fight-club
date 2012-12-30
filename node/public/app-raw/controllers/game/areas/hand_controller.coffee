@@ -3,5 +3,8 @@ class HandController extends AreaController
 		super
 
 	onCardDrops: ( card ) ->
-		this.player.flipCardUp( card )
-		this.player.zoomCardIn( card )
+		if( !this.player.isPlayerNetworked() )
+			this.player.flipCardDown( card )
+		else
+			this.player.flipCardUp( card )
+			this.player.zoomCardIn( card )
