@@ -106,7 +106,7 @@ HumanInputController = (function(_super) {
     var iCounter, _results;
     _results = [];
     for (iCounter = 0; 0 <= numCards ? iCounter < numCards : iCounter > numCards; 0 <= numCards ? iCounter++ : iCounter--) {
-      _results.push(this.onDrawCard());
+      _results.push(this.onDrawCardFromArea(this.targetPlayer.deckArea.id));
     }
     return _results;
   };

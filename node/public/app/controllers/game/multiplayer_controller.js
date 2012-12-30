@@ -8,7 +8,7 @@ MultiplayerController = (function(_super) {
 
   MultiplayerController.prototype.server = null;
 
-  MultiplayerController.prototype.local = true;
+  MultiplayerController.prototype.local = false;
 
   function MultiplayerController() {
     MultiplayerController.__super__.constructor.apply(this, arguments);

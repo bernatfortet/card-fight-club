@@ -1,6 +1,6 @@
 class MultiplayerController extends Spine.Controller
 	server: null
-	local: true
+	local: false
 
 	constructor: ->
 		super

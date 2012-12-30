@@ -71,7 +71,7 @@ class HumanInputController extends InputController
 
 	onAddNCards: ( numCards ) =>
 		for iCounter in [0...numCards]
-			this.onDrawCard()
+			this.onDrawCardFromArea( this.targetPlayer.deckArea.id )
 
 	onRightMouseClick: ( event ) =>
 		RIGHT_MOUSE_BUTTON = 3
