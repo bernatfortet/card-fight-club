@@ -45,12 +45,12 @@ class PlayerController extends Spine.Controller
 		this.shuffleArea( this.deckArea.id )
 
 
-	onDrawCard: () ->
-		this.createCardFromTopOfDeck()
-		this.deckController.onDrawCard()
+	onDrawCardFromArea: ( areaModel ) ->
+		this.createCardFromTopOfArea( areaModel )
+		areaModel.controller.onDrawCard()
 
-	createCardFromTopOfDeck: () ->
-		topCard = this.deckArea.getAndRemoveTopCard()
+	createCardFromTopOfArea: ( areaModel ) ->
+		topCard = areaModel.getAndRemoveTopCard()
 		if( topCard )
 			this.addCard( topCard )
 

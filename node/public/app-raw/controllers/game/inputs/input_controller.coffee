@@ -52,5 +52,5 @@ class InputController extends Spine.Controller
 		areaId = opt.$trigger.data().areaId
 		this.targetPlayer.showCardsFromArea( areaId )
 	
-	onDrawCard: () =>
-		this.targetPlayer.onDrawCard();
+	onDrawCardFromArea: ( areaId ) =>
+		this.targetPlayer.onDrawCardFromArea( Area.find( areaId ) );

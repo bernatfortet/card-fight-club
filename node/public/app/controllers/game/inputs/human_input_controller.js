@@ -23,7 +23,7 @@ HumanInputController = (function(_super) {
     this.onCardDragStops = __bind(this.onCardDragStops, this);
     this.onMouseOutArea = __bind(this.onMouseOutArea, this);
     this.onMouseOverArea = __bind(this.onMouseOverArea, this);
-    this.onDoubleClickDeck = __bind(this.onDoubleClickDeck, this);
+    this.onDoubleClickArea = __bind(this.onDoubleClickArea, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
     this.onRightMouseClick = __bind(this.onRightMouseClick, this);
     this.onAddNCards = __bind(this.onAddNCards, this);
@@ -39,7 +39,7 @@ HumanInputController = (function(_super) {
     });
     $(".Area").on("mouseover", this.onMouseOverArea);
     $(".Area").on("mouseout", this.onMouseOutArea);
-    $(".Player .Deck").on("dblclick", this.onDoubleClickDeck);
+    $(".CardPile").on("dblclick", this.onDoubleClickArea);
     $.contextMenu({
       selector: ".Player .CardPile",
       items: {
@@ -129,8 +129,10 @@ HumanInputController = (function(_super) {
     }
   };
 
-  HumanInputController.prototype.onDoubleClickDeck = function() {
-    return this.onDrawCard();
+  HumanInputController.prototype.onDoubleClickArea = function(event) {
+    var areaId;
+    areaId = $(event.target).data().areaId;
+    return this.onDrawCardFromArea(areaId);
   };
 
   HumanInputController.prototype.onMouseOverArea = function(event) {

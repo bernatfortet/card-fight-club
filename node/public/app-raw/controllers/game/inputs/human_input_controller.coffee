@@ -22,7 +22,7 @@ class HumanInputController extends InputController
 		$(".Area").on("mouseover", this.onMouseOverArea )
 		$(".Area").on("mouseout", this.onMouseOutArea )
 
-		$(".Player .Deck").on("dblclick", this.onDoubleClickDeck )
+		$(".CardPile").on("dblclick", this.onDoubleClickArea )
 
 		$.contextMenu({
 			selector: ".Player .CardPile"
@@ -86,8 +86,9 @@ class HumanInputController extends InputController
 		else
 			this.onFlipCardUp( this.getCardId( event.currentTarget ) )
 
-	onDoubleClickDeck: () =>
-		this.onDrawCard()
+	onDoubleClickArea: ( event ) =>
+		areaId = $(event.target).data().areaId
+		this.onDrawCardFromArea( areaId )
 
 	onMouseOverArea: ( event ) =>
 		areaId = $(event.target).data().areaId

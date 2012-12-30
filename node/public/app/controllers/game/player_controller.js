@@ -79,14 +79,14 @@ PlayerController = (function(_super) {
     return this.shuffleArea(this.deckArea.id);
   };
 
-  PlayerController.prototype.onDrawCard = function() {
-    this.createCardFromTopOfDeck();
-    return this.deckController.onDrawCard();
+  PlayerController.prototype.onDrawCardFromArea = function(areaModel) {
+    this.createCardFromTopOfArea(areaModel);
+    return areaModel.controller.onDrawCard();
   };
 
-  PlayerController.prototype.createCardFromTopOfDeck = function() {
+  PlayerController.prototype.createCardFromTopOfArea = function(areaModel) {
     var topCard;
-    topCard = this.deckArea.getAndRemoveTopCard();
+    topCard = areaModel.getAndRemoveTopCard();
     if (topCard) return this.addCard(topCard);
   };
 

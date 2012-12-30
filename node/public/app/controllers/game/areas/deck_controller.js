@@ -27,12 +27,6 @@ DeckController = (function(_super) {
     return this.player.removeCard(cardModel);
   };
 
-  DeckController.prototype.onDrawCard = function() {
-    if (this.isTopCardRevealed) {
-      return this.player.toogleRevealTopCardFromArea(this.item);
-    }
-  };
-
   return DeckController;
 
 })(AreaController);

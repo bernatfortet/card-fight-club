@@ -16,7 +16,3 @@ class DeckController extends AreaController
 		this.player.flipCardDown( cardModel )
 		this.player.removeCard( cardModel )
 		#Remove Card Element
-
-	onDrawCard: () ->
-		if( this.isTopCardRevealed )
-			this.player.toogleRevealTopCardFromArea( this.item )

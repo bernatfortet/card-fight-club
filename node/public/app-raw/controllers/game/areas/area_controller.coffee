@@ -33,6 +33,10 @@ class AreaController extends Spine.Controller
 
 	onCardDrops: ( card ) ->
 
+	onDrawCard: () ->
+		if( this.isTopCardRevealed )
+			this.player.toogleRevealTopCardFromArea( this.item )
+
 	onMouseOver: () ->
 		if( this.isTopCardRevealed )
 			this.player.zoomCardIn( this.item.getTopCard() )

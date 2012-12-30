@@ -10,7 +10,7 @@ InputController = (function(_super) {
   InputController.prototype.targetPlayer = null;
 
   function InputController() {
-    this.onDrawCard = __bind(this.onDrawCard, this);
+    this.onDrawCardFromArea = __bind(this.onDrawCardFromArea, this);
     this.onViewCardsFromArea = __bind(this.onViewCardsFromArea, this);
     this.onToggleRevealCardFromArea = __bind(this.onToggleRevealCardFromArea, this);
     this.onToggleRevealTopCardFromArea = __bind(this.onToggleRevealTopCardFromArea, this);
@@ -85,8 +85,8 @@ InputController = (function(_super) {
     return this.targetPlayer.showCardsFromArea(areaId);
   };
 
-  InputController.prototype.onDrawCard = function() {
-    return this.targetPlayer.onDrawCard();
+  InputController.prototype.onDrawCardFromArea = function(areaId) {
+    return this.targetPlayer.onDrawCardFromArea(Area.find(areaId));
   };
 
   return InputController;

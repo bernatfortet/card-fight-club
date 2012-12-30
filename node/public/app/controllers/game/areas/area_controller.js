@@ -48,6 +48,12 @@ AreaController = (function(_super) {
 
   AreaController.prototype.onCardDrops = function(card) {};
 
+  AreaController.prototype.onDrawCard = function() {
+    if (this.isTopCardRevealed) {
+      return this.player.toogleRevealTopCardFromArea(this.item);
+    }
+  };
+
   AreaController.prototype.onMouseOver = function() {
     if (this.isTopCardRevealed) {
       return this.player.zoomCardIn(this.item.getTopCard());
