@@ -11,8 +11,13 @@ MultiplayerController = (function(_super) {
   MultiplayerController.prototype.local = false;
 
   function MultiplayerController() {
+    var params;
     MultiplayerController.__super__.constructor.apply(this, arguments);
     this.server = io.connect('http:' + serverIp + ':8080');
+    params = {
+      userId: User.first().id
+    };
+    this.sendEvent("onConnect", params);
   }
 
   MultiplayerController.prototype.onCreateDeck = function(deckModel) {
@@ -148,6 +153,7 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.sendEvent = function(event, params) {
+    params.playerId = User.first().id;
     if (!this.local) return this.server.emit(event, params);
   };
 

@@ -15,5 +15,6 @@ class App extends Spine.Controller
 		this.dbController.getDeckFromMongoLab( deckId )
 
 	createUser: ( userData, deckData  ) ->
-		User.create({ name: "pepito", deck: deckData })
+		randomId = Math.floor( Math.random() * 1000 )
+		User.create({ id: randomId,  name: "pepito", deck: deckData })
 		this.gameController.initialize()

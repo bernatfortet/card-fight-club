@@ -7,6 +7,11 @@ class MultiplayerController extends Spine.Controller
 
 		this.server = io.connect('http:'+serverIp+':8080')
 
+		params =
+			userId: User.first().id
+		this.sendEvent( "onConnect", params )
+
+
 	onCreateDeck: ( deckModel ) ->
 		cards = new Object
 		iCounter = 0
@@ -111,4 +116,5 @@ class MultiplayerController extends Spine.Controller
 		return id
 
 	sendEvent: ( event, params ) ->
+		params.playerId = User.first().id
 		this.server.emit( event, params ) if !this.local

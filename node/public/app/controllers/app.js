@@ -23,7 +23,10 @@ App = (function(_super) {
   };
 
   App.prototype.createUser = function(userData, deckData) {
+    var randomId;
+    randomId = Math.floor(Math.random() * 1000);
     User.create({
+      id: randomId,
       name: "pepito",
       deck: deckData
     });

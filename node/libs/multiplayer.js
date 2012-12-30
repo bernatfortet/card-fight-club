@@ -13,10 +13,10 @@ var Multiplayer = {
 
 		this.io.sockets.on('connection', function ( client ) {
 
-			//client.join('testRoom');
+			client.on('onConnect', function( data ) {
+				//TODO set UserIds then emit messages to other user
+			});
 
-			//_this.io.sockets.in('testRoom').emit("test");
-			
 			client.on('onCreateDeck', function( data ) {
 				client.broadcast.emit( "onDeckIsCreated", data );
 				console.log( "onDeckIsCreated ");
