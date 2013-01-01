@@ -10,6 +10,8 @@ App = (function(_super) {
 
   App.prototype.serverIp = "25.175.254.163";
 
+  App.prototype.varTest = null;
+
   function App() {
     App.__super__.constructor.apply(this, arguments);
   }
