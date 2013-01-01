@@ -1,7 +1,7 @@
 // Required Libs, Controllers and Models ==================================
 var appManager;
 var serverIp = "25.175.254.163";
-serverIp = "localhost"
+//serverIp = "localhost"
 
 require(
 	[

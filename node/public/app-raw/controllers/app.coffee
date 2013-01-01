@@ -10,8 +10,8 @@ class App extends Spine.Controller
 		this.gameController = new GameController()
 		this.dbController = new DBController()
 
-		#deckId = prompt("Insert Deck Id","");
-		deckId = "50df4fe8e4b0d84e5fee60ad"
+		deckId = prompt("Insert Deck Id","");
+		#deckId = "50df4fe8e4b0d84e5fee60ad"
 		this.dbController.getDeckFromMongoLab( deckId )
 
 	createUser: ( userData, deckData  ) ->

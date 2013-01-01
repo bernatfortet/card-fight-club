@@ -12,10 +12,12 @@ class AreaController extends Spine.Controller
 
 	addCard: ( cardModel ) ->
 		this.item.addCard( cardModel )
+		this.checkCardsEmpty()
 
 	removeCard: ( cardModel ) ->
 		this.item.removeCard( cardModel )
 		this.player.zoomCardOut()
+		this.checkCardsEmpty()
 
 	toggleRevealTopCard: ( cardModel ) ->
 		if( this.isTopCardRevealed )

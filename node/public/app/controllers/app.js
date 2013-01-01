@@ -18,7 +18,7 @@ App = (function(_super) {
     var deckId;
     this.gameController = new GameController();
     this.dbController = new DBController();
-    deckId = "50df4fe8e4b0d84e5fee60ad";
+    deckId = prompt("Insert Deck Id", "");
     return this.dbController.getDeckFromMongoLab(deckId);
   };
 

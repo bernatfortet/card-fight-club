@@ -26,8 +26,9 @@ body{ z-index: -2;}
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
-		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@graveyardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);
+		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);
 			&.Active{ .fancyRedGlow; }
+			&[data-isEmpty="true"]{ background-image: @graveyardImage;}
 		}
 		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable;
 			&.Active{ .fancyGreenGlowInset; }

@@ -20,12 +20,14 @@ AreaController = (function(_super) {
   };
 
   AreaController.prototype.addCard = function(cardModel) {
-    return this.item.addCard(cardModel);
+    this.item.addCard(cardModel);
+    return this.checkCardsEmpty();
   };
 
   AreaController.prototype.removeCard = function(cardModel) {
     this.item.removeCard(cardModel);
-    return this.player.zoomCardOut();
+    this.player.zoomCardOut();
+    return this.checkCardsEmpty();
   };
 
   AreaController.prototype.toggleRevealTopCard = function(cardModel) {
