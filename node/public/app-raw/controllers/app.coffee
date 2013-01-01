@@ -1,7 +1,6 @@
 class App extends Spine.Controller
 
 	userInfo: null
-	serverIp: "25.175.254.163"
 
 
 	constructor: ->
