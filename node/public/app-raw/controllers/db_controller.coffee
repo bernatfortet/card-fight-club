@@ -5,7 +5,7 @@ class DBController extends Spine.Controller
 	apiKey: "apiKey=50b9ed0fe4b0afba6ecc5836"
 
 	#Tutor Server
-	tutorServerUrl: "http://"+serverIp+":3000/card/"
+	tutorServerUrl: "http://"+window.location.hostname+":3000/card/"
 
 	deckId: "50dcf268e4b0b7b39972bf5f"
 	userId: "50dcf675e4b0876155f7f7c8"
