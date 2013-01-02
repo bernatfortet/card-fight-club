@@ -7,7 +7,7 @@ NetworkController = (function(_super) {
 
   __extends(NetworkController, _super);
 
-  local = false;
+  local = true;
 
   function NetworkController() {
     NetworkController.__super__.constructor.apply(this, arguments);
@@ -29,7 +29,8 @@ NetworkController = (function(_super) {
       roomId: "1"
     };
     console.log("OnConnect", params);
-    return this.sendEvent("onConnect", params);
+    this.sendEvent("onConnect", params);
+    if (localServer) return this.onUserJoinsRoom(params);
   };
 
   NetworkController.prototype.onUserJoinsRoom = function(data) {
@@ -39,7 +40,7 @@ NetworkController = (function(_super) {
 
   NetworkController.prototype.sendEvent = function(event, params) {
     params.userId = User.first().id;
-    if (!this.local) return this.server.emit(event, params);
+    if (!localServer) return this.server.emit(event, params);
   };
 
   return NetworkController;

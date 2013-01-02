@@ -1,5 +1,5 @@
 class NetworkController extends Spine.Controller
-	local = false
+	local = true
 
 	constructor: ->
 		super
@@ -21,6 +21,7 @@ class NetworkController extends Spine.Controller
 		console.log("OnConnect", params );
 		this.sendEvent( "onConnect", params )
 
+		this.onUserJoinsRoom( params ) if localServer
 
 	#Receivers
 	onUserJoinsRoom: ( data ) ->
@@ -29,4 +30,4 @@ class NetworkController extends Spine.Controller
 
 	sendEvent: ( event, params ) ->
 		params.userId = User.first().id
-		this.server.emit( event, params ) if !this.local
+		this.server.emit( event, params ) if !localServer

@@ -133,10 +133,17 @@ PlayerController = (function(_super) {
   };
 
   PlayerController.prototype.getCardPositionInHand = function(areaModel) {
-    var cardWidth, cardsInHand;
-    cardWidth = 120;
+    var areaLeftOffset, areaOuterWidth, cardPosition, cardWidth, cardsInHand;
+    cardWidth = 100;
     cardsInHand = areaModel.cards.Count();
-    return (areaModel.controller.el.offset().left + (cardsInHand * cardWidth)) / $(window).width();
+    areaLeftOffset = areaModel.controller.el.offset().left;
+    areaOuterWidth = areaModel.controller.el.outerWidth();
+    cardPosition = areaLeftOffset + (cardsInHand * cardWidth);
+    if (cardPosition <= areaOuterWidth) {
+      return cardPosition / $(window).width();
+    } else {
+      return (areaOuterWidth - cardWidth) / $(window).width();
+    }
   };
 
   PlayerController.prototype.moveCard = function(cardModel, location) {

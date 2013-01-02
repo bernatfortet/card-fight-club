@@ -1,5 +1,4 @@
 class App extends Spine.Controller
-
 	userInfo: null
 
 

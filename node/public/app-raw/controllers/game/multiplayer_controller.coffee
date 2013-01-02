@@ -26,7 +26,7 @@ class MultiplayerController extends Spine.Controller
 
 		this.sendEvent( "onCreateDeck", params )
 
-		app.gameController.networkInputController.onDeckIsCreated( params ) if this.local
+		app.gameController.networkInputController.onDeckIsCreated( params ) if localServer
 		console.log("Deck is Created", params );
 
 	onCreateCard: ( cardModel ) ->
@@ -36,7 +36,7 @@ class MultiplayerController extends Spine.Controller
 			image_url: cardModel.image_url
 			name: cardModel.name
 		this.sendEvent( "onCreateCard", params )
-		app.gameController.networkInputController.onCardIsCreated( params ) if this.local
+		app.gameController.networkInputController.onCardIsCreated( params ) if localServer
 
 		console.log("Card is Created", params );
 
@@ -44,7 +44,7 @@ class MultiplayerController extends Spine.Controller
 		opponentCardId = this.setIdForOpponent( cardModel.id )
 		this.sendEvent( "onRemoveCard", opponentCardId )
 
-		app.gameController.networkInputController.onCardIsRemoved( opponentCardId ) if this.local
+		app.gameController.networkInputController.onCardIsRemoved( opponentCardId ) if localServer
 		console.log( "Card has been Removed ", opponentCardId );
 
 	onMoveCard: ( cardModel ) ->
@@ -57,7 +57,7 @@ class MultiplayerController extends Spine.Controller
 			location: invertedLocation
 		this.sendEvent( "onMoveCard", params )
 
-		app.gameController.networkInputController.onCardIsMoved( params ) if this.local
+		app.gameController.networkInputController.onCardIsMoved( params ) if localServer
 		console.log( "Card has moved ", opponentCardId );
  
 	onCardChangesArea: ( cardModel, areaModel ) ->
@@ -68,7 +68,7 @@ class MultiplayerController extends Spine.Controller
 
 		this.sendEvent( "onCardChangesArea", params )
 
-		app.gameController.networkInputController.onCardAreaIsChanged( params ) if this.local
+		app.gameController.networkInputController.onCardAreaIsChanged( params ) if localServer
 		console.log( "Card has changed area ", params );
 
 	onTapCard: ( cardModel ) ->
@@ -76,7 +76,7 @@ class MultiplayerController extends Spine.Controller
 		
 		this.sendEvent( "onTapCard", opponentCardId )
 
-		app.gameController.networkInputController.onCardIsTapped( opponentCardId ) if this.local
+		app.gameController.networkInputController.onCardIsTapped( opponentCardId ) if localServer
 		console.log( "Card has tapped ", opponentCardId );
 
 	onFlipCardUp: ( cardModel ) ->
@@ -85,14 +85,14 @@ class MultiplayerController extends Spine.Controller
 		opponentCardId = this.setIdForOpponent( cardModel.id )
 		this.sendEvent( "onFlipCardUp", opponentCardId )
 
-		app.gameController.networkInputController.onCardIsFlippedUp( opponentCardId ) if this.local
+		app.gameController.networkInputController.onCardIsFlippedUp( opponentCardId ) if localServer
 		console.log( "Card has flipped Up ", opponentCardId );
 
 	onFlipCardDown: ( cardModel ) ->
 		opponentCardId = this.setIdForOpponent( cardModel.id )
 		this.sendEvent( "onFlipCardDown", opponentCardId )
 
-		app.gameController.networkInputController.onCardIsFlippedDown( opponentCardId ) if this.local
+		app.gameController.networkInputController.onCardIsFlippedDown( opponentCardId ) if localServer
 		console.log( "Card has flipped Down ", opponentCardId );
 
 	onShuffle: ( area ) ->
@@ -106,7 +106,7 @@ class MultiplayerController extends Spine.Controller
 			areaName: areaModel.name
 		this.sendEvent( "onToggleRevealCardFromArea", params )
 
-		app.gameController.networkInputController.onCardFromAreaIsRevealedToggle( params ) if this.local
+		app.gameController.networkInputController.onCardFromAreaIsRevealedToggle( params ) if localServer
 		console.log( "Area has revealed top card ", params );
 
 	setIdForOpponent: ( id ) ->
@@ -116,4 +116,4 @@ class MultiplayerController extends Spine.Controller
 
 	sendEvent: ( event, params ) ->
 		params.userId = User.first().id
-		this.server.emit( event, params ) if !this.local
+		this.server.emit( event, params ) if !localServer

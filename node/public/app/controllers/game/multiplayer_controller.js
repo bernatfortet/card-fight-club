@@ -37,7 +37,7 @@ MultiplayerController = (function(_super) {
       cards: cards
     };
     this.sendEvent("onCreateDeck", params);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onDeckIsCreated(params);
     }
     return console.log("Deck is Created", params);
@@ -52,7 +52,7 @@ MultiplayerController = (function(_super) {
       name: cardModel.name
     };
     this.sendEvent("onCreateCard", params);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardIsCreated(params);
     }
     return console.log("Card is Created", params);
@@ -62,7 +62,7 @@ MultiplayerController = (function(_super) {
     var opponentCardId;
     opponentCardId = this.setIdForOpponent(cardModel.id);
     this.sendEvent("onRemoveCard", opponentCardId);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardIsRemoved(opponentCardId);
     }
     return console.log("Card has been Removed ", opponentCardId);
@@ -78,7 +78,7 @@ MultiplayerController = (function(_super) {
       location: invertedLocation
     };
     this.sendEvent("onMoveCard", params);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardIsMoved(params);
     }
     return console.log("Card has moved ", opponentCardId);
@@ -92,7 +92,7 @@ MultiplayerController = (function(_super) {
       areaName: areaModel.name
     };
     this.sendEvent("onCardChangesArea", params);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardAreaIsChanged(params);
     }
     return console.log("Card has changed area ", params);
@@ -102,7 +102,7 @@ MultiplayerController = (function(_super) {
     var opponentCardId;
     opponentCardId = this.setIdForOpponent(cardModel.id);
     this.sendEvent("onTapCard", opponentCardId);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardIsTapped(opponentCardId);
     }
     return console.log("Card has tapped ", opponentCardId);
@@ -113,7 +113,7 @@ MultiplayerController = (function(_super) {
     if (Area.find(cardModel.areaId).name === "hand") return;
     opponentCardId = this.setIdForOpponent(cardModel.id);
     this.sendEvent("onFlipCardUp", opponentCardId);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardIsFlippedUp(opponentCardId);
     }
     return console.log("Card has flipped Up ", opponentCardId);
@@ -123,7 +123,7 @@ MultiplayerController = (function(_super) {
     var opponentCardId;
     opponentCardId = this.setIdForOpponent(cardModel.id);
     this.sendEvent("onFlipCardDown", opponentCardId);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardIsFlippedDown(opponentCardId);
     }
     return console.log("Card has flipped Down ", opponentCardId);
@@ -141,7 +141,7 @@ MultiplayerController = (function(_super) {
       areaName: areaModel.name
     };
     this.sendEvent("onToggleRevealCardFromArea", params);
-    if (this.local) {
+    if (localServer) {
       app.gameController.networkInputController.onCardFromAreaIsRevealedToggle(params);
     }
     return console.log("Area has revealed top card ", params);
@@ -154,7 +154,7 @@ MultiplayerController = (function(_super) {
 
   MultiplayerController.prototype.sendEvent = function(event, params) {
     params.userId = User.first().id;
-    if (!this.local) return this.server.emit(event, params);
+    if (!localServer) return this.server.emit(event, params);
   };
 
   return MultiplayerController;

@@ -90,12 +90,15 @@ class PlayerController extends Spine.Controller
 		cardModel.controller.move( areaPosX, areaPosY )
 
 	getCardPositionInHand: ( areaModel ) ->
-		
-		cardWidth = 120 #TODO Unharcode this number
+		cardWidth = 100 #TODO Unharcode this number
 		cardsInHand = areaModel.cards.Count()
-		return ( areaModel.controller.el.offset().left + ( cardsInHand * cardWidth ) ) / $(window).width()
-
-
+		areaLeftOffset = areaModel.controller.el.offset().left
+		areaOuterWidth = areaModel.controller.el.outerWidth()
+		cardPosition = areaLeftOffset + ( cardsInHand * cardWidth )
+		if( cardPosition <= areaOuterWidth ) 
+			return cardPosition /  $(window).width()
+		else 
+			return ( areaOuterWidth - cardWidth ) /  $(window).width()
 
 	moveCard: ( cardModel, location ) ->
 		cardModel.controller.move( location.x, location.y )
