@@ -23,7 +23,7 @@ var Multiplayer = {
 				user.join( roomId )
 
 				var clientsInRoom = _this.io.sockets.clients( roomId ).length
-				if( clientsInRoom == 2 )
+				if( clientsInRoom >= 2 )
 					_this.io.sockets.in(roomId).emit( "onUserJoinsRoom", "TODO fill user Data" )
 			});
 
