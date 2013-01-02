@@ -1,9 +1,10 @@
 class NetworkInputController extends InputController
-
+	server: null
+	
 	constructor: ->
 		super
 
-		this.server = io.connect('http:25.175.254.163:8080')
+		this.server = io.connect('http:'+serverIp+':8080')
 
 		this.setListeners()
 
@@ -17,17 +18,12 @@ class NetworkInputController extends InputController
 		this.server.on 'onCardIsFlippedDown', 	this.onCardIsFlippedDown
 		this.server.on 'onCardAreaIsChanged', 	this.onCardAreaIsChanged
 
-	onDeckIsCreated: ( deck ) =>
-		Deck.create(
-			name: deck.name, 
-			id: deck.id
-			cards: deck.cards
-			controller: this.targetPlayer.deckController
-		)
-
-	onCardIsCreated: ( cardId ) =>
-		realModel = Card.find( this.getRealId( cardId ) )
-		cardModel = Card.create( id: cardId, image_url: realModel.image_url, name: realModel.name, deck: realModel.deckId, areaId: this.targetPlayer.deckController.item.id, controller: null  )
+	onDeckIsCreated: ( deckData ) =>
+		if( this.targetPlayer.deck == null )
+			this.onCreateDeck( deckData )
+			
+	onCardIsCreated: ( params ) =>
+		cardModel = Card.create( id: params.cardId, image_url: params.image_url, name: params.name, deck: this.targetPlayer.deck.id, areaId: this.targetPlayer.deckController.item.id, controller: null  )
 		this.onCreateCard( cardModel )
 
 	onCardIsRemoved: ( cardId ) =>

@@ -13,11 +13,10 @@ App = (function(_super) {
   }
 
   App.prototype.initialize = function() {
-    var deckId;
     this.gameController = new GameController();
     this.dbController = new DBController();
-    deckId = prompt("Insert Deck Id", "");
-    return this.dbController.getDeckFromMongoLab(deckId);
+    this.networkController = new NetworkController();
+    return this.dbController.getDeckFromMongoLab(this.getDeckid());
   };
 
   App.prototype.createUser = function(userData, deckData) {
@@ -28,7 +27,25 @@ App = (function(_super) {
       name: "pepito",
       deck: deckData
     });
+    return this.networkController.onReady();
+  };
+
+  App.prototype.startGame = function() {
     return this.gameController.initialize();
+  };
+
+  App.prototype.getDeckid = function() {
+    var deckId;
+    deckId = prompt("Insert Deck Id", "");
+    if (deckId === "1") {
+      return deckId = "50df4fe8e4b0d84e5fee60ad";
+    } else if (deckId === "2") {
+      return deckId = "50dcf268e4b0b7b39972bf5f";
+    } else if (deckId === "3") {
+      return deckId = "50df5072e4b0d84e5fee60b0";
+    } else {
+      return deckId = "50df4fe8e4b0d84e5fee60ad";
+    }
   };
 
   return App;

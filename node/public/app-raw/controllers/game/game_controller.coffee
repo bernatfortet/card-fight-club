@@ -12,6 +12,7 @@ class GameController extends Spine.Controller
 
 
 	initialize: ->
+		this.multiplayerController = new MultiplayerController()
 		this.humanInputController = new HumanInputController()
 		this.networkInputController = new NetworkInputController()
 

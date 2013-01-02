@@ -11,47 +11,75 @@ var Multiplayer = {
 	setListeners: function( ){
 		var _this = this;
 
-		this.io.sockets.on('connection', function ( client ) {
+		this.io.sockets.on('connection', function ( user ) {
+			console.log("on Connection -->>>>>>>>>>>>>>>>>>>>>");
 
-			client.on('onConnect', function( data ) {
-				//TODO set UserIds then emit messages to other user
+			user.on('onConnect', function( data ) {
+				console.log( "onConnect");
+				var roomId = data.roomId
+
+				user.set('roomId', roomId )
+				user.set('userId', data.userId )
+				user.join( roomId )
+
+				var clientsInRoom = _this.io.sockets.clients( roomId ).length
+				if( clientsInRoom == 2 )
+					_this.io.sockets.in(roomId).emit( "onUserJoinsRoom", "TODO fill user Data" )
 			});
 
-			client.on('onCreateDeck', function( data ) {
-				client.broadcast.emit( "onDeckIsCreated", data );
-				console.log( "onDeckIsCreated ");
+			user.on('onCreateDeck', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onDeckIsCreated ");
+					user.broadcast.to(roomId).emit( "onDeckIsCreated", data );
+				});
 			});
-			client.on('onCreateCard', function( data ) {
-				client.broadcast.emit( "onCardIsCreated", data );
-				console.log( "onCardIsCreated ");
+			user.on('onCreateCard', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardIsCreated ");
+					user.broadcast.to(roomId).emit( "onCardIsCreated", data );
+				});
 			});
-			client.on('onRemoveCard', function( data ) {
-				client.broadcast.emit( "onCardIsRemoved", data );
-				console.log( "onCardIsRemoved ");
+			user.on('onRemoveCard', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardIsRemoved ");
+					user.broadcast.to(roomId).emit( "onCardIsRemoved", data );
+				});
 			});
-			client.on('onMoveCard', function( data ) {
-				client.broadcast.emit( "onCardIsMoved", data );
-				console.log( "onCardIsMoved ");
+			user.on('onMoveCard', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardIsMoved ");
+					user.broadcast.to(roomId).emit( "onCardIsMoved", data );
+				});
 			});
-			client.on('onTapCard', function( data ) {
-				client.broadcast.emit( "onCardIsTapped", data );
-				console.log( "onCardIsTapped ");
+			user.on('onTapCard', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardIsTapped ");
+					user.broadcast.to(roomId).emit( "onCardIsTapped", data );
+				});
 			});
-			client.on('onFlipCardUp', function( data ) {
-				client.broadcast.emit( "onCardIsFlippedUp", data );
-				console.log( "onCardIsFlippedUp ");
+			user.on('onFlipCardUp', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardIsFlippedUp ");
+					user.broadcast.to(roomId).emit( "onCardIsFlippedUp", data );
+				});
 			});
-			client.on('onFlipCardDown', function( data ) {
-				client.broadcast.emit( "onCardIsFlippedDown", data );
-				console.log( "onCardIsFlippedDown ");
+			user.on('onFlipCardDown', function( data ) {
+				user.get('roomId', function(err, roomId){
+					user.broadcast.to(roomId).emit( "onCardIsFlippedDown", data );
+					console.log( "onCardIsFlippedDown ");
+				});
 			});
-			client.on('onCardChangesArea', function( data ) {
-				client.broadcast.emit( "onCardAreaIsChanged", data );
-				console.log( "onCardAreaIsChanged ");
+			user.on('onCardChangesArea', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardAreaIsChanged ");
+					user.broadcast.to(roomId).emit( "onCardAreaIsChanged", data );
+				});
 			});
-			client.on('onToggleRevealCardFromArea', function( data ) {
-				client.broadcast.emit( "onCardFromAreaIsRevealedToggle", data );
-				console.log( "onCardFromAreaIsRevealedToggle ");
+			user.on('onToggleRevealCardFromArea', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardFromAreaIsRevealedToggle ");
+					user.broadcast.to(roomId).emit( "onCardFromAreaIsRevealedToggle", data );
+				});
 			});
 
 		});

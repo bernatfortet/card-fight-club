@@ -18,6 +18,7 @@ GameController = (function(_super) {
   }
 
   GameController.prototype.initialize = function() {
+    this.multiplayerController = new MultiplayerController();
     this.humanInputController = new HumanInputController();
     this.networkInputController = new NetworkInputController();
     this.multiplayerController = new MultiplayerController();

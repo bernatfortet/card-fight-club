@@ -18,15 +18,20 @@ InputController = (function(_super) {
     this.onZoomCardOut = __bind(this.onZoomCardOut, this);
     this.onZoomCardIn = __bind(this.onZoomCardIn, this);
     this.onChangeCardArea = __bind(this.onChangeCardArea, this);
-    this.onCreateCard = __bind(this.onCreateCard, this);    InputController.__super__.constructor.apply(this, arguments);
+    this.onCreateCard = __bind(this.onCreateCard, this);
+    this.onCreateDeck = __bind(this.onCreateDeck, this);    InputController.__super__.constructor.apply(this, arguments);
   }
 
   InputController.prototype.setTargetPlayer = function(targetPlayer) {
     return this.targetPlayer = targetPlayer;
   };
 
-  InputController.prototype.onCreateCard = function(card) {
-    return this.targetPlayer.addCard(card);
+  InputController.prototype.onCreateDeck = function(deckData) {
+    return this.targetPlayer.setDeck(deckData);
+  };
+
+  InputController.prototype.onCreateCard = function(cardModel) {
+    return this.targetPlayer.addCard(cardModel);
   };
 
   InputController.prototype.onRemoveCard = function(cardId) {

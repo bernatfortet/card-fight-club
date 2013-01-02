@@ -7,6 +7,8 @@ NetworkInputController = (function(_super) {
 
   __extends(NetworkInputController, _super);
 
+  NetworkInputController.prototype.server = null;
+
   function NetworkInputController() {
     this.onCardFromAreaIsRevealedToggle = __bind(this.onCardFromAreaIsRevealedToggle, this);
     this.onCardIsFlippedDown = __bind(this.onCardIsFlippedDown, this);
@@ -17,7 +19,7 @@ NetworkInputController = (function(_super) {
     this.onCardIsRemoved = __bind(this.onCardIsRemoved, this);
     this.onCardIsCreated = __bind(this.onCardIsCreated, this);
     this.onDeckIsCreated = __bind(this.onDeckIsCreated, this);    NetworkInputController.__super__.constructor.apply(this, arguments);
-    this.server = io.connect('http:25.175.254.163:8080');
+    this.server = io.connect('http:' + serverIp + ':8080');
     this.setListeners();
   }
 
@@ -32,23 +34,17 @@ NetworkInputController = (function(_super) {
     return this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
   };
 
-  NetworkInputController.prototype.onDeckIsCreated = function(deck) {
-    return Deck.create({
-      name: deck.name,
-      id: deck.id,
-      cards: deck.cards,
-      controller: this.targetPlayer.deckController
-    });
+  NetworkInputController.prototype.onDeckIsCreated = function(deckData) {
+    if (this.targetPlayer.deck === null) return this.onCreateDeck(deckData);
   };
 
-  NetworkInputController.prototype.onCardIsCreated = function(cardId) {
-    var cardModel, realModel;
-    realModel = Card.find(this.getRealId(cardId));
+  NetworkInputController.prototype.onCardIsCreated = function(params) {
+    var cardModel;
     cardModel = Card.create({
-      id: cardId,
-      image_url: realModel.image_url,
-      name: realModel.name,
-      deck: realModel.deckId,
+      id: params.cardId,
+      image_url: params.image_url,
+      name: params.name,
+      deck: this.targetPlayer.deck.id,
       areaId: this.targetPlayer.deckController.item.id,
       controller: null
     });

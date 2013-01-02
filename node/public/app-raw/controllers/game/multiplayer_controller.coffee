@@ -7,11 +7,6 @@ class MultiplayerController extends Spine.Controller
 
 		this.server = io.connect('http:'+serverIp+':8080')
 
-		params =
-			userId: User.first().id
-		this.sendEvent( "onConnect", params )
-
-
 	onCreateDeck: ( deckModel ) ->
 		cards = new Object
 		iCounter = 0
@@ -24,22 +19,26 @@ class MultiplayerController extends Spine.Controller
 					name: card.name
 				iCounter++
 
-		deckData = 
+		params = 
 			id: this.setIdForOpponent( deckModel.id )
 			name: deckModel.name
 			cards: cards
 
-		this.sendEvent( "onCreateDeck", deckData )
+		this.sendEvent( "onCreateDeck", params )
 
-		app.gameController.networkInputController.onDeckIsCreated( deckData ) if this.local
-		console.log("Deck is Created", deckData );
+		app.gameController.networkInputController.onDeckIsCreated( params ) if this.local
+		console.log("Deck is Created", params );
 
 	onCreateCard: ( cardModel ) ->
 		cardId = this.setIdForOpponent( cardModel.id )
-		this.sendEvent( "onCreateCard", cardId )
-		app.gameController.networkInputController.onCardIsCreated( cardId ) if this.local
+		params = 
+			cardId: cardId
+			image_url: cardModel.image_url
+			name: cardModel.name
+		this.sendEvent( "onCreateCard", params )
+		app.gameController.networkInputController.onCardIsCreated( params ) if this.local
 
-		console.log("Card is Created", cardModel );
+		console.log("Card is Created", params );
 
 	onRemoveCard: ( cardModel ) ->
 		opponentCardId = this.setIdForOpponent( cardModel.id )
@@ -116,5 +115,5 @@ class MultiplayerController extends Spine.Controller
 		return id
 
 	sendEvent: ( event, params ) ->
-		params.playerId = User.first().id
+		params.userId = User.first().id
 		this.server.emit( event, params ) if !this.local

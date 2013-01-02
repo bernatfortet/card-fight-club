@@ -11,17 +11,12 @@ MultiplayerController = (function(_super) {
   MultiplayerController.prototype.local = false;
 
   function MultiplayerController() {
-    var params;
     MultiplayerController.__super__.constructor.apply(this, arguments);
     this.server = io.connect('http:' + serverIp + ':8080');
-    params = {
-      userId: User.first().id
-    };
-    this.sendEvent("onConnect", params);
   }
 
   MultiplayerController.prototype.onCreateDeck = function(deckModel) {
-    var cards, deckData, iCounter,
+    var cards, iCounter, params,
       _this = this;
     cards = new Object;
     iCounter = 0;
@@ -36,26 +31,31 @@ MultiplayerController = (function(_super) {
         return iCounter++;
       }
     });
-    deckData = {
+    params = {
       id: this.setIdForOpponent(deckModel.id),
       name: deckModel.name,
       cards: cards
     };
-    this.sendEvent("onCreateDeck", deckData);
+    this.sendEvent("onCreateDeck", params);
     if (this.local) {
-      app.gameController.networkInputController.onDeckIsCreated(deckData);
+      app.gameController.networkInputController.onDeckIsCreated(params);
     }
-    return console.log("Deck is Created", deckData);
+    return console.log("Deck is Created", params);
   };
 
   MultiplayerController.prototype.onCreateCard = function(cardModel) {
-    var cardId;
+    var cardId, params;
     cardId = this.setIdForOpponent(cardModel.id);
-    this.sendEvent("onCreateCard", cardId);
+    params = {
+      cardId: cardId,
+      image_url: cardModel.image_url,
+      name: cardModel.name
+    };
+    this.sendEvent("onCreateCard", params);
     if (this.local) {
-      app.gameController.networkInputController.onCardIsCreated(cardId);
+      app.gameController.networkInputController.onCardIsCreated(params);
     }
-    return console.log("Card is Created", cardModel);
+    return console.log("Card is Created", params);
   };
 
   MultiplayerController.prototype.onRemoveCard = function(cardModel) {
@@ -153,7 +153,7 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.sendEvent = function(event, params) {
-    params.playerId = User.first().id;
+    params.userId = User.first().id;
     if (!this.local) return this.server.emit(event, params);
   };
 

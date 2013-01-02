@@ -1,7 +1,6 @@
 // Required Libs, Controllers and Models ==================================
 var appManager;
-var serverIp = window.location.host;
-//serverIp = "localhost"
+var serverIp = window.location.hostname;
 
 require(
 	[

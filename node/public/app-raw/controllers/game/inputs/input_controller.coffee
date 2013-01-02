@@ -4,12 +4,15 @@ class InputController extends Spine.Controller
 
 	constructor: ->
 		super
-				
+	
 	setTargetPlayer: ( targetPlayer ) ->
 		this.targetPlayer = targetPlayer
 
-	onCreateCard: ( card ) =>
-		this.targetPlayer.addCard( card );
+	onCreateDeck: ( deckData ) =>
+		this.targetPlayer.setDeck( deckData );
+
+	onCreateCard: ( cardModel ) =>
+		this.targetPlayer.addCard( cardModel );
 
 	onRemoveCard: ( cardId ) ->
 		this.targetPlayer.removeCard( Card.find( cardId ) )

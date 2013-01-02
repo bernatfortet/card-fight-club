@@ -13,8 +13,6 @@ DBController = (function(_super) {
 
   DBController.prototype.tutorServerUrl = "http://" + window.location.hostname + ":3000/card/";
 
-  DBController.prototype.deckId = "50dcf268e4b0b7b39972bf5f";
-
   DBController.prototype.userId = "50dcf675e4b0876155f7f7c8";
 
   DBController.prototype.userInfo = null;
