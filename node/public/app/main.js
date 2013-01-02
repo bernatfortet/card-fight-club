@@ -2,6 +2,15 @@
 var appManager;
 var serverIp = window.location.hostname;
 var localServer = true;
+
+if( !localServer ){
+	window.onbeforeunload = function(){
+		if ( true ){
+			return "Are you sure you want to exit this page?";
+		}
+	}
+}
+
 require(
 	[
 		"order!jquery",
