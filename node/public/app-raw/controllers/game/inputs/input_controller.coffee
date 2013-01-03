@@ -57,3 +57,4 @@ class InputController extends Spine.Controller
 	
 	onDrawCardFromArea: ( areaId ) =>
 		this.targetPlayer.onDrawCardFromArea( Area.find( areaId ) );
+		

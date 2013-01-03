@@ -26,8 +26,8 @@ class NetworkInputController extends InputController
 		cardModel = Card.create( id: params.cardId, image_url: params.image_url, name: params.name, deck: this.targetPlayer.deck.id, areaId: this.targetPlayer.deckController.item.id, controller: null  )
 		this.onCreateCard( cardModel )
 
-	onCardIsRemoved: ( cardId ) =>
-		this.onRemoveCard( cardId )
+	onCardIsRemoved: ( params ) =>
+		this.onRemoveCard( cardId.cardId )
 
 	onCardIsMoved: ( params ) =>
 		this.onMoveCard( params.cardId, params.location )
@@ -36,14 +36,14 @@ class NetworkInputController extends InputController
 		areaId = this.getPlayersAreaIdFromName( params.areaName, this.targetPlayer )
 		this.onChangeCardArea( params.cardId, areaId )
 
-	onCardIsTapped: ( cardId ) =>
-		this.onTapCard( cardId )
+	onCardIsTapped: ( params ) =>
+		this.onTapCard( params.cardId )
 
-	onCardIsFlippedUp: ( cardId ) =>
-		this.onFlipCardUp( cardId )
+	onCardIsFlippedUp: ( params ) =>
+		this.onFlipCardUp( params.cardId )
 
-	onCardIsFlippedDown: ( cardId ) =>
-		this.onFlipCardDown( cardId )
+	onCardIsFlippedDown: ( params ) =>
+		this.onFlipCardDown( params.cardId )
 
 	onCardFromAreaIsRevealedToggle: ( params ) =>
 		areaId = this.getPlayersAreaIdFromName( params.areaName, this.targetPlayer )

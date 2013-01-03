@@ -51,8 +51,8 @@ NetworkInputController = (function(_super) {
     return this.onCreateCard(cardModel);
   };
 
-  NetworkInputController.prototype.onCardIsRemoved = function(cardId) {
-    return this.onRemoveCard(cardId);
+  NetworkInputController.prototype.onCardIsRemoved = function(params) {
+    return this.onRemoveCard(cardId.cardId);
   };
 
   NetworkInputController.prototype.onCardIsMoved = function(params) {
@@ -65,16 +65,16 @@ NetworkInputController = (function(_super) {
     return this.onChangeCardArea(params.cardId, areaId);
   };
 
-  NetworkInputController.prototype.onCardIsTapped = function(cardId) {
-    return this.onTapCard(cardId);
+  NetworkInputController.prototype.onCardIsTapped = function(params) {
+    return this.onTapCard(params.cardId);
   };
 
-  NetworkInputController.prototype.onCardIsFlippedUp = function(cardId) {
-    return this.onFlipCardUp(cardId);
+  NetworkInputController.prototype.onCardIsFlippedUp = function(params) {
+    return this.onFlipCardUp(params.cardId);
   };
 
-  NetworkInputController.prototype.onCardIsFlippedDown = function(cardId) {
-    return this.onFlipCardDown(cardId);
+  NetworkInputController.prototype.onCardIsFlippedDown = function(params) {
+    return this.onFlipCardDown(params.cardId);
   };
 
   NetworkInputController.prototype.onCardFromAreaIsRevealedToggle = function(params) {

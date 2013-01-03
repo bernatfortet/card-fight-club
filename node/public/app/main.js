@@ -2,6 +2,7 @@
 var appManager;
 var serverIp = window.location.hostname;
 var localServer = true;
+var debugApp = localServer;
 
 if( !localServer ){
 	window.onbeforeunload = function(){

@@ -8,9 +8,7 @@ body{ z-index: -2;}
 #WebsiteApp{z-index:200}
 
 //Game ============================
-.game{ width:100%; height:100%; .abs; left:0; top:0; .unselectable; z-index:-2; background:lighten(black, 10%);}
-
-
+.playzone{ width:85%; height:100%; .abs; left:0; top:0; .unselectable; z-index:-2; background:lighten(black, 10%); }
 	.player{ width: 100%; height:50%; .abs; bottom:0; left:0;}
 		@backCardImage: url("../images/back.jpg");
 		@emtyCardImage: url("../images/empty.jpg");
@@ -62,7 +60,7 @@ body{ z-index: -2;}
 		.card{ .anim; }
 	}
 
-	.zoomed-card{ width:223px; height:310px; .fixed; right:0; top:35%; z-index:0; background-repeat:no-repeat; background-position:right center; .br(12px);
+	.zoomed-card{ width:223px; height:310px; .abs; right:0; top:35%; z-index:0; background-repeat:no-repeat; background-position:right center; .br(12px);
 		&[data-isZooming="true"]{ z-index:32; }
 	}
 
@@ -82,3 +80,7 @@ body{ z-index: -2;}
 			&:hover{ background:black; color:white;}
 		}
 	}
+
+.chat{ width:15%; height:100%; .abs; right:0; top:0; background:black;
+}
+

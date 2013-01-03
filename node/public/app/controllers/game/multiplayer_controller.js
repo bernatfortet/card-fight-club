@@ -59,13 +59,16 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.onRemoveCard = function(cardModel) {
-    var opponentCardId;
+    var opponentCardId, params;
     opponentCardId = this.setIdForOpponent(cardModel.id);
-    this.sendEvent("onRemoveCard", opponentCardId);
+    params = {
+      cardId: opponentCardId
+    };
+    this.sendEvent("onRemoveCard", params);
     if (localServer) {
-      app.gameController.networkInputController.onCardIsRemoved(opponentCardId);
+      app.gameController.networkInputController.onCardIsRemoved(params);
     }
-    return console.log("Card has been Removed ", opponentCardId);
+    return console.log("Card has been Removed ", params);
   };
 
   MultiplayerController.prototype.onMoveCard = function(cardModel) {
@@ -99,34 +102,43 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.onTapCard = function(cardModel) {
-    var opponentCardId;
+    var opponentCardId, params;
     opponentCardId = this.setIdForOpponent(cardModel.id);
-    this.sendEvent("onTapCard", opponentCardId);
+    params = {
+      cardId: opponentCardId
+    };
+    this.sendEvent("onTapCard", params);
     if (localServer) {
-      app.gameController.networkInputController.onCardIsTapped(opponentCardId);
+      app.gameController.networkInputController.onCardIsTapped(params);
     }
-    return console.log("Card has tapped ", opponentCardId);
+    return console.log("Card has tapped ", params);
   };
 
   MultiplayerController.prototype.onFlipCardUp = function(cardModel) {
-    var opponentCardId;
+    var opponentCardId, params;
     if (Area.find(cardModel.areaId).name === "hand") return;
     opponentCardId = this.setIdForOpponent(cardModel.id);
-    this.sendEvent("onFlipCardUp", opponentCardId);
+    params = {
+      cardId: opponentCardId
+    };
+    this.sendEvent("onFlipCardUp", params);
     if (localServer) {
-      app.gameController.networkInputController.onCardIsFlippedUp(opponentCardId);
+      app.gameController.networkInputController.onCardIsFlippedUp(params);
     }
-    return console.log("Card has flipped Up ", opponentCardId);
+    return console.log("Card has flipped Up ", params);
   };
 
   MultiplayerController.prototype.onFlipCardDown = function(cardModel) {
-    var opponentCardId;
+    var opponentCardId, params;
     opponentCardId = this.setIdForOpponent(cardModel.id);
-    this.sendEvent("onFlipCardDown", opponentCardId);
+    params = {
+      cardId: opponentCardId
+    };
+    this.sendEvent("onFlipCardDown", params);
     if (localServer) {
-      app.gameController.networkInputController.onCardIsFlippedDown(opponentCardId);
+      app.gameController.networkInputController.onCardIsFlippedDown(params);
     }
-    return console.log("Card has flipped Down ", opponentCardId);
+    return console.log("Card has flipped Down ", params);
   };
 
   MultiplayerController.prototype.onShuffle = function(area) {

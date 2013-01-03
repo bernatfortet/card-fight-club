@@ -39,7 +39,7 @@ HumanInputController = (function(_super) {
     });
     $(".Area").on("mouseover", this.onMouseOverArea);
     $(".Area").on("mouseout", this.onMouseOutArea);
-    $(".CardPile").on("dblclick", this.onDoubleClickArea);
+    $(".Player .CardPile").on("dblclick", this.onDoubleClickArea);
     $.contextMenu({
       selector: ".Player .CardPile",
       items: {

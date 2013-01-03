@@ -42,10 +42,13 @@ class MultiplayerController extends Spine.Controller
 
 	onRemoveCard: ( cardModel ) ->
 		opponentCardId = this.setIdForOpponent( cardModel.id )
-		this.sendEvent( "onRemoveCard", opponentCardId )
+		params = 
+			cardId: opponentCardId
 
-		app.gameController.networkInputController.onCardIsRemoved( opponentCardId ) if localServer
-		console.log( "Card has been Removed ", opponentCardId );
+		this.sendEvent( "onRemoveCard", params )
+
+		app.gameController.networkInputController.onCardIsRemoved( params ) if localServer
+		console.log( "Card has been Removed ", params );
 
 	onMoveCard: ( cardModel ) ->
 		invertedLocation = cardModel.controller.getLocation()
@@ -73,27 +76,34 @@ class MultiplayerController extends Spine.Controller
 
 	onTapCard: ( cardModel ) ->
 		opponentCardId = this.setIdForOpponent( cardModel.id )
-		
-		this.sendEvent( "onTapCard", opponentCardId )
+		params = 
+			cardId: opponentCardId
 
-		app.gameController.networkInputController.onCardIsTapped( opponentCardId ) if localServer
-		console.log( "Card has tapped ", opponentCardId );
+		this.sendEvent( "onTapCard", params )
+
+		app.gameController.networkInputController.onCardIsTapped( params ) if localServer
+		console.log( "Card has tapped ", params );
 
 	onFlipCardUp: ( cardModel ) ->
 		return if( Area.find( cardModel.areaId).name == "hand" )
-
 		opponentCardId = this.setIdForOpponent( cardModel.id )
-		this.sendEvent( "onFlipCardUp", opponentCardId )
+		params = 
+			cardId: opponentCardId
 
-		app.gameController.networkInputController.onCardIsFlippedUp( opponentCardId ) if localServer
-		console.log( "Card has flipped Up ", opponentCardId );
+		this.sendEvent( "onFlipCardUp", params )
+
+		app.gameController.networkInputController.onCardIsFlippedUp( params ) if localServer
+		console.log( "Card has flipped Up ", params );
 
 	onFlipCardDown: ( cardModel ) ->
 		opponentCardId = this.setIdForOpponent( cardModel.id )
-		this.sendEvent( "onFlipCardDown", opponentCardId )
+		params = 
+			cardId: opponentCardId
+			
+		this.sendEvent( "onFlipCardDown", params )
 
-		app.gameController.networkInputController.onCardIsFlippedDown( opponentCardId ) if localServer
-		console.log( "Card has flipped Down ", opponentCardId );
+		app.gameController.networkInputController.onCardIsFlippedDown( params ) if localServer
+		console.log( "Card has flipped Down ", params );
 
 	onShuffle: ( area ) ->
 		#this.sendEvent( "onMoveCard", area )
