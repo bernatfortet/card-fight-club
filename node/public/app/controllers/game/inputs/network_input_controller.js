@@ -31,7 +31,8 @@ NetworkInputController = (function(_super) {
     this.server.on('onCardIsTapped', this.onCardIsTapped);
     this.server.on('onCardIsFlippedUp', this.onCardIsFlippedUp);
     this.server.on('onCardIsFlippedDown', this.onCardIsFlippedDown);
-    return this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
+    this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
+    return this.server.on('onCardFromAreaIsRevealedToggle', this.onCardFromAreaIsRevealedToggle);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deckData) {

@@ -9,14 +9,15 @@ class NetworkInputController extends InputController
 		this.setListeners()
 
 	setListeners: () ->
-		this.server.on 'onDeckIsCreated', 		this.onDeckIsCreated
-		this.server.on 'onCardIsCreated', 		this.onCardIsCreated
-		this.server.on 'onCardIsRemoved', 		this.onCardIsRemoved
-		this.server.on 'onCardIsMoved', 		this.onCardIsMoved
-		this.server.on 'onCardIsTapped',		this.onCardIsTapped
-		this.server.on 'onCardIsFlippedUp', 	this.onCardIsFlippedUp
-		this.server.on 'onCardIsFlippedDown', 	this.onCardIsFlippedDown
-		this.server.on 'onCardAreaIsChanged', 	this.onCardAreaIsChanged
+		this.server.on 'onDeckIsCreated', 					this.onDeckIsCreated
+		this.server.on 'onCardIsCreated', 					this.onCardIsCreated
+		this.server.on 'onCardIsRemoved', 					this.onCardIsRemoved
+		this.server.on 'onCardIsMoved', 					this.onCardIsMoved
+		this.server.on 'onCardIsTapped',					this.onCardIsTapped
+		this.server.on 'onCardIsFlippedUp', 				this.onCardIsFlippedUp
+		this.server.on 'onCardIsFlippedDown', 				this.onCardIsFlippedDown
+		this.server.on 'onCardAreaIsChanged', 				this.onCardAreaIsChanged
+		this.server.on 'onCardFromAreaIsRevealedToggle', 	this.onCardFromAreaIsRevealedToggle
 
 	onDeckIsCreated: ( deckData ) =>
 		if( this.targetPlayer.deck == null )
