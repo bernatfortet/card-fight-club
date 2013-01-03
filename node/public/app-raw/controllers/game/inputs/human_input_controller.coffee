@@ -76,7 +76,8 @@ class HumanInputController extends InputController
 	onRightMouseClick: ( event ) =>
 		RIGHT_MOUSE_BUTTON = 3
 		if( event.which == RIGHT_MOUSE_BUTTON )
-			if( debugApp ) event.preventDefault()
+			if( debugApp )
+				event.preventDefault()
 			this.onTapCard( this.getCardId( event.currentTarget ) )
 
 	onDoubleClickCard: ( event ) =>
