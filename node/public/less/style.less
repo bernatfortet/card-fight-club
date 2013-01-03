@@ -16,16 +16,19 @@ body{ z-index: -2;}
 
 
 		.area{}
+		.cardpile{ background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim; }
 		.board{ width: 75%; height:65%; background:lighten(black, 20%);
 			&.Active{ .fancyGreenGlowInset; }
 		}
-		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim;
+		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%;
 			&:hover{ .fancyGreenGlow; .anim;}
+			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
-		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%; background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .br(7px);
-			&.Active{ .fancyRedGlow; }
+		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%;
+			&:hover{ .fancyGreenGlow; .anim;}
+			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @graveyardImage;}
 		}
 		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable;
