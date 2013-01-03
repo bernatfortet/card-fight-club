@@ -115,7 +115,7 @@ HumanInputController = (function(_super) {
     var RIGHT_MOUSE_BUTTON;
     RIGHT_MOUSE_BUTTON = 3;
     if (event.which === RIGHT_MOUSE_BUTTON) {
-      if (debugApp) event.preventDefault();
+      if (!debugApp) event.preventDefault();
       return this.onTapCard(this.getCardId(event.currentTarget));
     }
   };
