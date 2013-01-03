@@ -1,7 +1,7 @@
 // Required Libs, Controllers and Models ==================================
 var appManager;
 var serverIp = window.location.hostname;
-var localServer = true;
+var localServer = false;
 var debugApp = localServer;
 
 if( !localServer ){
