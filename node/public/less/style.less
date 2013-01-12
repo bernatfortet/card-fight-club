@@ -6,7 +6,8 @@ body{ z-index: -2; background-color:#1e1d24;  }
 	&.active{ .shown;}
 }
 #WebsiteApp{z-index:200; .cover-all;
-	.background-image(~"radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0.4) 100%),url(../images/noise.png), linear-gradient(-14deg, transparent 0%, rgba(59,202,255,0.3) 100%), linear-gradient(-14deg, rgba(133,48,40,0.1) 0%, transparent 100% )"); .bs(0 0 10px 0 black inset);}
+	/*.background-image(~"radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0.4) 100%),url(../images/noise.png), linear-gradient(-14deg, transparent 0%, rgba(59,202,255,0.3) 100%), linear-gradient(-14deg, rgba(133,48,40,0.1) 0%, transparent 100% )"); .bs(0 0 10px 0 black inset);*/
+	background-image:url("../images/bkg.jpg"); background-size:100% 100%;}
 
 //Game ============================
 
@@ -22,18 +23,18 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		.board{ width: 75%; height:65%; /*background:lighten(black, 20%);*/
 			&.Active{ .fancyGreenGlowInset; }
 		}
-		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%;
+		.deck{ width:126px; height:176px; .abs; right:10px; bottom:13px;
 			&:hover{ .fancyGreenGlow; .anim;}
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
-		.graveyard{ width:126px; height:35%; max-height:176px; .abs; right:2%; bottom:37%;
+		.graveyard{ width:126px; height:176px; .abs; right:10px; bottom:196px;
 			&:hover{ .fancyGreenGlow; .anim;}
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @graveyardImage;}
 		}
-		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; /*background: lighten(black, 30%);*/  .unselectable;
+		.hand{ width:85%; height:176px; .abs; left:10px; bottom:13px; background: fade(black, 30%);  .unselectable; .br(6px);
 			&.Active{ .fancyGreenGlowInset; }
 		}
 
@@ -59,9 +60,9 @@ body{ z-index: -2; background-color:#1e1d24;  }
 
 	.opponent{  top:0;
 		.board{ .abs; bottom: 0;}
-		.deck{ top: 0; bottom: none;}
-		.graveyard{ bottom: 0; top:37%;}
-		.hand{ top: 0; bottom: none;}
+		.deck{ top: 13px; bottom: none;}
+		.graveyard{ bottom: 0; top:196px;}
+		.hand{ top:13px; bottom: none;}
 		.card{ .anim; }
 	}
 
@@ -88,8 +89,8 @@ body{ z-index: -2; background-color:#1e1d24;  }
 }
 
 .sidebar{ width:200px; height:100%; .abs; right:0; top:0; z-index:-2 }
-	.logo{ width:187; height:68px; .rel; margin:20px auto 0; background: url("../images/logo.png") no-repeat; .op(0.2); .anchor; .anim; z-index:-1;
-		&:hover{ .op(1); .anim;}
+	.logo{ width:187; height:68px; .rel; margin:20px auto 0; background: url("../images/logo.png") no-repeat; .op(0.2); .anchor; .anim(300ms); z-index:-1;
+		&:hover{ .op(1); .anim(300ms);}
 	}
 	.chat{ 
 		.input{ width:100%; height:30px; .abs; left:0; bottom:0;
