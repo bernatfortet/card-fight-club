@@ -1,10 +1,10 @@
 // Required Libs, Controllers and Models ==================================
 var appManager;
 var serverIp = window.location.hostname;
-var localServer = false;
-var debugApp = localServer;
+var localServer = true;
+var debugApp = true;
 
-if( !localServer ){
+if( !localServer && !debugApp ){
 	window.onbeforeunload = function(){
 		if ( true ){
 			return "Are you sure you want to exit this page?";
@@ -50,6 +50,7 @@ require(
 			"order!controllers/game/game_controller",
 			"order!controllers/game/player_controller",
 			"order!controllers/game/multiplayer_controller",
+			"order!controllers/game/chat_controller",
 			"order!controllers/game/card_controller",
 			"order!controllers/game/zoomed_card_controller",
 			"order!controllers/game/card_lister_controller",

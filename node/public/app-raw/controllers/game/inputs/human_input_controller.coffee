@@ -42,6 +42,15 @@ class HumanInputController extends InputController
 				#	name: "Put Bottom Card to Top"
 		})
 
+		$(".Chat").on("click", =>
+			$(".Chat input").focus()
+			app.gameController.chatController.flashInput();
+		)
+
+		$(".Chat input").on("keydown", jwerty.event('enter', (event) =>
+			this.sendChatMsg( event )
+		))
+
 		this.setKeyboardListeners()
 
 	setCardListeners: ( cardElement ) ->
@@ -61,13 +70,13 @@ class HumanInputController extends InputController
 		cardElement.on("mouseout", this.onMouseOutCard )
 
 	setKeyboardListeners: () =>
-		jwerty.key( '1', => this.onAddNCards(1) )
-		jwerty.key( '2', => this.onAddNCards(2) )
-		jwerty.key( '3', => this.onAddNCards(3) )
-		jwerty.key( '4', => this.onAddNCards(4) )
-		jwerty.key( '5', => this.onAddNCards(5) )
-		jwerty.key( '6', => this.onAddNCards(6) )
-		jwerty.key( '7', => this.onAddNCards(7) )
+		$('body').bind('keyup', jwerty.event('ctrl+1', => this.onAddNCards(1) ));
+		$('body').bind('keyup', jwerty.event('ctrl+2', => this.onAddNCards(2) ));
+		$('body').bind('keyup', jwerty.event('ctrl+3', => this.onAddNCards(3) ));
+		$('body').bind('keyup', jwerty.event('ctrl+4', => this.onAddNCards(4) ));
+		$('body').bind('keyup', jwerty.event('ctrl+5', => this.onAddNCards(5) ));
+		$('body').bind('keyup', jwerty.event('ctrl+6', => this.onAddNCards(6) ));
+		$('body').bind('keyup', jwerty.event('ctrl+7', => this.onAddNCards(7) ));
 
 	onAddNCards: ( numCards ) =>
 		for iCounter in [0...numCards]
@@ -78,7 +87,15 @@ class HumanInputController extends InputController
 		if( event.which == RIGHT_MOUSE_BUTTON )
 			if( !debugApp )
 				event.preventDefault()
-			this.onTapCard( this.getCardId( event.currentTarget ) )
+
+			tapState = $(event.currentTarget).attr("data-tapped")
+
+			if( tapState == "true")
+				this.onUntapCard( this.getCardId( event.currentTarget ) )
+			else
+				this.onTapCard( this.getCardId( event.currentTarget ) )
+
+			
 
 	onDoubleClickCard: ( event ) =>
 		flipState = $(event.currentTarget).attr("data-flipped")
@@ -121,6 +138,15 @@ class HumanInputController extends InputController
 	onMouseOutCard: ( event ) =>
 		this.activeCard = null
 		this.onZoomCardOut()
+
+	sendChatMsg: ( event ) =>
+		msg = $(event.target).val()
+		params = 
+			userName: User.first().name
+			msg: msg
+
+		app.gameController.chatController.renderChatMsg( params )
+		app.gameController.multiplayerController.onSendChatMsg( msg )
 
 	getCardId: ( cardTarget ) ->
 		card = $(cardTarget)

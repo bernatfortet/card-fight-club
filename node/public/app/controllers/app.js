@@ -3,11 +3,8 @@ var App,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
 App = (function(_super) {
-  var local;
 
   __extends(App, _super);
-
-  local = true;
 
   App.prototype.userInfo = null;
 
@@ -27,7 +24,7 @@ App = (function(_super) {
     randomId = Math.floor(Math.random() * 1000);
     User.create({
       id: randomId,
-      name: "pepito",
+      name: "User" + randomId,
       deck: deckData
     });
     return this.networkController.onReady();
@@ -39,7 +36,7 @@ App = (function(_super) {
 
   App.prototype.getDeckid = function() {
     var deckId;
-    deckId = prompt("Insert Deck Id", "");
+    if (!debugApp) deckId = prompt("Insert Deck Id", "");
     if (deckId === "1") {
       return deckId = "50df4fe8e4b0d84e5fee60ad";
     } else if (deckId === "2") {

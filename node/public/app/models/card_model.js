@@ -10,10 +10,11 @@ Card = (function(_super) {
     Card.__super__.constructor.apply(this, arguments);
   }
 
-  Card.configure('Card', 'id', 'card_id', "image_url", "name", "deckId", "areaId", "controller");
+  Card.configure('Card', 'id', 'card_id', "image_url", "name", "deckId", "areaId", 'previousAreaId', "controller");
 
   Card.include({
     setArea: function(areaId) {
+      this.previousAreaId = this.areaId;
       Area.find(this.areaId).controller.removeCard(this);
       this.areaId = areaId;
       Area.find(this.areaId).controller.addCard(this);

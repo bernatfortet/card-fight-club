@@ -57,6 +57,12 @@ var Multiplayer = {
 					user.broadcast.to(roomId).emit( "onCardIsTapped", data );
 				});
 			});
+			user.on('onUntapCard', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCardIsUntapped ");
+					user.broadcast.to(roomId).emit( "onCardIsUntapped", data );
+				});
+			});
 			user.on('onFlipCardUp', function( data ) {
 				user.get('roomId', function(err, roomId){
 					console.log( "onCardIsFlippedUp ");
@@ -79,6 +85,12 @@ var Multiplayer = {
 				user.get('roomId', function(err, roomId){
 					console.log( "onCardFromAreaIsRevealedToggle ");
 					user.broadcast.to(roomId).emit( "onCardFromAreaIsRevealedToggle", data );
+				});
+			});
+			user.on('onSendChatMsg', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onReceiveChatMsg ");
+					user.broadcast.to(roomId).emit( "onReceiveChatMsg", data );
 				});
 			});
 

@@ -11,6 +11,10 @@ class CardController extends Spine.Controller
 
 	render: ->
 		this.el = ( $("#"+this.template).tmpl( this.item ) )
+		this.setCardZindex()
+
+	setCardZindex: ->
+		this.el.css("z-index", parseInt( $(".Card").last().css("zIndex") ) + 1)
 
 	move: ( posX, posY ) ->
 		this.el.css("left", posX * 100 + "%" )
@@ -18,16 +22,18 @@ class CardController extends Spine.Controller
 
 	getLocation: ->
 		xCenterPoint = this.el.offset().left
-		yCenterPoint = this.el.offset().top + this.el.outerHeight()
+		yCenterPoint = this.el.offset().top + this.el.children().outerHeight()
 		cardLocation =
 			x: xCenterPoint / $(window).width()
 			y: yCenterPoint / $(window).height()
 
 	tap: =>
-		if( this.el.attr("data-tapped") != "true" )
-			this.el.attr("data-tapped", "true")
-		else
-			this.el.attr("data-tapped", "false")
+		this.el.attr("data-tapped", "true")
+		this.isTapped = true
+
+	untap: =>
+		this.el.attr("data-tapped", "false")
+		this.isTapped = false
 
 	flipUp: =>
 		this.el.attr("data-flipped", "up")
@@ -43,3 +49,5 @@ class CardController extends Spine.Controller
 	zoomOut: =>
 		this.el.attr("data-zoom", "false")
 
+	isVisible: =>
+		return this.isFlippedUp

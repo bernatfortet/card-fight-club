@@ -23,6 +23,9 @@ class InputController extends Spine.Controller
 	onTapCard: ( cardId ) ->
 		this.targetPlayer.tapCard( Card.find( cardId ) )
 
+	onUntapCard: ( cardId ) ->
+		this.targetPlayer.untapCard( Card.find( cardId ) )
+
 	onFlipCard: ( cardId ) ->
 		this.targetPlayer.flipCard( Card.find( cardId ) )
 

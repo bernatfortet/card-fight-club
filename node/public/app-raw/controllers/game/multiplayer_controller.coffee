@@ -67,6 +67,7 @@ class MultiplayerController extends Spine.Controller
 		opponentCardId = this.setIdForOpponent( cardModel.id )
 		params =
 			cardId: opponentCardId
+			previousAreaName: Area.find( cardModel.previousAreaId ).name
 			areaName: areaModel.name
 
 		this.sendEvent( "onCardChangesArea", params )
@@ -83,6 +84,16 @@ class MultiplayerController extends Spine.Controller
 
 		app.gameController.networkInputController.onCardIsTapped( params ) if localServer
 		console.log( "Card has tapped ", params );
+
+	onUntapCard: ( cardModel ) ->
+		opponentCardId = this.setIdForOpponent( cardModel.id )
+		params = 
+			cardId: opponentCardId
+
+		this.sendEvent( "onUntapCard", params )
+
+		app.gameController.networkInputController.onCardIsUntapped( params ) if localServer
+		console.log( "Card has untapped ", params );
 
 	onFlipCardUp: ( cardModel ) ->
 		return if( Area.find( cardModel.areaId).name == "hand" )
@@ -118,6 +129,16 @@ class MultiplayerController extends Spine.Controller
 
 		app.gameController.networkInputController.onCardFromAreaIsRevealedToggle( params ) if localServer
 		console.log( "Area has revealed top card ", params );
+
+	onSendChatMsg: ( msg ) ->
+		params =
+			userName: User.first().name
+			msg: msg
+
+		this.sendEvent( "onSendChatMsg", params )
+
+		app.gameController.networkInputController.onReceiveChatMsg( params ) if localServer
+		console.log( "Player says:  ", params );
 
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")

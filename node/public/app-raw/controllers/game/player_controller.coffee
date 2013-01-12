@@ -65,9 +65,10 @@ class PlayerController extends Spine.Controller
 			this.setCardHoverListener( cardController.el )
 
 		this.renderCard( cardController.el )
-		this.moveToAreaLocation( cardModel, this.hand.id )
 		
 		this.changeCardArea( cardModel, this.hand.id )
+		this.moveToAreaLocation( cardModel, this.hand.id )
+		
 		this.flipCardUp( cardModel )
 
 	removeCard: ( cardModel ) ->
@@ -106,7 +107,7 @@ class PlayerController extends Spine.Controller
 
 	changeCardArea: ( cardModel, areaId ) ->
 		areaModel = Area.find( areaId )
-		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaModel.id ) )
+		if( !this.checkIfCardComesFromSameArea( cardModel.areaId, areaId ) )
 			this.multiplayerController.onCardChangesArea( cardModel, areaModel ) if this.isPlayerNetworked()
 			cardModel.setArea( areaId )
 			areaModel.controller.onCardDrops( cardModel )
@@ -120,6 +121,10 @@ class PlayerController extends Spine.Controller
 	tapCard: ( cardModel ) ->
 		cardModel.controller.tap()
 		this.multiplayerController.onTapCard( cardModel ) if this.isPlayerNetworked()
+
+	untapCard: ( cardModel ) ->
+		cardModel.controller.untap()
+		this.multiplayerController.onUntapCard( cardModel ) if this.isPlayerNetworked()
 
 	flipCardUp: ( cardModel ) ->
 		cardAreaModel = Area.find( cardModel.areaId )

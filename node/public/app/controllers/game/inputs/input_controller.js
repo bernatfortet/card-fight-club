@@ -46,6 +46,10 @@ InputController = (function(_super) {
     return this.targetPlayer.tapCard(Card.find(cardId));
   };
 
+  InputController.prototype.onUntapCard = function(cardId) {
+    return this.targetPlayer.untapCard(Card.find(cardId));
+  };
+
   InputController.prototype.onFlipCard = function(cardId) {
     return this.targetPlayer.flipCard(Card.find(cardId));
   };

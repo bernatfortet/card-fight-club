@@ -1,4 +1,4 @@
-class App extends Spine.Controller
+ºclass App extends Spine.Controller
 	userInfo: null
 
 
@@ -14,14 +14,15 @@ class App extends Spine.Controller
 
 	createUser: ( userData, deckData  ) ->
 		randomId = Math.floor( Math.random() * 1000 )
-		User.create({ id: randomId,  name: "pepito", deck: deckData })
+		User.create({ id: randomId,  name: "User"+randomId, deck: deckData })
 		this.networkController.onReady()
 
 	startGame: ->
 		this.gameController.initialize()
 
 	getDeckid: ->
-		deckId = prompt("Insert Deck Id","");
+		if( !debugApp )
+			deckId = prompt("Insert Deck Id","");
 
 		if( deckId == "1")
 			deckId = "50df4fe8e4b0d84e5fee60ad" #RedRage

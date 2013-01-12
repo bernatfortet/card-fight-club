@@ -14,17 +14,24 @@ CardController = (function(_super) {
   CardController.prototype.isFlippedUp = false;
 
   function CardController() {
+    this.isVisible = __bind(this.isVisible, this);
     this.zoomOut = __bind(this.zoomOut, this);
     this.zoomIn = __bind(this.zoomIn, this);
     this.flipDown = __bind(this.flipDown, this);
     this.flipUp = __bind(this.flipUp, this);
+    this.untap = __bind(this.untap, this);
     this.tap = __bind(this.tap, this);    CardController.__super__.constructor.apply(this, arguments);
     this.render();
     this.item.setController(this);
   }
 
   CardController.prototype.render = function() {
-    return this.el = $("#" + this.template).tmpl(this.item);
+    this.el = $("#" + this.template).tmpl(this.item);
+    return this.setCardZindex();
+  };
+
+  CardController.prototype.setCardZindex = function() {
+    return this.el.css("z-index", parseInt($(".Card").last().css("zIndex")) + 1);
   };
 
   CardController.prototype.move = function(posX, posY) {
@@ -35,7 +42,7 @@ CardController = (function(_super) {
   CardController.prototype.getLocation = function() {
     var cardLocation, xCenterPoint, yCenterPoint;
     xCenterPoint = this.el.offset().left;
-    yCenterPoint = this.el.offset().top + this.el.outerHeight();
+    yCenterPoint = this.el.offset().top + this.el.children().outerHeight();
     return cardLocation = {
       x: xCenterPoint / $(window).width(),
       y: yCenterPoint / $(window).height()
@@ -43,11 +50,13 @@ CardController = (function(_super) {
   };
 
   CardController.prototype.tap = function() {
-    if (this.el.attr("data-tapped") !== "true") {
-      return this.el.attr("data-tapped", "true");
-    } else {
-      return this.el.attr("data-tapped", "false");
-    }
+    this.el.attr("data-tapped", "true");
+    return this.isTapped = true;
+  };
+
+  CardController.prototype.untap = function() {
+    this.el.attr("data-tapped", "false");
+    return this.isTapped = false;
   };
 
   CardController.prototype.flipUp = function() {
@@ -66,6 +75,10 @@ CardController = (function(_super) {
 
   CardController.prototype.zoomOut = function() {
     return this.el.attr("data-zoom", "false");
+  };
+
+  CardController.prototype.isVisible = function() {
+    return this.isFlippedUp;
   };
 
   return CardController;

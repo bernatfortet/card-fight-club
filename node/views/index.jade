@@ -30,7 +30,14 @@ html(lange="en")
 			.section#Login
 			.section.game#Game.active
 
-				.chat.Chat
+				.sidebar.Sidebar
+					.logo.Logo
+					.chat.Chat
+						.conversation.Conversation
+						.input
+							.background.flash.Flash
+							input( type="text", placeholder="Send Message")
+
 				.playzone.Playzone
 					.zoomed-card.ZoomedCard
 

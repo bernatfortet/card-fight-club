@@ -92,6 +92,7 @@ MultiplayerController = (function(_super) {
     opponentCardId = this.setIdForOpponent(cardModel.id);
     params = {
       cardId: opponentCardId,
+      previousAreaName: Area.find(cardModel.previousAreaId).name,
       areaName: areaModel.name
     };
     this.sendEvent("onCardChangesArea", params);
@@ -112,6 +113,19 @@ MultiplayerController = (function(_super) {
       app.gameController.networkInputController.onCardIsTapped(params);
     }
     return console.log("Card has tapped ", params);
+  };
+
+  MultiplayerController.prototype.onUntapCard = function(cardModel) {
+    var opponentCardId, params;
+    opponentCardId = this.setIdForOpponent(cardModel.id);
+    params = {
+      cardId: opponentCardId
+    };
+    this.sendEvent("onUntapCard", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCardIsUntapped(params);
+    }
+    return console.log("Card has untapped ", params);
   };
 
   MultiplayerController.prototype.onFlipCardUp = function(cardModel) {
@@ -157,6 +171,19 @@ MultiplayerController = (function(_super) {
       app.gameController.networkInputController.onCardFromAreaIsRevealedToggle(params);
     }
     return console.log("Area has revealed top card ", params);
+  };
+
+  MultiplayerController.prototype.onSendChatMsg = function(msg) {
+    var params;
+    params = {
+      userName: User.first().name,
+      msg: msg
+    };
+    this.sendEvent("onSendChatMsg", params);
+    if (localServer) {
+      app.gameController.networkInputController.onReceiveChatMsg(params);
+    }
+    return console.log("Player says:  ", params);
   };
 
   MultiplayerController.prototype.setIdForOpponent = function(id) {

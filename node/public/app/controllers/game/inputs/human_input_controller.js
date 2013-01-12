@@ -16,6 +16,7 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.originalHeight = null;
 
   function HumanInputController() {
+    this.sendChatMsg = __bind(this.sendChatMsg, this);
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
     this.onTopCardFromAreaIsRevealedToggle = __bind(this.onTopCardFromAreaIsRevealedToggle, this);
@@ -33,6 +34,7 @@ HumanInputController = (function(_super) {
   }
 
   HumanInputController.prototype.setListeners = function() {
+    var _this = this;
     $(".Player .Area").droppable({
       drop: this.onCardChangesArea,
       hoverClass: "Active"
@@ -57,6 +59,13 @@ HumanInputController = (function(_super) {
         }
       }
     });
+    $(".Chat").on("click", function() {
+      $(".Chat input").focus();
+      return app.gameController.chatController.flashInput();
+    });
+    $(".Chat input").on("keydown", jwerty.event('enter', function(event) {
+      return _this.sendChatMsg(event);
+    }));
     return this.setKeyboardListeners();
   };
 
@@ -79,27 +88,27 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.setKeyboardListeners = function() {
     var _this = this;
-    jwerty.key('1', function() {
+    $('body').bind('keyup', jwerty.event('ctrl+1', function() {
       return _this.onAddNCards(1);
-    });
-    jwerty.key('2', function() {
+    }));
+    $('body').bind('keyup', jwerty.event('ctrl+2', function() {
       return _this.onAddNCards(2);
-    });
-    jwerty.key('3', function() {
+    }));
+    $('body').bind('keyup', jwerty.event('ctrl+3', function() {
       return _this.onAddNCards(3);
-    });
-    jwerty.key('4', function() {
+    }));
+    $('body').bind('keyup', jwerty.event('ctrl+4', function() {
       return _this.onAddNCards(4);
-    });
-    jwerty.key('5', function() {
+    }));
+    $('body').bind('keyup', jwerty.event('ctrl+5', function() {
       return _this.onAddNCards(5);
-    });
-    jwerty.key('6', function() {
+    }));
+    $('body').bind('keyup', jwerty.event('ctrl+6', function() {
       return _this.onAddNCards(6);
-    });
-    return jwerty.key('7', function() {
+    }));
+    return $('body').bind('keyup', jwerty.event('ctrl+7', function() {
       return _this.onAddNCards(7);
-    });
+    }));
   };
 
   HumanInputController.prototype.onAddNCards = function(numCards) {
@@ -112,11 +121,16 @@ HumanInputController = (function(_super) {
   };
 
   HumanInputController.prototype.onRightMouseClick = function(event) {
-    var RIGHT_MOUSE_BUTTON;
+    var RIGHT_MOUSE_BUTTON, tapState;
     RIGHT_MOUSE_BUTTON = 3;
     if (event.which === RIGHT_MOUSE_BUTTON) {
       if (!debugApp) event.preventDefault();
-      return this.onTapCard(this.getCardId(event.currentTarget));
+      tapState = $(event.currentTarget).attr("data-tapped");
+      if (tapState === "true") {
+        return this.onUntapCard(this.getCardId(event.currentTarget));
+      } else {
+        return this.onTapCard(this.getCardId(event.currentTarget));
+      }
     }
   };
 
@@ -178,6 +192,17 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.onMouseOutCard = function(event) {
     this.activeCard = null;
     return this.onZoomCardOut();
+  };
+
+  HumanInputController.prototype.sendChatMsg = function(event) {
+    var msg, params;
+    msg = $(event.target).val();
+    params = {
+      userName: User.first().name,
+      msg: msg
+    };
+    app.gameController.chatController.renderChatMsg(params);
+    return app.gameController.multiplayerController.onSendChatMsg(msg);
   };
 
   HumanInputController.prototype.getCardId = function(cardTarget) {

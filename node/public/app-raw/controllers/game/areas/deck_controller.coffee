@@ -15,4 +15,3 @@ class DeckController extends AreaController
 	onCardDrops: ( cardModel ) ->
 		this.player.flipCardDown( cardModel )
 		this.player.removeCard( cardModel )
-		#Remove Card Element

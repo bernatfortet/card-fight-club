@@ -1,23 +1,25 @@
 @import "style-magic.less";
 
-body{ z-index: -2;}
+body{ z-index: -2; background-color:#1e1d24;  }
 // Website ==========================
 .section{ .hidden;
 	&.active{ .shown;}
 }
-#WebsiteApp{z-index:200}
+#WebsiteApp{z-index:200; .cover-all;
+	.background-image(~"radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.1) 85%, rgba(0,0,0,0.4) 100%),url(../images/noise.png), linear-gradient(-14deg, transparent 0%, rgba(59,202,255,0.3) 100%), linear-gradient(-14deg, rgba(133,48,40,0.1) 0%, transparent 100% )"); .bs(0 0 10px 0 black inset);}
 
 //Game ============================
-.playzone{ width:85%; height:100%; .abs; left:0; top:0; .unselectable; z-index:-2; background:lighten(black, 10%); }
+
+
+.playzone{ width:85%; height:100%; .abs; left:0; top:0; .unselectable; z-index:-2; 
 	.player{ width: 100%; height:50%; .abs; bottom:0; left:0;}
 		@backCardImage: url("../images/back.jpg");
 		@emtyCardImage: url("../images/empty.jpg");
 		@graveyardImage: url("../images/graveyard.jpg");
 
-
 		.area{}
 		.cardpile{ background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim; }
-		.board{ width: 75%; height:65%; background:lighten(black, 20%);
+		.board{ width: 75%; height:65%; /*background:lighten(black, 20%);*/
 			&.Active{ .fancyGreenGlowInset; }
 		}
 		.deck{ width:126px; height:35%; .abs; right:2%; bottom:2%;
@@ -31,14 +33,14 @@ body{ z-index: -2;}
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @graveyardImage;}
 		}
-		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; background: lighten(black, 30%);  .unselectable;
+		.hand{ width:75%; height:35%; max-height:176px; .abs; left:0; bottom:0; /*background: lighten(black, 30%);*/  .unselectable;
 			&.Active{ .fancyGreenGlowInset; }
 		}
 
 
 		.cards{ .rel; z-index: 4;}
-		.card{ width:126px; height:176px; position:fixed !important; max-height:176px; .abs; .fl; .unselectable; .anchor; z-index:2;
-			.tap-container{ .cover-all; .br(7px);}
+		.card{ width:126px; height:126px; position:fixed !important; .abs; .unselectable; .anchor; z-index:2;
+			.tap-container{ width:126px; height:176px; .abs; left:0; top:0; .br(7px);}
 			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; .br(7px); }
 			.img{ .cover-all; .trans( rotateY(180deg) translateZ(1px) ); transform-origin: center center 0; background:black; .br(7px); }
 				.placeholder-name{ .cover-all; color:white;}
@@ -83,7 +85,26 @@ body{ z-index: -2;}
 			&:hover{ background:black; color:white;}
 		}
 	}
-
-.chat{ width:15%; height:100%; .abs; right:0; top:0; background:black;
 }
+
+.sidebar{ width:200px; height:100%; .abs; right:0; top:0; z-index:-2 }
+	.logo{ width:187; height:68px; .rel; margin:20px auto 0; background: url("../images/logo.png") no-repeat; .op(0.2); .anchor; .anim; z-index:-1;
+		&:hover{ .op(1); .anim;}
+	}
+	.chat{ 
+		.input{ width:100%; height:30px; .abs; left:0; bottom:0;
+			.background{ .cover-all; background:black; }
+			.flash{ .anim(275ms);
+				&[state="Shown"]{ background:white; }
+				&[state="Hidden"]{ background:black; }
+			}
+			input{ width:90%; height:100%; .abs; left:5%; color:white; border:0; background:transparent;}
+		}
+		.conversation{ width:80%; height:90%; .abs; left:5%; top:120px; }
+			.msg{ width:100%; margin-bottom:4px; color:white; .fs(9px); font-family: Verdana, "sans-serif";
+				.player{ }
+				.action{ }
+				.content{}
+			}
+	}
 

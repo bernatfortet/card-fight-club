@@ -10,9 +10,11 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.server = null;
 
   function NetworkInputController() {
+    this.onReceiveChatMsg = __bind(this.onReceiveChatMsg, this);
     this.onCardFromAreaIsRevealedToggle = __bind(this.onCardFromAreaIsRevealedToggle, this);
     this.onCardIsFlippedDown = __bind(this.onCardIsFlippedDown, this);
     this.onCardIsFlippedUp = __bind(this.onCardIsFlippedUp, this);
+    this.onCardIsUntapped = __bind(this.onCardIsUntapped, this);
     this.onCardIsTapped = __bind(this.onCardIsTapped, this);
     this.onCardAreaIsChanged = __bind(this.onCardAreaIsChanged, this);
     this.onCardIsMoved = __bind(this.onCardIsMoved, this);
@@ -32,7 +34,8 @@ NetworkInputController = (function(_super) {
     this.server.on('onCardIsFlippedUp', this.onCardIsFlippedUp);
     this.server.on('onCardIsFlippedDown', this.onCardIsFlippedDown);
     this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
-    return this.server.on('onCardFromAreaIsRevealedToggle', this.onCardFromAreaIsRevealedToggle);
+    this.server.on('onCardFromAreaIsRevealedToggle', this.onCardFromAreaIsRevealedToggle);
+    return this.server.on('onReceiveChatMsg', this.onReceiveChatMsg);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deckData) {
@@ -41,6 +44,7 @@ NetworkInputController = (function(_super) {
 
   NetworkInputController.prototype.onCardIsCreated = function(params) {
     var cardModel;
+    app.gameController.chatController.renderDrawFromArea(params);
     cardModel = Card.create({
       id: params.cardId,
       image_url: params.image_url,
@@ -53,7 +57,7 @@ NetworkInputController = (function(_super) {
   };
 
   NetworkInputController.prototype.onCardIsRemoved = function(params) {
-    return this.onRemoveCard(cardId.cardId);
+    return this.onRemoveCard(params.cardId);
   };
 
   NetworkInputController.prototype.onCardIsMoved = function(params) {
@@ -62,19 +66,28 @@ NetworkInputController = (function(_super) {
 
   NetworkInputController.prototype.onCardAreaIsChanged = function(params) {
     var areaId;
+    app.gameController.chatController.renderCardAreaChanges(params);
     areaId = this.getPlayersAreaIdFromName(params.areaName, this.targetPlayer);
     return this.onChangeCardArea(params.cardId, areaId);
   };
 
   NetworkInputController.prototype.onCardIsTapped = function(params) {
+    app.gameController.chatController.renderTapMsg(params);
     return this.onTapCard(params.cardId);
   };
 
+  NetworkInputController.prototype.onCardIsUntapped = function(params) {
+    app.gameController.chatController.renderUntapMsg(params);
+    return this.onUntapCard(params.cardId);
+  };
+
   NetworkInputController.prototype.onCardIsFlippedUp = function(params) {
+    app.gameController.chatController.renderFlipUpMsg(params);
     return this.onFlipCardUp(params.cardId);
   };
 
   NetworkInputController.prototype.onCardIsFlippedDown = function(params) {
+    app.gameController.chatController.renderFlipDownMsg(params);
     return this.onFlipCardDown(params.cardId);
   };
 
@@ -82,6 +95,10 @@ NetworkInputController = (function(_super) {
     var areaId;
     areaId = this.getPlayersAreaIdFromName(params.areaName, this.targetPlayer);
     return this.onToggleRevealCardFromArea(params.cardId, areaId);
+  };
+
+  NetworkInputController.prototype.onReceiveChatMsg = function(params) {
+    return app.gameController.chatController.renderChatMsg(params);
   };
 
   NetworkInputController.prototype.getPlayersAreaIdFromName = function(areaName, player) {

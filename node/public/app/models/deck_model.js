@@ -21,6 +21,7 @@ Deck = (function(_super) {
         name: name,
         deckId: this.id,
         areaId: this.controller.item.id,
+        previousAreaId: this.controller.item.id,
         controller: null
       });
       return this.controller.addCard(cardModel);
@@ -33,6 +34,7 @@ Deck = (function(_super) {
         name: name,
         deckId: this.id,
         areaId: this.controller.item.id,
+        previousAreaId: this.controller.item.id,
         controller: null
       });
       return this.controller.addCard(cardModel);

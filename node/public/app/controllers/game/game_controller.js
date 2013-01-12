@@ -21,6 +21,9 @@ GameController = (function(_super) {
     this.multiplayerController = new MultiplayerController();
     this.humanInputController = new HumanInputController();
     this.networkInputController = new NetworkInputController();
+    this.chatController = new ChatController({
+      el: $(".Chat")
+    });
     this.multiplayerController = new MultiplayerController();
     this.zoomedCardController = new ZoomedCardController({
       el: $(".ZoomedCard")
