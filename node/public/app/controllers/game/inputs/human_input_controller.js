@@ -108,7 +108,7 @@ HumanInputController = (function(_super) {
     $('body').bind('keyup', jwerty.event('ctrl+7', function() {
       return _this.onAddNCards(7);
     }));
-    return $('body').bind('keyup', jwerty.event('R', function() {
+    return $('body').bind('keyup', jwerty.event('ctrl+R', function() {
       if (confirm("Are sure you want to reset?")) {
         return app.gameController.reset();
       }
