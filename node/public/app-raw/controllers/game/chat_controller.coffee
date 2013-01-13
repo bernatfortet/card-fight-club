@@ -8,8 +8,13 @@ class ChatController extends Spine.Controller
 	constructor: ->
 		super
 
-	renderMsg: ( msgData ) ->
-		this.el.find(".Conversation").append( $.tmpl( this.template, msgData ) )
+	renderMsg: ( params ) ->
+		if( params.userId )
+			params.player = User.find( params.userId ).name
+		else if( params.userName )
+			params.player = params.userName
+
+		this.el.find(".Conversation").append( $.tmpl( this.template, params ) )
 
 	flashInput: () =>
 		this.el.find(".Flash").attr("state", "Shown")
@@ -21,27 +26,21 @@ class ChatController extends Spine.Controller
 
 	renderTapMsg: ( params ) ->
 		cardName = Card.find( params.cardId ).name
-		msgData =
-			player: User.find( params.userId ).name
-			content: " taps '#{cardName}'"
+		params.content = " taps '#{cardName}'"
 
-		this.renderMsg( msgData )
+		this.renderMsg( params )
 
 	renderUntapMsg: ( params ) ->
 		cardName = Card.find( params.cardId ).name
-		msgData =
-			player: User.find( params.userId ).name
-			content: " untapps '#{cardName}'"
+		params.content = " untapps '#{cardName}'"
 
-		this.renderMsg( msgData )
+		this.renderMsg( params )
 
 	renderFlipUpMsg: ( params ) ->
 		cardName = Card.find( params.cardId ).name
-		msgData =
-			player: User.find( params.userId ).name
-			content: " flips up '#{cardName}'"
+		params.content = " flips up '#{cardName}'"
 
-		this.renderMsg( msgData )
+		this.renderMsg( params )
 
 	renderFlipDownMsg: ( params ) ->
 		cardIsInHandArea = Area.find( Card.find( params.cardId ).areaId ).name == "hand"
@@ -50,19 +49,15 @@ class ChatController extends Spine.Controller
 		else
 			cardName = "a card"
 
-		msgData =
-			player: User.find( params.userId ).name
-			content: " flips down #{cardName}"
+		params.content = " flips down #{cardName}"
 
-		this.renderMsg( msgData )
+		this.renderMsg( params )
 
 	renderDrawFromArea: ( params ) ->
 		areaName = Area.find( Card.find( params.cardId ).areaId ).name
-		msgData =
-			player: User.find( params.userId ).name
-			content: " draws from #{areaName}"
+		params.content = " draws from #{areaName}"
 
-		this.renderMsg( msgData )
+		this.renderMsg( params )
 
 
 	renderCardAreaChanges: ( params ) ->
@@ -75,16 +70,12 @@ class ChatController extends Spine.Controller
 		else
 			cardName = "a card"
 
-		msgData =
-			player: User.find( params.userId ).name
-			content: " moves #{cardName} from #{previousAreaName} to #{params.areaName}"
+		params.content = " moves #{cardName} from #{previousAreaName} to #{params.areaName}"
 
-		this.renderMsg( msgData )
+		this.renderMsg( params )
 
 	renderChatMsg: ( params ) =>
-		msgData =
-			player: params.userName
-			content: ": #{params.msg}"
-		this.renderMsg( msgData )
+		params.content = ": #{params.msg}"
+		this.renderMsg( params )
 
 

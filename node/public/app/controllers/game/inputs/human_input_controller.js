@@ -14,6 +14,7 @@ HumanInputController = (function(_super) {
   function HumanInputController() {
     this.sendChatMsg = __bind(this.sendChatMsg, this);
     this.onResize = __bind(this.onResize, this);
+    this.onSubmitNumber = __bind(this.onSubmitNumber, this);
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
     this.onTopCardFromAreaIsRevealedToggle = __bind(this.onTopCardFromAreaIsRevealedToggle, this);
@@ -59,7 +60,8 @@ HumanInputController = (function(_super) {
       return app.gameController.chatController.flashInput();
     });
     $(".Chat input").on("keydown", jwerty.event('enter', function(event) {
-      return _this.sendChatMsg(event);
+      _this.sendChatMsg(event);
+      return $(".Chat input").val("");
     }));
     this.setKeyboardListeners();
     this.setElementListeners();
@@ -192,7 +194,11 @@ HumanInputController = (function(_super) {
   };
 
   HumanInputController.prototype.setElementListeners = function() {
+    var _this = this;
     $(".Draggable").draggable();
+    $(".NumberA input").on("keydown", jwerty.event('enter', function(event) {
+      return _this.onSubmitNumber(event);
+    }));
     return $(".NumberA input").on('submit', this.onSubmitNumber);
   };
 

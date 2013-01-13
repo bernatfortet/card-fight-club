@@ -192,7 +192,7 @@ MultiplayerController = (function(_super) {
   };
 
   MultiplayerController.prototype.sendEvent = function(event, params) {
-    params.userId = User.first().id;
+    params.userName = User.first().name;
     if (!localServer) return this.server.emit(event, params);
   };
 

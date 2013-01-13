@@ -146,5 +146,5 @@ class MultiplayerController extends Spine.Controller
 		return id
 
 	sendEvent: ( event, params ) ->
-		params.userId = User.first().id
+		params.userName = User.first().name
 		this.server.emit( event, params ) if !localServer

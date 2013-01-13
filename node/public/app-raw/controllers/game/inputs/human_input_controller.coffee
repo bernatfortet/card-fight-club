@@ -43,6 +43,7 @@ class HumanInputController extends InputController
 
 		$(".Chat input").on("keydown", jwerty.event('enter', (event) =>
 			this.sendChatMsg( event )
+			$(".Chat input").val("");
 		))
 
 		this.setKeyboardListeners()

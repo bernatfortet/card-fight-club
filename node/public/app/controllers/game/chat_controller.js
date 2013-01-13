@@ -18,8 +18,13 @@ ChatController = (function(_super) {
     this.flashInput = __bind(this.flashInput, this);    ChatController.__super__.constructor.apply(this, arguments);
   }
 
-  ChatController.prototype.renderMsg = function(msgData) {
-    return this.el.find(".Conversation").append($.tmpl(this.template, msgData));
+  ChatController.prototype.renderMsg = function(params) {
+    if (params.userId) {
+      params.player = User.find(params.userId).name;
+    } else if (params.userName) {
+      params.player = params.userName;
+    }
+    return this.el.find(".Conversation").append($.tmpl(this.template, params));
   };
 
   ChatController.prototype.flashInput = function() {
@@ -33,62 +38,47 @@ ChatController = (function(_super) {
   };
 
   ChatController.prototype.renderTapMsg = function(params) {
-    var cardName, msgData;
+    var cardName;
     cardName = Card.find(params.cardId).name;
-    msgData = {
-      player: User.find(params.userId).name,
-      content: " taps '" + cardName + "'"
-    };
-    return this.renderMsg(msgData);
+    params.content = " taps '" + cardName + "'";
+    return this.renderMsg(params);
   };
 
   ChatController.prototype.renderUntapMsg = function(params) {
-    var cardName, msgData;
+    var cardName;
     cardName = Card.find(params.cardId).name;
-    msgData = {
-      player: User.find(params.userId).name,
-      content: " untapps '" + cardName + "'"
-    };
-    return this.renderMsg(msgData);
+    params.content = " untapps '" + cardName + "'";
+    return this.renderMsg(params);
   };
 
   ChatController.prototype.renderFlipUpMsg = function(params) {
-    var cardName, msgData;
+    var cardName;
     cardName = Card.find(params.cardId).name;
-    msgData = {
-      player: User.find(params.userId).name,
-      content: " flips up '" + cardName + "'"
-    };
-    return this.renderMsg(msgData);
+    params.content = " flips up '" + cardName + "'";
+    return this.renderMsg(params);
   };
 
   ChatController.prototype.renderFlipDownMsg = function(params) {
-    var cardIsInHandArea, cardName, msgData;
+    var cardIsInHandArea, cardName;
     cardIsInHandArea = Area.find(Card.find(params.cardId).areaId).name === "hand";
     if (!cardIsInHandArea) {
       cardName = "'" + Card.find(params.cardId).name + "'";
     } else {
       cardName = "a card";
     }
-    msgData = {
-      player: User.find(params.userId).name,
-      content: " flips down " + cardName
-    };
-    return this.renderMsg(msgData);
+    params.content = " flips down " + cardName;
+    return this.renderMsg(params);
   };
 
   ChatController.prototype.renderDrawFromArea = function(params) {
-    var areaName, msgData;
+    var areaName;
     areaName = Area.find(Card.find(params.cardId).areaId).name;
-    msgData = {
-      player: User.find(params.userId).name,
-      content: " draws from " + areaName
-    };
-    return this.renderMsg(msgData);
+    params.content = " draws from " + areaName;
+    return this.renderMsg(params);
   };
 
   ChatController.prototype.renderCardAreaChanges = function(params) {
-    var areaNamesAreTheSame, cardIsVisible, cardName, msgData, previousAreaName;
+    var areaNamesAreTheSame, cardIsVisible, cardName, previousAreaName;
     previousAreaName = Area.find(Card.find(params.cardId).areaId).name;
     areaNamesAreTheSame = previousAreaName === params.areaName;
     if (areaNamesAreTheSame) return;
@@ -98,20 +88,13 @@ ChatController = (function(_super) {
     } else {
       cardName = "a card";
     }
-    msgData = {
-      player: User.find(params.userId).name,
-      content: " moves " + cardName + " from " + previousAreaName + " to " + params.areaName
-    };
-    return this.renderMsg(msgData);
+    params.content = " moves " + cardName + " from " + previousAreaName + " to " + params.areaName;
+    return this.renderMsg(params);
   };
 
   ChatController.prototype.renderChatMsg = function(params) {
-    var msgData;
-    msgData = {
-      player: params.userName,
-      content: ": " + params.msg
-    };
-    return this.renderMsg(msgData);
+    params.content = ": " + params.msg;
+    return this.renderMsg(params);
   };
 
   return ChatController;
