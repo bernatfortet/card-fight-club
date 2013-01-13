@@ -4,6 +4,13 @@ var serverIp = window.location.hostname;
 var localServer = false;
 var debugApp = false;
 
+var isOnInternet = window.location.hostname != "localhost";
+if( isOnInternet ){
+	localServer = false;
+	debugApp = false;
+}
+
+
 if( !localServer && !debugApp ){
 	window.onbeforeunload = function(){
 		if ( true ){
