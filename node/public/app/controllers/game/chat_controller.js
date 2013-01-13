@@ -9,7 +9,7 @@ ChatController = (function(_super) {
 
   ChatController.prototype.template = '\
 		<div class="msg">\
-			<span class="player">${player}</span><span class="content">${content}</span>\
+			<span class="player">${player}:</span><span class="content">${content}</span>\
 		</div>\
 	';
 
@@ -93,7 +93,7 @@ ChatController = (function(_super) {
   };
 
   ChatController.prototype.renderChatMsg = function(params) {
-    params.content = ": " + params.msg;
+    params.content = " " + params.msg;
     return this.renderMsg(params);
   };
 
