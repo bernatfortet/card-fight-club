@@ -34,5 +34,15 @@ class GameController extends Spine.Controller
 		this.humanInputController.onResize()
 		this.showGameBoard()
 
+	reset: ->
+		for card in Card.all()
+			cardArea = Area.find( card.areaId )
+			cardOwner = cardArea.controller.player
+			ownerIsPlayer = cardOwner.el == this.player.el
+
+			if( card.controller && ownerIsPlayer )
+				cardOwner.changeCardArea( card, cardOwner.deckArea.id )
+
+
 	showGameBoard: ->
 		$("#Game").addClass("active") #Use Spine sections

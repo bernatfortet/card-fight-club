@@ -76,6 +76,11 @@ class HumanInputController extends InputController
 		$('body').bind('keyup', jwerty.event('ctrl+6', => this.onAddNCards(6) ));
 		$('body').bind('keyup', jwerty.event('ctrl+7', => this.onAddNCards(7) ));
 
+		$('body').bind('keyup', jwerty.event('R', => 
+			if ( confirm ("Are sure you want to reset?") )
+				app.gameController.reset()
+		));
+
 	onAddNCards: ( numCards ) =>
 		for iCounter in [0...numCards]
 			this.onDrawCardFromArea( this.targetPlayer.deckArea.id )

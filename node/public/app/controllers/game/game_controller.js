@@ -47,6 +47,24 @@ GameController = (function(_super) {
     return this.showGameBoard();
   };
 
+  GameController.prototype.reset = function() {
+    var card, cardArea, cardOwner, ownerIsPlayer, _i, _len, _ref, _results;
+    _ref = Card.all();
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      card = _ref[_i];
+      cardArea = Area.find(card.areaId);
+      cardOwner = cardArea.controller.player;
+      ownerIsPlayer = cardOwner.el === this.player.el;
+      if (card.controller && ownerIsPlayer) {
+        _results.push(cardOwner.changeCardArea(card, cardOwner.deckArea.id));
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
   GameController.prototype.showGameBoard = function() {
     return $("#Game").addClass("active");
   };
