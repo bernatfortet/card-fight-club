@@ -28,7 +28,7 @@ html(lange="en")
 			#Views
 				include ../public/app-raw/views/views
 			.section#Login
-			.section.game#Game.active
+			.section.game#Game
 
 				.sidebar.Sidebar
 					.logo.Logo
@@ -36,7 +36,22 @@ html(lange="en")
 						.conversation.Conversation
 						.input
 							.background.flash.Flash
-							input( type="text", placeholder="Send Message")
+							input( type="text", placeholder="Send Message" )
+					.elements
+						.element.numberA.NumberA
+							input( type="text", value="20" )
+						.element.numberB.NumberB
+							input( type="text", value="20" )
+						.element.dice.Dice
+						.element.counter.blueCounter.Counter.Draggable
+							.inner
+						.element.counter.yellowCounter.Counter.Draggable
+							.inner
+						.element.counter.redCounter.Counter.Draggable
+							.inner
+						.element.hexagon.Hexagon
+							span 20
+
 
 				.playzone.Playzone
 					.zoomed-card.ZoomedCard
@@ -56,6 +71,7 @@ html(lange="en")
 						.deck.area.cardpile.Deck.Area.CardPile(data-isEmpty="true")
 						.hand.area.Hand(data-isEmpty="true")
 						.board.area.Board(data-isEmpty="true")
+							//.player-name name
 						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
 						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")
 
@@ -64,5 +80,6 @@ html(lange="en")
 						.deck.area.cardpile.Deck.Area.CardPile(data-isEmpty="true")
 						.hand.area.Hand.Area(data-isEmpty="true")
 						.board.area.Board.Area(data-isEmpty="true")
+							//.player-name name
 						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
 						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")

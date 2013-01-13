@@ -4,7 +4,7 @@ class ChatController extends Spine.Controller
 			<span class="player">${player}</span><span class="content">${content}</span>
 		</div>
 	'
-
+	#<div class="divider"></div>
 	constructor: ->
 		super
 

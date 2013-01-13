@@ -3,14 +3,8 @@ class HumanInputController extends InputController
 	activeCard: null
 	humanPlayer: null
 
-	originalWidth: null
-	originalHeight: null
-
 	constructor: ->
 		super
-
-		this.originalWidth = $(window).width()
-		this.originalHeight = $(window).height()
 
 	setListeners: ->
 
@@ -52,6 +46,9 @@ class HumanInputController extends InputController
 		))
 
 		this.setKeyboardListeners()
+		this.setElementListeners()
+
+		$(window).on("resize", this.onResize )
 
 	setCardListeners: ( cardElement ) ->
 		cardElement.draggable({
@@ -138,6 +135,30 @@ class HumanInputController extends InputController
 	onMouseOutCard: ( event ) =>
 		this.activeCard = null
 		this.onZoomCardOut()
+
+	setElementListeners: () ->
+		$(".Draggable").draggable();
+
+		$(".NumberA input").on("keydown", jwerty.event('enter', (event) =>
+			this.onSubmitNumber( event )
+		))
+
+
+		$(".NumberA input").on('submit', this.onSubmitNumber );
+
+	onSubmitNumber: ( event ) =>
+		console.log(" asdf");
+
+	onResize: ( event ) =>
+		console.log("OnResize");
+		$(".Playzone").width( $("#WebsiteApp").width() - $(".Sidebar").outerWidth(); )
+
+		handOuterHeight = $(".Player .Hand").outerHeight() + parseFloat($(".Player .Hand").css("bottom")) + 18
+		boardHeight =  $(".Player").outerHeight() - handOuterHeight 
+
+		$(".Board").height( boardHeight )
+
+		$(".Board, .Hand").width( $(".Deck").offset().left - 20 )
 
 	sendChatMsg: ( event ) =>
 		msg = $(event.target).val()

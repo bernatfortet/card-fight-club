@@ -45,7 +45,7 @@
         </div></script>
       </div>
       <div id="Login" class="section"></div>
-      <div id="Game" class="section game active">
+      <div id="Game" class="section game">
         <div class="sidebar Sidebar">
           <div class="logo Logo"></div>
           <div class="chat Chat">
@@ -54,6 +54,25 @@
               <div class="background flash Flash"></div>
               <input type="text" placeholder="Send Message">
             </div>
+          </div>
+          <div class="elements">
+            <div class="element numberA NumberA">
+              <input type="text" value="20">
+            </div>
+            <div class="element numberB NumberB">
+              <input type="text" value="20">
+            </div>
+            <div class="element dice Dice"></div>
+            <div class="element counter blueCounter Counter Draggable">
+              <div class="inner"></div>
+            </div>
+            <div class="element counter yellowCounter Counter Draggable">
+              <div class="inner"></div>
+            </div>
+            <div class="element counter redCounter Counter Draggable">
+              <div class="inner"></div>
+            </div>
+            <div class="element hexagon Hexagon"><span>20</span></div>
           </div>
         </div>
         <div class="playzone Playzone">
@@ -70,7 +89,9 @@
             <div class="cards area Cards"></div>
             <div data-isEmpty="true" class="deck area cardpile Deck Area CardPile"></div>
             <div data-isEmpty="true" class="hand area Hand"></div>
-            <div data-isEmpty="true" class="board area Board"></div>
+            <div data-isEmpty="true" class="board area Board">
+              <!--.player-name name-->
+            </div>
             <div data-isEmpty="true" class="graveyard area cardpile Graveyard Area CardPile"></div>
             <div data-isEmpty="true" class="sideboard area cardpile Sideboard Area CardPile"></div>
           </div>
@@ -78,7 +99,9 @@
             <div class="cards area Cards"></div>
             <div data-isEmpty="true" class="deck area cardpile Deck Area CardPile"></div>
             <div data-isEmpty="true" class="hand area Hand Area"></div>
-            <div data-isEmpty="true" class="board area Board Area"></div>
+            <div data-isEmpty="true" class="board area Board Area">
+              <!--.player-name name-->
+            </div>
             <div data-isEmpty="true" class="graveyard area cardpile Graveyard Area CardPile"></div>
             <div data-isEmpty="true" class="sideboard area cardpile Sideboard Area CardPile"></div>
           </div>

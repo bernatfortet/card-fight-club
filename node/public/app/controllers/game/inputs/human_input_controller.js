@@ -11,12 +11,9 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.humanPlayer = null;
 
-  HumanInputController.prototype.originalWidth = null;
-
-  HumanInputController.prototype.originalHeight = null;
-
   function HumanInputController() {
     this.sendChatMsg = __bind(this.sendChatMsg, this);
+    this.onResize = __bind(this.onResize, this);
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
     this.onTopCardFromAreaIsRevealedToggle = __bind(this.onTopCardFromAreaIsRevealedToggle, this);
@@ -29,8 +26,6 @@ HumanInputController = (function(_super) {
     this.onRightMouseClick = __bind(this.onRightMouseClick, this);
     this.onAddNCards = __bind(this.onAddNCards, this);
     this.setKeyboardListeners = __bind(this.setKeyboardListeners, this);    HumanInputController.__super__.constructor.apply(this, arguments);
-    this.originalWidth = $(window).width();
-    this.originalHeight = $(window).height();
   }
 
   HumanInputController.prototype.setListeners = function() {
@@ -66,7 +61,9 @@ HumanInputController = (function(_super) {
     $(".Chat input").on("keydown", jwerty.event('enter', function(event) {
       return _this.sendChatMsg(event);
     }));
-    return this.setKeyboardListeners();
+    this.setKeyboardListeners();
+    this.setElementListeners();
+    return $(window).on("resize", this.onResize);
   };
 
   HumanInputController.prototype.setCardListeners = function(cardElement) {
@@ -192,6 +189,25 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.onMouseOutCard = function(event) {
     this.activeCard = null;
     return this.onZoomCardOut();
+  };
+
+  HumanInputController.prototype.setElementListeners = function() {
+    $(".Draggable").draggable();
+    return $(".NumberA input").on('submit', this.onSubmitNumber);
+  };
+
+  HumanInputController.prototype.onSubmitNumber = function(event) {
+    return console.log(" asdf");
+  };
+
+  HumanInputController.prototype.onResize = function(event) {
+    var boardHeight, handOuterHeight;
+    console.log("OnResize");
+    $(".Playzone").width($("#WebsiteApp").width() - $(".Sidebar").outerWidth());
+    handOuterHeight = $(".Player .Hand").outerHeight() + parseFloat($(".Player .Hand").css("bottom")) + 18;
+    boardHeight = $(".Player").outerHeight() - handOuterHeight;
+    $(".Board").height(boardHeight);
+    return $(".Board, .Hand").width($(".Deck").offset().left - 20);
   };
 
   HumanInputController.prototype.sendChatMsg = function(event) {

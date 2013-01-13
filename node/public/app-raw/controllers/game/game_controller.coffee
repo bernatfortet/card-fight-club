@@ -31,3 +31,8 @@ class GameController extends Spine.Controller
 		this.player.setDeck( User.first().deck )
 
 		this.humanInputController.setListeners()
+		this.humanInputController.onResize()
+		this.showGameBoard()
+
+	showGameBoard: ->
+		$("#Game").addClass("active") #Use Spine sections

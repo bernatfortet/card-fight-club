@@ -42,7 +42,13 @@ GameController = (function(_super) {
     this.humanInputController.setTargetPlayer(this.player);
     this.networkInputController.setTargetPlayer(this.opponent);
     this.player.setDeck(User.first().deck);
-    return this.humanInputController.setListeners();
+    this.humanInputController.setListeners();
+    this.humanInputController.onResize();
+    return this.showGameBoard();
+  };
+
+  GameController.prototype.showGameBoard = function() {
+    return $("#Game").addClass("active");
   };
 
   return GameController;
