@@ -20,8 +20,11 @@ body{ z-index: -2; background-color:#1e1d24;  }
 
 		.area{}
 		.cardpile{ background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim; }
-		.board{ width: 75%; height:65%; /*background:lighten(black, 20%);*/
-			&.Active{ .fancyGreenGlowInset; }
+		.hand{ width:85%; height:176px; .abs; left:10px; bottom:13px; background:fade(white, 2%); .unselectable; .br(6px); border:1px solid rgba(255,255,255,0.04);
+			&.Active{ border: 1px solid rgba(255,255,255,0.15); .bs( 0 0 10px 0 rgba(255,255,255,0.15) inset); }
+		}
+		.board{ width: 85%; height:55%; .abs; left:10px; top:5px; background:fade(white, 2%); .br(6px); border: 1px solid rgba(255,255,255,0.04);
+			&.Active{ border: 1px solid rgba(255,255,255,0.1); .bs( 0 0 10px 0 rgba(255,255,255,0.1) inset); }
 		}
 		.deck{ width:126px; height:176px; .abs; right:10px; bottom:13px;
 			&:hover{ .fancyGreenGlow; .anim;}
@@ -34,10 +37,6 @@ body{ z-index: -2; background-color:#1e1d24;  }
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @graveyardImage;}
 		}
-		.hand{ width:85%; height:176px; .abs; left:10px; bottom:13px; background: fade(black, 30%);  .unselectable; .br(6px);
-			&.Active{ .fancyGreenGlowInset; }
-		}
-
 
 		.cards{ .rel; z-index: 4;}
 		.card{ width:126px; height:126px; position:fixed !important; .abs; .unselectable; .anchor; z-index:2;
@@ -59,10 +58,10 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		}
 
 	.opponent{  top:0;
-		.board{ .abs; bottom: 0;}
-		.deck{ top: 13px; bottom: none;}
-		.graveyard{ bottom: 0; top:196px;}
-		.hand{ top:13px; bottom: none;}
+		.board{ .abs; bottom:5px; top:auto; }
+		.deck{ top:13px; bottom:none; }
+		.graveyard{ bottom:0; top:196px; }
+		.hand{ top:13px; bottom:none; }
 		.card{ .anim; }
 	}
 
@@ -102,7 +101,7 @@ body{ z-index: -2; background-color:#1e1d24;  }
 			input{ width:90%; height:100%; .abs; left:5%; color:white; border:0; background:transparent;}
 		}
 		.conversation{ width:80%; height:90%; .abs; left:5%; top:120px; }
-			.msg{ width:100%; margin-bottom:4px; color:white; .fs(9px); font-family: Verdana, "sans-serif";
+			.msg{ width:100%; margin-bottom:2px; color:darken(white, 70%); .fs(9px, 12px); font-family: Verdana, "sans-serif";
 				.player{ }
 				.action{ }
 				.content{}
