@@ -1,8 +1,8 @@
 // Required Libs, Controllers and Models ==================================
 var appManager;
 var serverIp = window.location.hostname;
-var localServer = true;
-var debugApp = true;
+var localServer = false;
+var debugApp = false;
 
 if( !localServer && !debugApp ){
 	window.onbeforeunload = function(){
