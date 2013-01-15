@@ -15,6 +15,7 @@ class ChatController extends Spine.Controller
 			params.player = params.userName
 
 		this.el.find(".Conversation").append( $.tmpl( this.template, params ) )
+		this.el.find(".Conversation").scrollTo( this.el.find(".Conversation").outerHeight() )
 
 	flashInput: () =>
 		this.el.find(".Flash").attr("state", "Shown")

@@ -157,14 +157,24 @@ class HumanInputController extends InputController
 
 	onResize: ( event ) =>
 		console.log("OnResize");
+
+		#Playzone Width
 		$(".Playzone").width( $("#WebsiteApp").width() - $(".Sidebar").outerWidth(); )
 
+		#Board Height
 		handOuterHeight = $(".Player .Hand").outerHeight() + parseFloat($(".Player .Hand").css("bottom")) + 18
-		boardHeight =  $(".Player").outerHeight() - handOuterHeight 
+		$(".Board").height( $(".Player").outerHeight() - handOuterHeight )
 
-		$(".Board").height( boardHeight )
+		#Board and Hand Width
+		$(".Board, .Hand").width( $(".Deck").offset().left - 20	)
 
-		$(".Board, .Hand").width( $(".Deck").offset().left - 20 )
+		#Converstaion Resize
+		$(".Conversation").height(
+			$(".Playzone").outerHeight() - 20 -(
+				parseFloat($(".Conversation").css("top")) + 
+				parseFloat($(".Chat .Input").css("bottom")) + $(".Chat .Input").outerHeight();
+			)
+		) 
 
 	sendChatMsg: ( event ) =>
 		msg = $(event.target).val()

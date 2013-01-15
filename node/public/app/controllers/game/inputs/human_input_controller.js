@@ -212,13 +212,13 @@ HumanInputController = (function(_super) {
   };
 
   HumanInputController.prototype.onResize = function(event) {
-    var boardHeight, handOuterHeight;
+    var handOuterHeight;
     console.log("OnResize");
     $(".Playzone").width($("#WebsiteApp").width() - $(".Sidebar").outerWidth());
     handOuterHeight = $(".Player .Hand").outerHeight() + parseFloat($(".Player .Hand").css("bottom")) + 18;
-    boardHeight = $(".Player").outerHeight() - handOuterHeight;
-    $(".Board").height(boardHeight);
-    return $(".Board, .Hand").width($(".Deck").offset().left - 20);
+    $(".Board").height($(".Player").outerHeight() - handOuterHeight);
+    $(".Board, .Hand").width($(".Deck").offset().left - 20);
+    return $(".Conversation").height($(".Playzone").outerHeight() - 20 - (parseFloat($(".Conversation").css("top")) + parseFloat($(".Chat .Input").css("bottom")) + $(".Chat .Input").outerHeight()));
   };
 
   HumanInputController.prototype.sendChatMsg = function(event) {

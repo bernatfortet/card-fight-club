@@ -46,6 +46,8 @@ require(
 			"order!libs/jquery/plugins/jquery.tmpl",
 			"order!libs/jquery/plugins/jquery.contextMenu",
 			"order!libs/jquery/plugins/jwerty",
+			"order!libs/jquery/plugins/jquery.scrollTo.min",
+			
 
 			
 		//Controllers ==========================
