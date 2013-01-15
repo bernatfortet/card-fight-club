@@ -16,6 +16,7 @@ class GameController extends Spine.Controller
 		this.humanInputController = new HumanInputController()
 		this.networkInputController = new NetworkInputController()
 		this.chatController = new ChatController( el: $(".Chat") )
+		this.soundController = new SoundController( el: $(".Sounds") )
 
 		this.multiplayerController = new MultiplayerController( )
 

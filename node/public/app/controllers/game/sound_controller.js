@@ -6,9 +6,40 @@ SoundController = (function(_super) {
 
   __extends(SoundController, _super);
 
+  SoundController.prototype.template = '\
+		<audio id="${soundId}">\
+			<source src="${soundSource}" type="audio/${soundType}">\
+		</div>\
+	';
+
+  SoundController.prototype.soundList = {
+    0: "card_flip",
+    1: "deck_shuffle"
+  };
+
   function SoundController() {
+    var index;
     SoundController.__super__.constructor.apply(this, arguments);
+    for (index in this.soundList) {
+      this.renderSound(this.soundList[index]);
+    }
   }
+
+  SoundController.prototype.renderSound = function(soundName) {
+    var params, soundType;
+    soundType = "ogg";
+    console.log("sounds/" + soundName + "." + soundType);
+    params = {
+      soundId: soundName,
+      soundSource: "sounds/" + soundName + "." + soundType,
+      soundType: soundType
+    };
+    return this.el.append($.tmpl(this.template, params));
+  };
+
+  SoundController.prototype.playSound = function(soundName) {
+    return $("#" + soundName)[0].play();
+  };
 
   return SoundController;
 

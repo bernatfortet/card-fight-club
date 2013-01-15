@@ -24,6 +24,9 @@ GameController = (function(_super) {
     this.chatController = new ChatController({
       el: $(".Chat")
     });
+    this.soundController = new SoundController({
+      el: $(".Sounds")
+    });
     this.multiplayerController = new MultiplayerController();
     this.zoomedCardController = new ZoomedCardController({
       el: $(".ZoomedCard")
