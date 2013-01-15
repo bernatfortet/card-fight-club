@@ -13,9 +13,6 @@ var Multiplayer = {
 
 		this.io.sockets.on('connection', function ( user ) {
 			console.log("on Connection -->>>>>>>>>>>>>>>>>>>>>");
-			console.log( process.env );
-
-
 
 			user.on('onConnect', function( data ) {
 				console.log( "onConnect");

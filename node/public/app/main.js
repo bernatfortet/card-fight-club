@@ -61,6 +61,7 @@ require(
 			"order!controllers/game/card_controller",
 			"order!controllers/game/zoomed_card_controller",
 			"order!controllers/game/card_lister_controller",
+			"order!controllers/game/sound_controller",
 
 			//Areas
 			"order!controllers/game/areas/area_controller",
