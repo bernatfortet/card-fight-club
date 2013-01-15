@@ -6,8 +6,8 @@ class SoundController extends Spine.Controller
 		</div>
 	'
 	soundList:
-		0: "card_flip"
-		1: "deck_shuffle"
+		0: "flipCard"
+		1: "shuffleDeck"
 
 	constructor: ->
 		super

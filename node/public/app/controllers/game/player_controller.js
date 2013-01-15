@@ -193,15 +193,17 @@ PlayerController = (function(_super) {
     if (!this.isPlayerNetworked() && cardAreaModel.name === "hand") return;
     cardModel.controller.flipUp();
     if (this.isPlayerNetworked()) {
-      return this.multiplayerController.onFlipCardUp(cardModel);
+      this.multiplayerController.onFlipCardUp(cardModel);
     }
+    return app.gameController.soundController.playSound("flipCard");
   };
 
   PlayerController.prototype.flipCardDown = function(cardModel) {
     cardModel.controller.flipDown();
     if (this.isPlayerNetworked()) {
-      return this.multiplayerController.onFlipCardDown(cardModel);
+      this.multiplayerController.onFlipCardDown(cardModel);
     }
+    return app.gameController.soundController.playSound("flipCard");
   };
 
   PlayerController.prototype.zoomCardIn = function(cardModel) {
@@ -216,9 +218,8 @@ PlayerController = (function(_super) {
     var areaModel;
     areaModel = Area.find(areaId);
     areaModel.shuffle();
-    if (this.isPlayerNetworked()) {
-      return this.multiplayerController.onShuffle(areaModel);
-    }
+    if (this.isPlayerNetworked()) this.multiplayerController.onShuffle(areaModel);
+    return app.gameController.soundController.playSound("shuffleDeck");
   };
 
   PlayerController.prototype.toogleRevealTopCardFromArea = function(areaModel) {

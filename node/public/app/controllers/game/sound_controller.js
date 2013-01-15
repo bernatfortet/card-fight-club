@@ -13,8 +13,8 @@ SoundController = (function(_super) {
 	';
 
   SoundController.prototype.soundList = {
-    0: "card_flip",
-    1: "deck_shuffle"
+    0: "flipCard",
+    1: "shuffleDeck"
   };
 
   function SoundController() {

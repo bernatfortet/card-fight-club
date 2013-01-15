@@ -131,10 +131,12 @@ class PlayerController extends Spine.Controller
 		return if( !this.isPlayerNetworked() && cardAreaModel.name == "hand" )
 		cardModel.controller.flipUp()
 		this.multiplayerController.onFlipCardUp( cardModel ) if this.isPlayerNetworked()
+		app.gameController.soundController.playSound("flipCard")
 
 	flipCardDown: ( cardModel ) ->
 		cardModel.controller.flipDown()
 		this.multiplayerController.onFlipCardDown( cardModel ) if this.isPlayerNetworked()
+		app.gameController.soundController.playSound("flipCard")
 
 	zoomCardIn: ( cardModel ) ->
 		app.gameController.zoomedCardController.zoomIn( cardModel )
@@ -146,6 +148,7 @@ class PlayerController extends Spine.Controller
 		areaModel = Area.find( areaId )
 		areaModel.shuffle()
 		this.multiplayerController.onShuffle( areaModel ) if this.isPlayerNetworked()
+		app.gameController.soundController.playSound("shuffleDeck")
 
 	toogleRevealTopCardFromArea: ( areaModel ) ->
 		cardModel = areaModel.getTopCard()
