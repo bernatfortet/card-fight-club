@@ -1,4 +1,4 @@
-ºclass App extends Spine.Controller
+class App extends Spine.Controller
 	userInfo: null
 
 
@@ -30,5 +30,12 @@
 			deckId = "50dcf268e4b0b7b39972bf5f" #FirstDeck
 		else if( deckId == "3" )
 			deckId = "50df5072e4b0d84e5fee60b0" #Fragmentados
+		else if( deckId == "4" )
+			deckId = "50f732cde4b09c5e82a843b0" #Dragon Control
+		else if( deckId == "5" )
+			deckId = "50f732efe4b09c5e82a843b2" #Kingh Sleight
 		else 
 			deckId = "50df4fe8e4b0d84e5fee60ad" #RedRage
+
+
+			

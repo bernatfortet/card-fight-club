@@ -69,7 +69,8 @@ GameController = (function(_super) {
   };
 
   GameController.prototype.showGameBoard = function() {
-    return $("#Game").addClass("active");
+    $("#Game").addClass("active");
+    return $(".Loading").remove();
   };
 
   return GameController;

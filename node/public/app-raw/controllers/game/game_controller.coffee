@@ -47,3 +47,4 @@ class GameController extends Spine.Controller
 
 	showGameBoard: ->
 		$("#Game").addClass("active") #Use Spine sections
+		$(".Loading").remove() #Use Spine sections

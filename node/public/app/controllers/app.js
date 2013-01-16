@@ -43,6 +43,10 @@ App = (function(_super) {
       return deckId = "50dcf268e4b0b7b39972bf5f";
     } else if (deckId === "3") {
       return deckId = "50df5072e4b0d84e5fee60b0";
+    } else if (deckId === "4") {
+      return deckId = "50f732cde4b09c5e82a843b0";
+    } else if (deckId === "5") {
+      return deckId = "50f732efe4b09c5e82a843b2";
     } else {
       return deckId = "50df4fe8e4b0d84e5fee60ad";
     }
