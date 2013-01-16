@@ -176,7 +176,24 @@ class PlayerController extends Spine.Controller
 
 		this.multiplayerController.onPassTurn() if this.isPlayerNetworked()
 
+	throwDice: ->
+		diceResult = this.getRandomInt( 1, 6 )
+
+		params = 
+			userName: User.first().name
+			diceResult: diceResult
+
+		app.gameController.chatController.renderThrowDice( params )
+		app.gameController.soundController.playSound("throwDice")
+		
+
+		# this.multiplayerController.onThrowDice( diceResult ) if this.isPlayerNetworked()
+
 	receiveTurn: ->
 		$(".Player").attr("state", "")
 		this.el.attr("state", "Active")
+
+	getRandomInt: ( min, max ) ->
+		Math.floor(Math.random() * (max - min + 1)) + min;
+
 

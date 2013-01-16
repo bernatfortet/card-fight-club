@@ -9,12 +9,14 @@ ChatController = (function(_super) {
 
   ChatController.prototype.template = '\
 		<div class="msg">\
-			<span class="player">${player}:</span><span class="content">${content}</span>\
+			<span class="player">${player}</span><span class="content">${content}</span>\
 		</div>\
 	';
 
   function ChatController() {
+    this.renderThrowDice = __bind(this.renderThrowDice, this);
     this.renderChatMsg = __bind(this.renderChatMsg, this);
+    this.renderSystemMsg = __bind(this.renderSystemMsg, this);
     this.flashInput = __bind(this.flashInput, this);    ChatController.__super__.constructor.apply(this, arguments);
   }
 
@@ -98,8 +100,18 @@ ChatController = (function(_super) {
     return this.renderMsg(params);
   };
 
-  ChatController.prototype.renderChatMsg = function(params) {
+  ChatController.prototype.renderSystemMsg = function(params) {
     params.content = " " + params.msg;
+    return this.renderMsg(params);
+  };
+
+  ChatController.prototype.renderChatMsg = function(params) {
+    params.content = ": " + params.msg;
+    return this.renderMsg(params);
+  };
+
+  ChatController.prototype.renderThrowDice = function(params) {
+    params.content = " throws a dice: " + params.diceResult;
     return this.renderMsg(params);
   };
 

@@ -20,7 +20,7 @@ body{ z-index: -2; background-color:#1e1d24;  }
 
 		.area{}
 		.cardpile{ background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim; }
-		.hand{ width:85%; height:176px; .abs; left:10px; bottom:13px;
+		.hand{ width:85%; height:150px; .abs; left:10px; bottom:13px;
 		}
 		.board{ width: 85%; height:55%; .abs; left:10px; top:5px;
 			.player-name{ .abs; left:5px; top:5px; color:fade(white, 30%);}
@@ -28,13 +28,13 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		.hand, .board{ background:fade(white, 2%); .unselectable; .br(6px); border:1px solid rgba(255,255,255,0.04);
 			&.Active{ border: 1px solid rgba(255,255,255,0.1); .bs( 0 0 10px 0 rgba(255,255,255,0.1) inset); }
 		}
-		.deck{ width:126px; height:176px; .abs; right:10px; bottom:13px;
+		.deck{ width:107px; height:150px; .abs; right:10px; bottom:13px;
 			&:hover{ .fancyGreenGlow; .anim;}
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
 
-		.graveyard{ width:126px; height:176px; .abs; right:10px; bottom:196px; .anim;
+		.graveyard{ width:107px; height:150px; .abs; right:10px; bottom:196px; .anim;
 			&:hover{ .fancyGreenGlow; .anim;}
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @graveyardImage; .op(0.3); .anim;}
@@ -45,8 +45,8 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		}
 
 		.cards{ .rel; z-index: 4;}
-		.card{ width:126px; height:126px; position:fixed !important; .abs; .unselectable; .anchor; z-index:2;
-			.tap-container{ width:126px; height:176px; .abs; left:0; top:0; .br(7px);}
+		.card{ width:107px; height:107px; position:fixed !important; .abs; .unselectable; .anchor; z-index:2;
+			.tap-container{ width:107px; height:150px; .abs; left:0; top:0; .br(7px);}
 			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; .br(7px); }
 			.img{ .cover-all; .trans( rotateY(180deg) translateZ(1px) ); transform-origin: center center 0; background:black; .br(7px); }
 				.placeholder-name{ .cover-all; color:white;}

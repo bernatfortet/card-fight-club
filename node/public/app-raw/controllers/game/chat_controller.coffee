@@ -1,7 +1,7 @@
 class ChatController extends Spine.Controller
 	template: '
 		<div class="msg">
-			<span class="player">${player}:</span><span class="content">${content}</span>
+			<span class="player">${player}</span><span class="content">${content}</span>
 		</div>
 	'
 	#<div class="divider"></div>
@@ -79,8 +79,16 @@ class ChatController extends Spine.Controller
 
 		this.renderMsg( params )
 
-	renderChatMsg: ( params ) =>
+	renderSystemMsg: ( params ) =>
 		params.content = " #{params.msg}"
+		this.renderMsg( params )
+
+	renderChatMsg: ( params ) =>
+		params.content = ": #{params.msg}"
+		this.renderMsg( params )
+
+	renderThrowDice: ( params ) =>
+		params.content = " throws a dice: #{params.diceResult}"
 		this.renderMsg( params )
 
 

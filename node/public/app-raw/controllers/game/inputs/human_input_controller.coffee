@@ -95,6 +95,17 @@ class HumanInputController extends InputController
 			this.onPassTurn()
 		));
 
+	setElementListeners: () ->
+		$(".Draggable").draggable();
+
+		$(".NumberA input").on("keydown", jwerty.event('enter', (event) =>
+			this.onSubmitNumber( event )
+		))
+
+		$(".NumberA input").on('submit', this.onSubmitNumber );
+
+		$(".Dice").on("click", this.onThrowDice )
+
 	onAddNCards: ( numCards ) =>
 		for iCounter in [0...numCards]
 			this.onDrawCardFromArea( this.targetPlayer.deckArea.id )
@@ -156,15 +167,6 @@ class HumanInputController extends InputController
 		this.activeCard = null
 		this.onZoomCardOut()
 
-	setElementListeners: () ->
-		$(".Draggable").draggable();
-
-		$(".NumberA input").on("keydown", jwerty.event('enter', (event) =>
-			this.onSubmitNumber( event )
-		))
-
-
-		$(".NumberA input").on('submit', this.onSubmitNumber );
 
 	onSubmitNumber: ( event ) =>
 		console.log(" asdf");

@@ -5,9 +5,11 @@ class SoundController extends Spine.Controller
 			<source src="${soundSource}" type="audio/${soundType}">
 		</div>
 	'
-	soundList:
-		0: "flipCard"
-		1: "shuffleDeck"
+	soundList: new Array(
+		"flipCard"
+		"shuffleDeck"
+		"throwDice"
+	)
 
 	constructor: ->
 		super

@@ -66,5 +66,8 @@ class InputController extends Spine.Controller
 
 	onReceiveTurn: () =>
 		this.targetPlayer.receiveTurn();
+
+	onThrowDice: () =>
+		this.targetPlayer.throwDice();
 		
 		

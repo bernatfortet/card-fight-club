@@ -257,9 +257,24 @@ PlayerController = (function(_super) {
     if (this.isPlayerNetworked()) return this.multiplayerController.onPassTurn();
   };
 
+  PlayerController.prototype.throwDice = function() {
+    var diceResult, params;
+    diceResult = this.getRandomInt(1, 6);
+    params = {
+      userName: User.first().name,
+      diceResult: diceResult
+    };
+    app.gameController.chatController.renderThrowDice(params);
+    return app.gameController.soundController.playSound("throwDice");
+  };
+
   PlayerController.prototype.receiveTurn = function() {
     $(".Player").attr("state", "");
     return this.el.attr("state", "Active");
+  };
+
+  PlayerController.prototype.getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
   return PlayerController;

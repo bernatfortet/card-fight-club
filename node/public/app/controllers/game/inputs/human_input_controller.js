@@ -128,6 +128,16 @@ HumanInputController = (function(_super) {
     }));
   };
 
+  HumanInputController.prototype.setElementListeners = function() {
+    var _this = this;
+    $(".Draggable").draggable();
+    $(".NumberA input").on("keydown", jwerty.event('enter', function(event) {
+      return _this.onSubmitNumber(event);
+    }));
+    $(".NumberA input").on('submit', this.onSubmitNumber);
+    return $(".Dice").on("click", this.onThrowDice);
+  };
+
   HumanInputController.prototype.onAddNCards = function(numCards) {
     var iCounter, _results;
     _results = [];
@@ -209,15 +219,6 @@ HumanInputController = (function(_super) {
   HumanInputController.prototype.onMouseOutCard = function(event) {
     this.activeCard = null;
     return this.onZoomCardOut();
-  };
-
-  HumanInputController.prototype.setElementListeners = function() {
-    var _this = this;
-    $(".Draggable").draggable();
-    $(".NumberA input").on("keydown", jwerty.event('enter', function(event) {
-      return _this.onSubmitNumber(event);
-    }));
-    return $(".NumberA input").on('submit', this.onSubmitNumber);
   };
 
   HumanInputController.prototype.onSubmitNumber = function(event) {

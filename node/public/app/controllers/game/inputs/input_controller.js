@@ -10,6 +10,7 @@ InputController = (function(_super) {
   InputController.prototype.targetPlayer = null;
 
   function InputController() {
+    this.onThrowDice = __bind(this.onThrowDice, this);
     this.onReceiveTurn = __bind(this.onReceiveTurn, this);
     this.onPassTurn = __bind(this.onPassTurn, this);
     this.onDrawCardFromArea = __bind(this.onDrawCardFromArea, this);
@@ -106,6 +107,10 @@ InputController = (function(_super) {
 
   InputController.prototype.onReceiveTurn = function() {
     return this.targetPlayer.receiveTurn();
+  };
+
+  InputController.prototype.onThrowDice = function() {
+    return this.targetPlayer.throwDice();
   };
 
   return InputController;
