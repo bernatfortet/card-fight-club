@@ -30,16 +30,15 @@ HumanInputController = (function(_super) {
   }
 
   HumanInputController.prototype.setListeners = function() {
-    var _this = this;
-    $(".Player .Area").droppable({
+    $(".HumanPlayer .Area").droppable({
       drop: this.onCardChangesArea,
       hoverClass: "Active"
     });
     $(".Area").on("mouseover", this.onMouseOverArea);
     $(".Area").on("mouseout", this.onMouseOutArea);
-    $(".Player .CardPile").on("dblclick", this.onDoubleClickArea);
+    $(".HumanPlayer .CardPile").on("dblclick", this.onDoubleClickArea);
     $.contextMenu({
-      selector: ".Player .CardPile",
+      selector: ".HumanPlayer .CardPile",
       items: {
         shuffle: {
           name: "Shuffle",
@@ -55,15 +54,8 @@ HumanInputController = (function(_super) {
         }
       }
     });
-    $(".Chat").on("click", function() {
-      $(".Chat input").focus();
-      return app.gameController.chatController.flashInput();
-    });
-    $(".Chat input").on("keydown", jwerty.event('enter', function(event) {
-      _this.sendChatMsg(event);
-      return $(".Chat input").val("");
-    }));
     this.setKeyboardListeners();
+    this.setChatListeners();
     this.setElementListeners();
     return $(window).on("resize", this.onResize);
   };
@@ -112,6 +104,27 @@ HumanInputController = (function(_super) {
       if (confirm("Are sure you want to reset?")) {
         return app.gameController.reset();
       }
+    }));
+  };
+
+  HumanInputController.prototype.setChatListeners = function() {
+    var _this = this;
+    $(".Chat").on("click", function() {
+      $(".Chat input").focus();
+      return app.gameController.chatController.flashInput();
+    });
+    $(".Chat input").on("keydown", jwerty.event('enter', function(event) {
+      _this.sendChatMsg(event);
+      return $(".Chat input").val("");
+    }));
+    $(".Chat .YourTurn").on("click", this.onPassTurn);
+    return $('body').bind('keyup', jwerty.event('ctrl+space', function() {
+      var params;
+      params = {
+        userName: User.first().name
+      };
+      app.gameController.chatController.renderTurnPassing(params);
+      return _this.onPassTurn();
     }));
   };
 
@@ -215,8 +228,8 @@ HumanInputController = (function(_super) {
     var handOuterHeight;
     console.log("OnResize");
     $(".Playzone").width($("#WebsiteApp").width() - $(".Sidebar").outerWidth());
-    handOuterHeight = $(".Player .Hand").outerHeight() + parseFloat($(".Player .Hand").css("bottom")) + 18;
-    $(".Board").height($(".Player").outerHeight() - handOuterHeight);
+    handOuterHeight = $(".HumanPlayer .Hand").outerHeight() + parseFloat($(".HumanPlayer .Hand").css("bottom")) + 18;
+    $(".Board").height($(".HumanPlayer").outerHeight() - handOuterHeight);
     $(".Board, .Hand").width($(".Deck").offset().left - 20);
     return $(".Conversation").height($(".Playzone").outerHeight() - 20 - (parseFloat($(".Conversation").css("top")) + parseFloat($(".Chat .Input").css("bottom")) + $(".Chat .Input").outerHeight()));
   };

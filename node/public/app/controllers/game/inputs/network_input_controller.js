@@ -10,7 +10,8 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.server = null;
 
   function NetworkInputController() {
-    this.onReceiveChatMsg = __bind(this.onReceiveChatMsg, this);
+    this.onTurnIsReceived = __bind(this.onTurnIsReceived, this);
+    this.onChatMsgIsReceived = __bind(this.onChatMsgIsReceived, this);
     this.onCardFromAreaIsRevealedToggle = __bind(this.onCardFromAreaIsRevealedToggle, this);
     this.onCardIsFlippedDown = __bind(this.onCardIsFlippedDown, this);
     this.onCardIsFlippedUp = __bind(this.onCardIsFlippedUp, this);
@@ -35,7 +36,8 @@ NetworkInputController = (function(_super) {
     this.server.on('onCardIsFlippedDown', this.onCardIsFlippedDown);
     this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
     this.server.on('onCardFromAreaIsRevealedToggle', this.onCardFromAreaIsRevealedToggle);
-    return this.server.on('onReceiveChatMsg', this.onReceiveChatMsg);
+    this.server.on('onChatMsgIsReceived', this.onChatMsgIsReceived);
+    return this.server.on('onTurnIsReceived', this.onTurnIsReceived);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deckData) {
@@ -97,8 +99,13 @@ NetworkInputController = (function(_super) {
     return this.onToggleRevealCardFromArea(params.cardId, areaId);
   };
 
-  NetworkInputController.prototype.onReceiveChatMsg = function(params) {
+  NetworkInputController.prototype.onChatMsgIsReceived = function(params) {
     return app.gameController.chatController.renderChatMsg(params);
+  };
+
+  NetworkInputController.prototype.onTurnIsReceived = function(params) {
+    app.gameController.chatController.renderTurnPassing(params);
+    return app.gameController.humanInputController.onReceiveTurn();
   };
 
   NetworkInputController.prototype.getPlayersAreaIdFromName = function(areaName, player) {

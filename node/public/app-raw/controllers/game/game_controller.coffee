@@ -23,8 +23,8 @@ class GameController extends Spine.Controller
 		this.zoomedCardController = new ZoomedCardController( el: $(".ZoomedCard") )
 		this.cardListerController = new CardListerController( el: $(".CardLister") )
 
-		this.player = new PlayerController( el: $(".Player"), multiplayerController: this.multiplayerController, cardListerController: this.cardListerController )
-		this.opponent = new PlayerController( el: $(".opponent") )
+		this.player = new PlayerController( el: $(".HumanPlayer"), multiplayerController: this.multiplayerController, cardListerController: this.cardListerController )
+		this.opponent = new PlayerController( el: $(".Opponent") )
 
 		this.humanInputController.setTargetPlayer( this.player )
 		this.networkInputController.setTargetPlayer( this.opponent )

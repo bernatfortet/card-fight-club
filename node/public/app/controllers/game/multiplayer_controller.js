@@ -181,9 +181,19 @@ MultiplayerController = (function(_super) {
     };
     this.sendEvent("onSendChatMsg", params);
     if (localServer) {
-      app.gameController.networkInputController.onReceiveChatMsg(params);
+      app.gameController.networkInputController.onChatMsgIsReceived(params);
     }
     return console.log("Player says:  ", params);
+  };
+
+  MultiplayerController.prototype.onPassTurn = function() {
+    var params;
+    params = {};
+    this.sendEvent("onPassTurn", params);
+    if (localServer) {
+      app.gameController.networkInputController.onTurnIsReceived(params);
+    }
+    return console.log("Player Passes Turn  ");
   };
 
   MultiplayerController.prototype.setIdForOpponent = function(id) {

@@ -10,6 +10,8 @@ InputController = (function(_super) {
   InputController.prototype.targetPlayer = null;
 
   function InputController() {
+    this.onReceiveTurn = __bind(this.onReceiveTurn, this);
+    this.onPassTurn = __bind(this.onPassTurn, this);
     this.onDrawCardFromArea = __bind(this.onDrawCardFromArea, this);
     this.onViewCardsFromArea = __bind(this.onViewCardsFromArea, this);
     this.onToggleRevealCardFromArea = __bind(this.onToggleRevealCardFromArea, this);
@@ -96,6 +98,14 @@ InputController = (function(_super) {
 
   InputController.prototype.onDrawCardFromArea = function(areaId) {
     return this.targetPlayer.onDrawCardFromArea(Area.find(areaId));
+  };
+
+  InputController.prototype.onPassTurn = function() {
+    return this.targetPlayer.passTurn();
+  };
+
+  InputController.prototype.onReceiveTurn = function() {
+    return this.targetPlayer.receiveTurn();
   };
 
   return InputController;

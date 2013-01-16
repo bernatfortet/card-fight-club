@@ -60,7 +60,6 @@ class ChatController extends Spine.Controller
 
 		this.renderMsg( params )
 
-
 	renderCardAreaChanges: ( params ) ->
 		previousAreaName = Area.find( Card.find( params.cardId ).areaId ).name
 		areaNamesAreTheSame = previousAreaName == params.areaName
@@ -72,6 +71,11 @@ class ChatController extends Spine.Controller
 			cardName = "a card"
 
 		params.content = " moves #{cardName} from #{previousAreaName} to #{params.areaName}"
+
+		this.renderMsg( params )
+
+	renderTurnPassing: ( params ) ->
+		params.content = " Passes Turn --------------------------"
 
 		this.renderMsg( params )
 

@@ -251,6 +251,17 @@ PlayerController = (function(_super) {
     return this.multiplayerController != null;
   };
 
+  PlayerController.prototype.passTurn = function() {
+    $(".Player").attr("state", "");
+    $(".Opponent").attr("state", "Active");
+    if (this.isPlayerNetworked()) return this.multiplayerController.onPassTurn();
+  };
+
+  PlayerController.prototype.receiveTurn = function() {
+    $(".Player").attr("state", "");
+    return this.el.attr("state", "Active");
+  };
+
   return PlayerController;
 
 })(Spine.Controller);

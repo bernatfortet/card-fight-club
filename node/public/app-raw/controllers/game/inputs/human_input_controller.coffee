@@ -8,7 +8,7 @@ class HumanInputController extends InputController
 
 	setListeners: ->
 
-		$(".Player .Area").droppable({
+		$(".HumanPlayer .Area").droppable({
 			drop: this.onCardChangesArea
 			hoverClass: "Active"
 		})
@@ -16,10 +16,10 @@ class HumanInputController extends InputController
 		$(".Area").on("mouseover", this.onMouseOverArea )
 		$(".Area").on("mouseout", this.onMouseOutArea )
 
-		$(".Player .CardPile").on("dblclick", this.onDoubleClickArea )
+		$(".HumanPlayer .CardPile").on("dblclick", this.onDoubleClickArea )
 
 		$.contextMenu({
-			selector: ".Player .CardPile"
+			selector: ".HumanPlayer .CardPile"
 			items:
 				shuffle:
 					name: "Shuffle"
@@ -36,17 +36,8 @@ class HumanInputController extends InputController
 				#	name: "Put Bottom Card to Top"
 		})
 
-		$(".Chat").on("click", =>
-			$(".Chat input").focus()
-			app.gameController.chatController.flashInput();
-		)
-
-		$(".Chat input").on("keydown", jwerty.event('enter', (event) =>
-			this.sendChatMsg( event )
-			$(".Chat input").val("");
-		))
-
 		this.setKeyboardListeners()
+		this.setChatListeners()
 		this.setElementListeners()
 
 		$(window).on("resize", this.onResize )
@@ -79,6 +70,29 @@ class HumanInputController extends InputController
 		$('body').bind('keyup', jwerty.event('ctrl+R', => 
 			if ( confirm ("Are sure you want to reset?") )
 				app.gameController.reset()
+		));
+
+	setChatListeners: () ->
+		$(".Chat").on("click", =>
+			$(".Chat input").focus()
+			app.gameController.chatController.flashInput();
+		)
+
+		$(".Chat input").on("keydown", jwerty.event('enter', (event) =>
+			this.sendChatMsg( event )
+			$(".Chat input").val("");
+		))
+
+		$(".Chat .YourTurn").on("click", this.onPassTurn )
+
+
+		$('body').bind('keyup', jwerty.event('ctrl+space', => 
+			params = 
+				userName: User.first().name
+
+			app.gameController.chatController.renderTurnPassing( params )
+
+			this.onPassTurn()
 		));
 
 	onAddNCards: ( numCards ) =>
@@ -162,8 +176,8 @@ class HumanInputController extends InputController
 		$(".Playzone").width( $("#WebsiteApp").width() - $(".Sidebar").outerWidth(); )
 
 		#Board Height
-		handOuterHeight = $(".Player .Hand").outerHeight() + parseFloat($(".Player .Hand").css("bottom")) + 18
-		$(".Board").height( $(".Player").outerHeight() - handOuterHeight )
+		handOuterHeight = $(".HumanPlayer .Hand").outerHeight() + parseFloat($(".HumanPlayer .Hand").css("bottom")) + 18
+		$(".Board").height( $(".HumanPlayer").outerHeight() - handOuterHeight )
 
 		#Board and Hand Width
 		$(".Board, .Hand").width( $(".Deck").offset().left - 20	)

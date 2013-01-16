@@ -24,7 +24,8 @@ ChatController = (function(_super) {
     } else if (params.userName) {
       params.player = params.userName;
     }
-    return this.el.find(".Conversation").append($.tmpl(this.template, params));
+    this.el.find(".Conversation").append($.tmpl(this.template, params));
+    return this.el.find(".Conversation").scrollTo(this.el.find(".Conversation").outerHeight());
   };
 
   ChatController.prototype.flashInput = function() {
@@ -89,6 +90,11 @@ ChatController = (function(_super) {
       cardName = "a card";
     }
     params.content = " moves " + cardName + " from " + previousAreaName + " to " + params.areaName;
+    return this.renderMsg(params);
+  };
+
+  ChatController.prototype.renderTurnPassing = function(params) {
+    params.content = " Passes Turn --------------------------";
     return this.renderMsg(params);
   };
 

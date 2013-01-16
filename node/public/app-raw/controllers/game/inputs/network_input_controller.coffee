@@ -18,7 +18,8 @@ class NetworkInputController extends InputController
 		this.server.on 'onCardIsFlippedDown', 				this.onCardIsFlippedDown
 		this.server.on 'onCardAreaIsChanged', 				this.onCardAreaIsChanged
 		this.server.on 'onCardFromAreaIsRevealedToggle', 	this.onCardFromAreaIsRevealedToggle
-		this.server.on 'onReceiveChatMsg', 					this.onReceiveChatMsg
+		this.server.on 'onChatMsgIsReceived', 				this.onChatMsgIsReceived
+		this.server.on 'onTurnIsReceived', 					this.onTurnIsReceived
 
 	onDeckIsCreated: ( deckData ) =>
 		if( this.targetPlayer.deck == null )
@@ -60,8 +61,12 @@ class NetworkInputController extends InputController
 		areaId = this.getPlayersAreaIdFromName( params.areaName, this.targetPlayer )
 		this.onToggleRevealCardFromArea( params.cardId, areaId )
 
-	onReceiveChatMsg: ( params ) =>
+	onChatMsgIsReceived: ( params ) =>
 		app.gameController.chatController.renderChatMsg( params )
+
+	onTurnIsReceived: ( params ) =>
+		app.gameController.chatController.renderTurnPassing( params )
+		app.gameController.humanInputController.onReceiveTurn()
 
 	getPlayersAreaIdFromName: ( areaName, player ) ->
 		areaId = null

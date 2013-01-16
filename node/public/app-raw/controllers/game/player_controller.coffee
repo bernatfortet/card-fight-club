@@ -169,4 +169,14 @@ class PlayerController extends Spine.Controller
 
 	isPlayerNetworked: ->
 		return this.multiplayerController?
-	# getCardPercentPosX: ( cardModel ) ->
+
+	passTurn: ->
+		$(".Player").attr("state", "")
+		$(".Opponent").attr("state", "Active")
+
+		this.multiplayerController.onPassTurn() if this.isPlayerNetworked()
+
+	receiveTurn: ->
+		$(".Player").attr("state", "")
+		this.el.attr("state", "Active")
+

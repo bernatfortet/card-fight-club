@@ -90,7 +90,13 @@ var Multiplayer = {
 			user.on('onSendChatMsg', function( data ) {
 				user.get('roomId', function(err, roomId){
 					console.log( "onReceiveChatMsg ");
-					user.broadcast.to(roomId).emit( "onReceiveChatMsg", data );
+					user.broadcast.to(roomId).emit( "onChatMsgIsReceived", data );
+				});
+			});
+			user.on('onPassTurn', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onPassTurn ");
+					user.broadcast.to(roomId).emit( "onTurnIsReceived", data );
 				});
 			});
 

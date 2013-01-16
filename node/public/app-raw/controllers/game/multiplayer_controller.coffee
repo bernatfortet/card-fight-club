@@ -137,9 +137,17 @@ class MultiplayerController extends Spine.Controller
 
 		this.sendEvent( "onSendChatMsg", params )
 
-		app.gameController.networkInputController.onReceiveChatMsg( params ) if localServer
+		app.gameController.networkInputController.onChatMsgIsReceived( params ) if localServer
 		console.log( "Player says:  ", params );
 
+	onPassTurn: () ->
+		params = {}
+		this.sendEvent( "onPassTurn", params )
+
+		app.gameController.networkInputController.onTurnIsReceived( params ) if localServer
+		console.log( "Player Passes Turn  " );
+
+	#Tools
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")
 			id = "o".concat( id )

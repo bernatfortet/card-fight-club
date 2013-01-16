@@ -35,12 +35,12 @@ GameController = (function(_super) {
       el: $(".CardLister")
     });
     this.player = new PlayerController({
-      el: $(".Player"),
+      el: $(".HumanPlayer"),
       multiplayerController: this.multiplayerController,
       cardListerController: this.cardListerController
     });
     this.opponent = new PlayerController({
-      el: $(".opponent")
+      el: $(".Opponent")
     });
     this.humanInputController.setTargetPlayer(this.player);
     this.networkInputController.setTargetPlayer(this.opponent);

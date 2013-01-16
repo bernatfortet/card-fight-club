@@ -36,6 +36,8 @@ html(lange="en")
 					.logo.Logo
 					.chat.Chat
 						.conversation.Conversation
+						.your-turn.YourTurn
+							span Your Turn
 						.input.Input
 							.background.flash.Flash
 							input( type="text", placeholder="Send Message" )
@@ -68,7 +70,7 @@ html(lange="en")
 						.button.MoveToBottom move To Bottom
 
 
-					.player.opponent.Opponent
+					.player.opponent.Player.Opponent
 						.cards.area.Cards
 						.deck.area.cardpile.Deck.Area.CardPile(data-isEmpty="true")
 						.hand.area.Hand(data-isEmpty="true")
@@ -77,7 +79,7 @@ html(lange="en")
 						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
 						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")
 
-					.player.Player
+					.player.Player.HumanPlayer
 						.cards.area.Cards
 						.deck.area.cardpile.Deck.Area.CardPile(data-isEmpty="true")
 						.hand.area.Hand.Area(data-isEmpty="true")
