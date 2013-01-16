@@ -71,8 +71,8 @@ var Multiplayer = {
 			});
 			user.on('onFlipCardDown', function( data ) {
 				user.get('roomId', function(err, roomId){
-					user.broadcast.to(roomId).emit( "onCardIsFlippedDown", data );
 					console.log( "onCardIsFlippedDown ");
+					user.broadcast.to(roomId).emit( "onCardIsFlippedDown", data );
 				});
 			});
 			user.on('onCardChangesArea', function( data ) {
@@ -89,14 +89,20 @@ var Multiplayer = {
 			});
 			user.on('onSendChatMsg', function( data ) {
 				user.get('roomId', function(err, roomId){
-					console.log( "onReceiveChatMsg ");
+					console.log( "onChatMsgIsReceived ");
 					user.broadcast.to(roomId).emit( "onChatMsgIsReceived", data );
 				});
 			});
 			user.on('onPassTurn', function( data ) {
 				user.get('roomId', function(err, roomId){
-					console.log( "onPassTurn ");
+					console.log( "onTurnIsReceived ");
 					user.broadcast.to(roomId).emit( "onTurnIsReceived", data );
+				});
+			});
+			user.on('onThrowDice', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onDiceIsThrown ");
+					user.broadcast.to(roomId).emit( "onDiceIsThrown", data );
 				});
 			});
 

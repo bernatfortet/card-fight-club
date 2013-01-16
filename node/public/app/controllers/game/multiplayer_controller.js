@@ -196,6 +196,18 @@ MultiplayerController = (function(_super) {
     return console.log("Player Passes Turn  ");
   };
 
+  MultiplayerController.prototype.onThrowDice = function(diceResult) {
+    var params;
+    params = {
+      diceResult: diceResult
+    };
+    this.sendEvent("onThrowDice", params);
+    if (localServer) {
+      app.gameController.networkInputController.onDiceIsThrown(params);
+    }
+    return console.log("Player Throws Dice ", diceResult);
+  };
+
   MultiplayerController.prototype.setIdForOpponent = function(id) {
     if (id[0] !== "o") id = "o".concat(id);
     return id;

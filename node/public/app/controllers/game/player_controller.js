@@ -265,12 +265,16 @@ PlayerController = (function(_super) {
       diceResult: diceResult
     };
     app.gameController.chatController.renderThrowDice(params);
-    return app.gameController.soundController.playSound("throwDice");
+    app.gameController.soundController.playSound("throwDice");
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onThrowDice(diceResult);
+    }
   };
 
   PlayerController.prototype.receiveTurn = function() {
     $(".Player").attr("state", "");
-    return this.el.attr("state", "Active");
+    this.el.attr("state", "Active");
+    return app.gameController.soundController.playSound("receiveTurn");
   };
 
   PlayerController.prototype.getRandomInt = function(min, max) {

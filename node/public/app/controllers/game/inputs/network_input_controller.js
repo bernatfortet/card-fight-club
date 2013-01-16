@@ -10,6 +10,7 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.server = null;
 
   function NetworkInputController() {
+    this.onDiceIsThrown = __bind(this.onDiceIsThrown, this);
     this.onTurnIsReceived = __bind(this.onTurnIsReceived, this);
     this.onChatMsgIsReceived = __bind(this.onChatMsgIsReceived, this);
     this.onCardFromAreaIsRevealedToggle = __bind(this.onCardFromAreaIsRevealedToggle, this);
@@ -37,7 +38,8 @@ NetworkInputController = (function(_super) {
     this.server.on('onCardAreaIsChanged', this.onCardAreaIsChanged);
     this.server.on('onCardFromAreaIsRevealedToggle', this.onCardFromAreaIsRevealedToggle);
     this.server.on('onChatMsgIsReceived', this.onChatMsgIsReceived);
-    return this.server.on('onTurnIsReceived', this.onTurnIsReceived);
+    this.server.on('onTurnIsReceived', this.onTurnIsReceived);
+    return this.server.on('onDiceIsThrown', this.onDiceIsThrown);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deckData) {
@@ -106,6 +108,11 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.onTurnIsReceived = function(params) {
     app.gameController.chatController.renderTurnPassing(params);
     return app.gameController.humanInputController.onReceiveTurn();
+  };
+
+  NetworkInputController.prototype.onDiceIsThrown = function(params) {
+    app.gameController.chatController.renderThrowDice(params);
+    return app.gameController.soundController.playSound("throwDice");
   };
 
   NetworkInputController.prototype.getPlayersAreaIdFromName = function(areaName, player) {

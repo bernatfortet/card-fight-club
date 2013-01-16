@@ -147,6 +147,14 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onTurnIsReceived( params ) if localServer
 		console.log( "Player Passes Turn  " );
 
+	onThrowDice: ( diceResult ) ->
+		params =
+			diceResult: diceResult
+		this.sendEvent( "onThrowDice", params )
+
+		app.gameController.networkInputController.onDiceIsThrown( params ) if localServer
+		console.log( "Player Throws Dice ", diceResult );
+
 	#Tools
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")

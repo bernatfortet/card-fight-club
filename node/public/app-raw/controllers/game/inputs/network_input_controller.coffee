@@ -20,6 +20,7 @@ class NetworkInputController extends InputController
 		this.server.on 'onCardFromAreaIsRevealedToggle', 	this.onCardFromAreaIsRevealedToggle
 		this.server.on 'onChatMsgIsReceived', 				this.onChatMsgIsReceived
 		this.server.on 'onTurnIsReceived', 					this.onTurnIsReceived
+		this.server.on 'onDiceIsThrown', 					this.onDiceIsThrown
 
 	onDeckIsCreated: ( deckData ) =>
 		if( this.targetPlayer.deck == null )
@@ -67,6 +68,10 @@ class NetworkInputController extends InputController
 	onTurnIsReceived: ( params ) =>
 		app.gameController.chatController.renderTurnPassing( params )
 		app.gameController.humanInputController.onReceiveTurn()
+
+	onDiceIsThrown: ( params ) =>
+		app.gameController.chatController.renderThrowDice( params )
+		app.gameController.soundController.playSound("throwDice")
 
 	getPlayersAreaIdFromName: ( areaName, player ) ->
 		areaId = null

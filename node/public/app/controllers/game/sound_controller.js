@@ -12,7 +12,7 @@ SoundController = (function(_super) {
 		</div>\
 	';
 
-  SoundController.prototype.soundList = new Array("flipCard", "shuffleDeck", "throwDice");
+  SoundController.prototype.soundList = new Array("flipCard", "shuffleDeck", "throwDice", "receiveTurn");
 
   function SoundController() {
     var index;

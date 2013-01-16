@@ -9,6 +9,7 @@ class SoundController extends Spine.Controller
 		"flipCard"
 		"shuffleDeck"
 		"throwDice"
+		"receiveTurn"
 	)
 
 	constructor: ->
