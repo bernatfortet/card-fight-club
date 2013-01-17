@@ -10,6 +10,8 @@ AreaController = (function(_super) {
 
   AreaController.prototype.isTopCardRevealed = false;
 
+  AreaController.prototype.topCard = null;
+
   function AreaController() {
     AreaController.__super__.constructor.apply(this, arguments);
   }
@@ -33,10 +35,12 @@ AreaController = (function(_super) {
   AreaController.prototype.toggleRevealTopCard = function(cardModel) {
     if (this.isTopCardRevealed) {
       this.el.css("background-image", 'url("../images/back.jpg")');
-      return this.isTopCardRevealed = false;
+      this.isTopCardRevealed = false;
+      return this.topCard = null;
     } else {
       this.el.css("background-image", 'url("' + cardModel.image_url + '")');
-      return this.isTopCardRevealed = true;
+      this.isTopCardRevealed = true;
+      return this.topCard = cardModel;
     }
   };
 
@@ -57,9 +61,7 @@ AreaController = (function(_super) {
   };
 
   AreaController.prototype.onMouseOver = function() {
-    if (this.isTopCardRevealed) {
-      return this.player.zoomCardIn(this.item.getTopCard());
-    }
+    if (this.isTopCardRevealed) return this.player.zoomCardIn(this.topCard);
   };
 
   AreaController.prototype.onMouseOut = function() {

@@ -13,6 +13,10 @@ ChatController = (function(_super) {
 		</div>\
 	';
 
+  ChatController.prototype.elements = {
+    ".Conversation": "conversation"
+  };
+
   function ChatController() {
     this.renderThrowDice = __bind(this.renderThrowDice, this);
     this.renderChatMsg = __bind(this.renderChatMsg, this);
@@ -26,8 +30,9 @@ ChatController = (function(_super) {
     } else if (params.userName) {
       params.player = params.userName;
     }
-    this.el.find(".Conversation").append($.tmpl(this.template, params));
-    return this.el.find(".Conversation").scrollTo(this.el.find(".Conversation").outerHeight());
+    this.conversation.append($.tmpl(this.template, params));
+    this.conversation.scrollTo("100%");
+    return this.el.find(".msg").last().attr("state", "Seen");
   };
 
   ChatController.prototype.flashInput = function() {

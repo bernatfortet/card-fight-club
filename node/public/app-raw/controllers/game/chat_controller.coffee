@@ -5,6 +5,10 @@ class ChatController extends Spine.Controller
 		</div>
 	'
 	#<div class="divider"></div>
+
+	elements:
+		".Conversation": "conversation"
+
 	constructor: ->
 		super
 
@@ -14,8 +18,11 @@ class ChatController extends Spine.Controller
 		else if( params.userName )
 			params.player = params.userName
 
-		this.el.find(".Conversation").append( $.tmpl( this.template, params ) )
-		this.el.find(".Conversation").scrollTo( this.el.find(".Conversation").outerHeight() )
+		this.conversation.append( $.tmpl( this.template, params ) )
+
+
+		this.conversation.scrollTo( "100%" );
+		this.el.find(".msg").last().attr("state", "Seen")
 
 	flashInput: () =>
 		this.el.find(".Flash").attr("state", "Shown")

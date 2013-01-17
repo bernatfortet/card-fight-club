@@ -102,7 +102,8 @@ body{ z-index: -2; background-color:#1e1d24;  }
 	}
 	.chat{ 
 		.conversation{ width:189px; height:77%; .abs; left:10px; top:120px; overflow-y:scroll; }
-			.msg{ width:100%; margin-bottom:2px; color:darken(white, 30%); .fs(9px, 12px); font-family: Verdana, "sans-serif";
+			.msg{ width:100%; margin-bottom:2px; color:darken(white, 30%); .fs(9px, 12px); font-family: Verdana, "sans-serif"; .op(1); .anim;
+				&[state="Seen"]{ .op(0.5); .anim(8000ms);}
 				.player{ color:darken(white, 60%); }
 				.action{ }
 				.content{}

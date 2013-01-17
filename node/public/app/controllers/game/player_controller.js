@@ -254,7 +254,14 @@ PlayerController = (function(_super) {
   PlayerController.prototype.passTurn = function() {
     $(".Player").attr("state", "");
     $(".Opponent").attr("state", "Active");
+    app.gameController.soundController.playSound("receiveTurn");
     if (this.isPlayerNetworked()) return this.multiplayerController.onPassTurn();
+  };
+
+  PlayerController.prototype.receiveTurn = function() {
+    $(".Player").attr("state", "");
+    this.el.attr("state", "Active");
+    return app.gameController.soundController.playSound("receiveTurn");
   };
 
   PlayerController.prototype.throwDice = function() {
@@ -269,12 +276,6 @@ PlayerController = (function(_super) {
     if (this.isPlayerNetworked()) {
       return this.multiplayerController.onThrowDice(diceResult);
     }
-  };
-
-  PlayerController.prototype.receiveTurn = function() {
-    $(".Player").attr("state", "");
-    this.el.attr("state", "Active");
-    return app.gameController.soundController.playSound("receiveTurn");
   };
 
   PlayerController.prototype.getRandomInt = function(min, max) {

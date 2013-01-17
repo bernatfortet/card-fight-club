@@ -174,7 +174,13 @@ class PlayerController extends Spine.Controller
 		$(".Player").attr("state", "")
 		$(".Opponent").attr("state", "Active")
 
+		app.gameController.soundController.playSound("receiveTurn") #Play sound on passTurn
 		this.multiplayerController.onPassTurn() if this.isPlayerNetworked()
+
+	receiveTurn: ->
+		$(".Player").attr("state", "")
+		this.el.attr("state", "Active")
+		app.gameController.soundController.playSound("receiveTurn")
 
 	throwDice: ->
 		diceResult = this.getRandomInt( 1, 6 )
@@ -188,10 +194,6 @@ class PlayerController extends Spine.Controller
 
 		this.multiplayerController.onThrowDice( diceResult ) if this.isPlayerNetworked()
 
-	receiveTurn: ->
-		$(".Player").attr("state", "")
-		this.el.attr("state", "Active")
-		app.gameController.soundController.playSound("receiveTurn")
 
 	getRandomInt: ( min, max ) ->
 		Math.floor(Math.random() * (max - min + 1)) + min;
