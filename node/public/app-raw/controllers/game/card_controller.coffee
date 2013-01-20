@@ -11,9 +11,9 @@ class CardController extends Spine.Controller
 
 	render: ->
 		this.el = ( $("#"+this.template).tmpl( this.item ) )
-		this.setCardZindex()
+		this.setZindex()
 
-	setCardZindex: ->
+	setZindex: ->
 		this.el.css("z-index", parseInt( $(".Card").last().css("zIndex") ) + 1)
 
 	move: ( posX, posY ) ->
@@ -23,7 +23,7 @@ class CardController extends Spine.Controller
 	getLocation: ->
 		xCenterPoint = this.el.offset().left
 		yCenterPoint = this.el.offset().top + this.el.children().outerHeight()
-		cardLocation =
+		location =
 			x: xCenterPoint / $(window).width()
 			y: yCenterPoint / $(window).height()
 

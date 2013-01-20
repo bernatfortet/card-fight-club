@@ -47,7 +47,8 @@ GameController = (function(_super) {
     this.player.setDeck(User.first().deck);
     this.humanInputController.setListeners();
     this.humanInputController.onResize();
-    return this.showGameBoard();
+    this.showGameBoard();
+    if (localServer && debugApp) return this.callDebugMethods();
   };
 
   GameController.prototype.reset = function() {
@@ -71,6 +72,10 @@ GameController = (function(_super) {
   GameController.prototype.showGameBoard = function() {
     $("#Game").addClass("active");
     return $(".Loading").remove();
+  };
+
+  GameController.prototype.callDebugMethods = function() {
+    return app.gameController.humanInputController.createCounter();
   };
 
   return GameController;

@@ -239,18 +239,6 @@ PlayerController = (function(_super) {
     return this.cardListerController.showCardsFromArea(Area.find(areaId));
   };
 
-  PlayerController.prototype.setCardListeners = function(cardEl) {
-    return app.gameController.humanInputController.setCardListeners(cardEl);
-  };
-
-  PlayerController.prototype.setCardHoverListener = function(cardEl) {
-    return app.gameController.humanInputController.setCardHoverListener(cardEl);
-  };
-
-  PlayerController.prototype.isPlayerNetworked = function() {
-    return this.multiplayerController != null;
-  };
-
   PlayerController.prototype.passTurn = function() {
     $(".Player").attr("state", "");
     $(".Opponent").attr("state", "Active");
@@ -278,8 +266,56 @@ PlayerController = (function(_super) {
     }
   };
 
+  PlayerController.prototype.addCounter = function(counterModel) {
+    var counterController;
+    counterController = new CounterController({
+      item: counterModel
+    });
+    counterModel.setController(counterController);
+    if (this.isPlayerNetworked()) {
+      this.multiplayerController.onCreateCounter(counterModel);
+      this.setCounterListeners(counterController.el);
+    }
+    return this.renderCounter(counterController.el);
+  };
+
+  PlayerController.prototype.renderCounter = function(counterEl) {
+    return this.el.find(".Counters").append(counterEl);
+  };
+
+  PlayerController.prototype.removeCounter = function(counterModel) {
+    counterModel.controller.el.remove();
+    counterModel.controller = null;
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onRemoveCounter(counterModel);
+    }
+  };
+
+  PlayerController.prototype.moveCounter = function(counterModel, location) {
+    counterModel.controller.move(location.x, location.y);
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onMoveCounter(counterModel);
+    }
+  };
+
+  PlayerController.prototype.setCardListeners = function(cardElement) {
+    return app.gameController.humanInputController.setCardListeners(cardElement);
+  };
+
+  PlayerController.prototype.setCounterListeners = function(counterElement) {
+    return app.gameController.humanInputController.setCounterListener(counterElement);
+  };
+
+  PlayerController.prototype.setCardHoverListener = function(cardEl) {
+    return app.gameController.humanInputController.setCardHoverListener(cardEl);
+  };
+
   PlayerController.prototype.getRandomInt = function(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  PlayerController.prototype.isPlayerNetworked = function() {
+    return this.multiplayerController != null;
   };
 
   return PlayerController;

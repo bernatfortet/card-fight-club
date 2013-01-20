@@ -144,6 +144,7 @@ class PlayerController extends Spine.Controller
 	zoomCardOut: () ->
 		app.gameController.zoomedCardController.zoomOut()
 
+	# Area
 	shuffleArea: ( areaId ) ->
 		areaModel = Area.find( areaId )
 		areaModel.shuffle()
@@ -161,14 +162,7 @@ class PlayerController extends Spine.Controller
 	showCardsFromArea: ( areaId ) ->
 		this.cardListerController.showCardsFromArea( Area.find( areaId ) )
 
-	setCardListeners: ( cardEl ) ->
-		app.gameController.humanInputController.setCardListeners( cardEl )
 
-	setCardHoverListener: ( cardEl ) ->
-		app.gameController.humanInputController.setCardHoverListener( cardEl )
-
-	isPlayerNetworked: ->
-		return this.multiplayerController?
 
 	passTurn: ->
 		$(".Player").attr("state", "")
@@ -195,7 +189,42 @@ class PlayerController extends Spine.Controller
 		this.multiplayerController.onThrowDice( diceResult ) if this.isPlayerNetworked()
 
 
+	# Counters
+	addCounter: ( counterModel ) ->
+		counterController = new CounterController( item: counterModel )
+		counterModel.setController( counterController )
+
+		if ( this.isPlayerNetworked() ) #TODO should all players be able to set and move counters? 
+			this.multiplayerController.onCreateCounter( counterModel )
+			this.setCounterListeners( counterController.el )
+
+		this.renderCounter( counterController.el )
+
+	renderCounter: ( counterEl ) ->
+		this.el.find(".Counters").append( counterEl )
+
+	removeCounter: ( counterModel ) ->
+		counterModel.controller.el.remove()
+		counterModel.controller = null
+		this.multiplayerController.onRemoveCounter( counterModel ) if this.isPlayerNetworked()
+
+	moveCounter: ( counterModel, location ) ->
+		counterModel.controller.move( location.x, location.y )
+		this.multiplayerController.onMoveCounter( counterModel ) if this.isPlayerNetworked()
+
+
+	# Utils
+	setCardListeners: ( cardElement ) ->
+		app.gameController.humanInputController.setCardListeners( cardElement )
+
+	setCounterListeners: ( counterElement ) ->
+		app.gameController.humanInputController.setCounterListener( counterElement )
+
+	setCardHoverListener: ( cardEl ) ->
+		app.gameController.humanInputController.setCardHoverListener( cardEl )
+
 	getRandomInt: ( min, max ) ->
 		Math.floor(Math.random() * (max - min + 1)) + min;
 
-
+	isPlayerNetworked: ->
+			return this.multiplayerController?

@@ -1,4 +1,5 @@
 var MultiplayerController,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -11,7 +12,10 @@ MultiplayerController = (function(_super) {
   MultiplayerController.prototype.local = false;
 
   function MultiplayerController() {
-    MultiplayerController.__super__.constructor.apply(this, arguments);
+    this.onSetCounter = __bind(this.onSetCounter, this);
+    this.onMoveCounter = __bind(this.onMoveCounter, this);
+    this.onRemoveCounter = __bind(this.onRemoveCounter, this);
+    this.onCreateCounter = __bind(this.onCreateCounter, this);    MultiplayerController.__super__.constructor.apply(this, arguments);
     this.server = io.connect('http:' + serverIp + ':8080');
   }
 
@@ -206,6 +210,63 @@ MultiplayerController = (function(_super) {
       app.gameController.networkInputController.onDiceIsThrown(params);
     }
     return console.log("Player Throws Dice ", diceResult);
+  };
+
+  MultiplayerController.prototype.onCreateCounter = function(counterModel) {
+    var counterId, params;
+    counterId = this.setIdForOpponent(counterModel.id);
+    params = {
+      counterId: counterId,
+      attached_card_id: counterModel.attachedCardId != null
+    };
+    this.sendEvent("onCreateCounter", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCounterIsCreated(params);
+    }
+    return console.log("Counter is Created", params);
+  };
+
+  MultiplayerController.prototype.onRemoveCounter = function(counterModel) {
+    var opponentCounterId, params;
+    opponentCounterId = this.setIdForOpponent(counterModel.id);
+    params = {
+      counterId: opponentCounterId
+    };
+    this.sendEvent("onRemoveCounter", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCounterIsRemoved(params);
+    }
+    return console.log("Card has been Removed ", params);
+  };
+
+  MultiplayerController.prototype.onMoveCounter = function(counterModel) {
+    var invertedLocation, opponentCounterId, params;
+    invertedLocation = counterModel.controller.getLocation();
+    invertedLocation.y = 1 - invertedLocation.y;
+    opponentCounterId = this.setIdForOpponent(counterModel.id);
+    params = {
+      counterId: opponentCounterId,
+      location: invertedLocation
+    };
+    this.sendEvent("onMoveCounter", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCounterIsMoved(params);
+    }
+    return console.log("Counter has moved ", opponentCounterId);
+  };
+
+  MultiplayerController.prototype.onSetCounter = function(counterModel) {
+    var opponentCounterId, params;
+    opponentCounterId = this.setIdForOpponent(counterModel.id);
+    params = {
+      counterId: opponentCounterId,
+      counterNumber: counterModel.number
+    };
+    this.sendEvent("onSetCounter", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCounterIsSet(params);
+    }
+    return console.log("Counter has moved ", opponentCounterId);
   };
 
   MultiplayerController.prototype.setIdForOpponent = function(id) {

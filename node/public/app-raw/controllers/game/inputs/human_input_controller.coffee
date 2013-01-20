@@ -50,7 +50,7 @@ class HumanInputController extends InputController
 			stack: ".Card"
 		})
 		cardElement.on("dblclick", this.onDoubleClickCard )
-		cardElement.on("contextmenu", this.onRightMouseClick )
+		cardElement.on("contextmenu", this.onRightMouseClickCard )
 
 		this.setCardHoverListener( cardElement )
 
@@ -68,8 +68,7 @@ class HumanInputController extends InputController
 		$('body').bind('keyup', jwerty.event('ctrl+7', => this.onAddNCards(7) ));
 
 		$('body').bind('keyup', jwerty.event('ctrl+M', (event) =>
-			#if ( confirm ("Are sure you want to reset?") )
-				app.gameController.reset()
+			app.gameController.reset()
 		));
 
 	setChatListeners: () ->
@@ -96,8 +95,6 @@ class HumanInputController extends InputController
 		));
 
 	setElementListeners: () ->
-		$(".Draggable").draggable();
-
 		$(".NumberA input").on("keydown", jwerty.event('enter', (event) =>
 			this.onSubmitNumber( event )
 		))
@@ -106,11 +103,22 @@ class HumanInputController extends InputController
 
 		$(".Dice").on("click", this.onThrowDice )
 
+	setCounterListener: ( counterElement ) ->
+		counterElement.draggable({
+			stop: this.onCounterDragStops
+			snap: ".Card"
+			snapMode: "inner"
+			stack: ".Counter"
+		})
+		counterElement.on("dblclick", this.onDoubleClickCounter )
+		#TODO when input changes triggerSet
+
+
 	onAddNCards: ( numCards ) =>
 		for iCounter in [0...numCards]
 			this.onDrawCardFromArea( this.targetPlayer.deckArea.id )
 
-	onRightMouseClick: ( event ) =>
+	onRightMouseClickCard: ( event ) =>
 		RIGHT_MOUSE_BUTTON = 3
 		if( event.which == RIGHT_MOUSE_BUTTON )
 			if( !debugApp )
@@ -119,18 +127,18 @@ class HumanInputController extends InputController
 			tapState = $(event.currentTarget).attr("data-tapped")
 
 			if( tapState == "true")
-				this.onUntapCard( this.getCardId( event.currentTarget ) )
+				this.onUntapCard( this.getTargetObjectId( event.currentTarget ) )
 			else
-				this.onTapCard( this.getCardId( event.currentTarget ) )
+				this.onTapCard( this.getTargetObjectId( event.currentTarget ) )
 
 			
 
 	onDoubleClickCard: ( event ) =>
 		flipState = $(event.currentTarget).attr("data-flipped")
 		if( flipState == "up")
-			this.onFlipCardDown( this.getCardId( event.currentTarget ) )
+			this.onFlipCardDown( this.getTargetObjectId( event.currentTarget ) )
 		else
-			this.onFlipCardUp( this.getCardId( event.currentTarget ) )
+			this.onFlipCardUp( this.getTargetObjectId( event.currentTarget ) )
 
 	onDoubleClickArea: ( event ) =>
 		areaId = $(event.target).data().areaId
@@ -145,15 +153,16 @@ class HumanInputController extends InputController
 		Area.find( areaId ).controller.onMouseOut()
 
 	onCardDragStops: ( event, ui )  =>
-		cardPosition = ui.position # TODO Consider Changing this to something like Card.find(this.getCardId()).position
+		cardPosition = ui.position
 		location = 
 			x: ui.position.left / $(window).width()
 			y: ui.position.top / $(window).height()
-		this.onMoveCard( this.getCardId( event.target ), location )	
+		this.onMoveCard( this.getTargetObjectId( event.target ), location )	
 
 	onCardChangesArea: ( event, ui ) =>
-		areaId = $(event.target).data().areaId
-		this.onChangeCardArea( this.getCardId( ui.draggable ), areaId )
+		if( $(ui.draggable).hasClass(".Card") )
+			areaId = $(event.target).data().areaId
+			this.onChangeCardArea( this.getTargetObjectId( ui.draggable ), areaId )
 
 	onTopCardFromAreaIsRevealedToggle: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId
@@ -161,7 +170,7 @@ class HumanInputController extends InputController
 
 	onMouseOverCard: ( event ) =>
 		this.activeCard = event.currentTarget
-		this.onZoomCardIn( this.getCardId( this.activeCard ))
+		this.onZoomCardIn( this.getTargetObjectId( this.activeCard ))
 
 	onMouseOutCard: ( event ) =>
 		this.activeCard = null
@@ -192,6 +201,21 @@ class HumanInputController extends InputController
 			)
 		) 
 
+
+	# Counters
+	createCounter: () ->
+		counterModel = Counter.create( number:0,  attached_card_id: null, controller: null )
+		this.onCreateCounter( counterModel )
+
+	onCounterDragStops: ( event, ui )  =>
+		counterPosition = ui.position
+		location = 
+			x: ui.position.left / $(window).width()
+			y: ui.position.top / $(window).height()
+		this.onMoveCounter( this.getTargetObjectId( event.target ), location )	
+
+
+	# Chat
 	sendChatMsg: ( event ) =>
 		msg = $(event.target).val()
 		params = 
@@ -201,6 +225,8 @@ class HumanInputController extends InputController
 		app.gameController.chatController.renderChatMsg( params )
 		app.gameController.multiplayerController.onSendChatMsg( msg )
 
-	getCardId: ( cardTarget ) ->
-		card = $(cardTarget)
-		cardId = card.data().id
+
+	# Utils
+	getTargetObjectId: ( target ) ->
+		target = $(target)
+		targetId = target.data().id

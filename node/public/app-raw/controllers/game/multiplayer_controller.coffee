@@ -7,6 +7,7 @@ class MultiplayerController extends Spine.Controller
 
 		this.server = io.connect('http:'+serverIp+':8080')
 
+	# Deck
 	onCreateDeck: ( deckModel ) ->
 		cards = new Object
 		iCounter = 0
@@ -29,6 +30,8 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onDeckIsCreated( params ) if localServer
 		console.log("Deck is Created", params );
 
+
+	# Cards
 	onCreateCard: ( cardModel ) ->
 		cardId = this.setIdForOpponent( cardModel.id )
 		params = 
@@ -116,6 +119,8 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onCardIsFlippedDown( params ) if localServer
 		console.log( "Card has flipped Down ", params );
 
+
+	# Areas
 	onShuffle: ( area ) ->
 		#this.sendEvent( "onMoveCard", area )
 		console.log( "Area has shuffled ", area.name, area.id);
@@ -130,6 +135,8 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onCardFromAreaIsRevealedToggle( params ) if localServer
 		console.log( "Area has revealed top card ", params );
 
+
+	# Chat
 	onSendChatMsg: ( msg ) ->
 		params =
 			userName: User.first().name
@@ -140,6 +147,8 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onChatMsgIsReceived( params ) if localServer
 		console.log( "Player says:  ", params );
 
+
+	# Gameplay
 	onPassTurn: () ->
 		params = {}
 		this.sendEvent( "onPassTurn", params )
@@ -155,7 +164,55 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onDiceIsThrown( params ) if localServer
 		console.log( "Player Throws Dice ", diceResult );
 
-	#Tools
+	# Counters
+	onCreateCounter: ( counterModel ) =>
+		counterId = this.setIdForOpponent( counterModel.id )
+
+		params = 
+			counterId: counterId
+			attached_card_id: counterModel.attachedCardId?
+
+		this.sendEvent( "onCreateCounter", params )
+		app.gameController.networkInputController.onCounterIsCreated( params ) if localServer
+
+		console.log("Counter is Created", params );
+
+	onRemoveCounter: ( counterModel ) =>
+		opponentCounterId = this.setIdForOpponent( counterModel.id )
+		params = 
+			counterId: opponentCounterId
+
+		this.sendEvent( "onRemoveCounter", params )
+
+		app.gameController.networkInputController.onCounterIsRemoved( params ) if localServer
+		console.log( "Card has been Removed ", params );
+
+	onMoveCounter: ( counterModel ) =>
+		invertedLocation = counterModel.controller.getLocation()
+		invertedLocation.y = 1 - invertedLocation.y
+		opponentCounterId = this.setIdForOpponent( counterModel.id )
+
+		params =
+			counterId: opponentCounterId
+			location: invertedLocation
+		this.sendEvent( "onMoveCounter", params )
+
+		app.gameController.networkInputController.onCounterIsMoved( params ) if localServer
+		console.log( "Counter has moved ", opponentCounterId );
+
+	onSetCounter: ( counterModel ) =>	
+		opponentCounterId = this.setIdForOpponent( counterModel.id )
+		params =
+			counterId: opponentCounterId
+			counterNumber: counterModel.number
+
+		this.sendEvent( "onSetCounter", params )
+
+		app.gameController.networkInputController.onCounterIsSet( params ) if localServer
+		console.log( "Counter has moved ", opponentCounterId );
+
+
+	# Utils
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")
 			id = "o".concat( id )

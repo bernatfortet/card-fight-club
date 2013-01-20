@@ -35,6 +35,8 @@ class GameController extends Spine.Controller
 		this.humanInputController.onResize()
 		this.showGameBoard()
 
+		this.callDebugMethods() if localServer && debugApp
+
 	reset: ->
 		for card in Card.all()
 			cardArea = Area.find( card.areaId )
@@ -48,3 +50,6 @@ class GameController extends Spine.Controller
 	showGameBoard: ->
 		$("#Game").addClass("active") #Use Spine sections
 		$(".Loading").remove() #Use Spine sections
+
+	callDebugMethods: ->
+		app.gameController.humanInputController.createCounter()

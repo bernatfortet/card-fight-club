@@ -27,10 +27,10 @@ CardController = (function(_super) {
 
   CardController.prototype.render = function() {
     this.el = $("#" + this.template).tmpl(this.item);
-    return this.setCardZindex();
+    return this.setZindex();
   };
 
-  CardController.prototype.setCardZindex = function() {
+  CardController.prototype.setZindex = function() {
     return this.el.css("z-index", parseInt($(".Card").last().css("zIndex")) + 1);
   };
 
@@ -40,10 +40,10 @@ CardController = (function(_super) {
   };
 
   CardController.prototype.getLocation = function() {
-    var cardLocation, xCenterPoint, yCenterPoint;
+    var location, xCenterPoint, yCenterPoint;
     xCenterPoint = this.el.offset().left;
     yCenterPoint = this.el.offset().top + this.el.children().outerHeight();
-    return cardLocation = {
+    return location = {
       x: xCenterPoint / $(window).width(),
       y: yCenterPoint / $(window).height()
     };

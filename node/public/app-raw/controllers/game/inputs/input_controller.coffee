@@ -8,9 +8,13 @@ class InputController extends Spine.Controller
 	setTargetPlayer: ( targetPlayer ) ->
 		this.targetPlayer = targetPlayer
 
+
+	#Deck Model
 	onCreateDeck: ( deckData ) =>
 		this.targetPlayer.setDeck( deckData );
 
+
+	#Cards
 	onCreateCard: ( cardModel ) =>
 		this.targetPlayer.addCard( cardModel );
 
@@ -19,6 +23,9 @@ class InputController extends Spine.Controller
 		
 	onMoveCard: ( cardId, location ) ->
 		this.targetPlayer.moveCard( Card.find( cardId ), location )
+
+	onChangeCardArea: ( cardId, areaId ) =>
+		this.targetPlayer.changeCardArea( Card.find( cardId ), areaId )
 
 	onTapCard: ( cardId ) ->
 		this.targetPlayer.tapCard( Card.find( cardId ) )
@@ -35,14 +42,14 @@ class InputController extends Spine.Controller
 	onFlipCardDown: ( cardId ) ->
 		this.targetPlayer.flipCardDown( Card.find( cardId ) )
 
-	onChangeCardArea: ( cardId, areaId ) =>
-		this.targetPlayer.changeCardArea( Card.find( cardId ), areaId )
-
 	onZoomCardIn: ( cardId ) =>
 		this.targetPlayer.zoomCardIn(Card.find( cardId ) )
 
 	onZoomCardOut: () =>
 		this.targetPlayer.zoomCardOut()
+
+
+	#Areas
 
 	onShuffleArea: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId
@@ -61,6 +68,8 @@ class InputController extends Spine.Controller
 	onDrawCardFromArea: ( areaId ) =>
 		this.targetPlayer.onDrawCardFromArea( Area.find( areaId ) );
 
+
+	#Gameplay
 	onPassTurn: () =>
 		this.targetPlayer.passTurn();
 
@@ -69,5 +78,16 @@ class InputController extends Spine.Controller
 
 	onThrowDice: () =>
 		this.targetPlayer.throwDice();
-		
-		
+
+	#Counters
+	onCreateCounter: ( counterModel ) =>
+		this.targetPlayer.addCounter( counterModel );
+
+	onRemoveCounter: ( counterId ) =>
+		this.targetPlayer.removeCounter( Counter.find( counterId ) );
+
+	onMoveCounter: ( counterId, location ) =>
+		this.targetPlayer.moveCounter( Counter.find( counterId ), location );
+
+	onSetCounter: ( counterId, counterNumber ) =>		
+		this.targetPlayer.setCounter( Counter.find( counterId ), counterNumber );

@@ -10,6 +10,10 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.server = null;
 
   function NetworkInputController() {
+    this.onCounterIsSet = __bind(this.onCounterIsSet, this);
+    this.onCounterIsMoved = __bind(this.onCounterIsMoved, this);
+    this.onCounterIsRemoved = __bind(this.onCounterIsRemoved, this);
+    this.onCounterIsCreated = __bind(this.onCounterIsCreated, this);
     this.onDiceIsThrown = __bind(this.onDiceIsThrown, this);
     this.onTurnIsReceived = __bind(this.onTurnIsReceived, this);
     this.onChatMsgIsReceived = __bind(this.onChatMsgIsReceived, this);
@@ -39,7 +43,11 @@ NetworkInputController = (function(_super) {
     this.server.on('onCardFromAreaIsRevealedToggle', this.onCardFromAreaIsRevealedToggle);
     this.server.on('onChatMsgIsReceived', this.onChatMsgIsReceived);
     this.server.on('onTurnIsReceived', this.onTurnIsReceived);
-    return this.server.on('onDiceIsThrown', this.onDiceIsThrown);
+    this.server.on('onDiceIsThrown', this.onDiceIsThrown);
+    this.server.on('onCounterIsCreated', this.onCounterIsCreated);
+    this.server.on('onCounterIsRemoved', this.onCounterIsRemoved);
+    this.server.on('onCounterIsMoved', this.onCounterIsMoved);
+    return this.server.on('onCounterIsSet', this.onCounterIsSet);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deckData) {
@@ -113,6 +121,29 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.onDiceIsThrown = function(params) {
     app.gameController.chatController.renderThrowDice(params);
     return app.gameController.soundController.playSound("throwDice");
+  };
+
+  NetworkInputController.prototype.onCounterIsCreated = function(params) {
+    var counterModel;
+    counterModel = Counter.create({
+      id: params.counterId,
+      number: 0,
+      attached_card_id: params.cardId,
+      controller: null
+    });
+    return this.onCreateCounter(counterModel);
+  };
+
+  NetworkInputController.prototype.onCounterIsRemoved = function(params) {
+    return this.onRemoveCounter(params.counterId);
+  };
+
+  NetworkInputController.prototype.onCounterIsMoved = function(params) {
+    return this.onMoveCounter(params.counterId, params.location);
+  };
+
+  NetworkInputController.prototype.onCounterIsSet = function(params) {
+    return this.onSetCounter(params.counterId, params.counterNumber);
   };
 
   NetworkInputController.prototype.getPlayersAreaIdFromName = function(areaName, player) {

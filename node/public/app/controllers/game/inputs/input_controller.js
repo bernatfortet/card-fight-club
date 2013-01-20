@@ -10,6 +10,10 @@ InputController = (function(_super) {
   InputController.prototype.targetPlayer = null;
 
   function InputController() {
+    this.onSetCounter = __bind(this.onSetCounter, this);
+    this.onMoveCounter = __bind(this.onMoveCounter, this);
+    this.onRemoveCounter = __bind(this.onRemoveCounter, this);
+    this.onCreateCounter = __bind(this.onCreateCounter, this);
     this.onThrowDice = __bind(this.onThrowDice, this);
     this.onReceiveTurn = __bind(this.onReceiveTurn, this);
     this.onPassTurn = __bind(this.onPassTurn, this);
@@ -45,6 +49,10 @@ InputController = (function(_super) {
     return this.targetPlayer.moveCard(Card.find(cardId), location);
   };
 
+  InputController.prototype.onChangeCardArea = function(cardId, areaId) {
+    return this.targetPlayer.changeCardArea(Card.find(cardId), areaId);
+  };
+
   InputController.prototype.onTapCard = function(cardId) {
     return this.targetPlayer.tapCard(Card.find(cardId));
   };
@@ -63,10 +71,6 @@ InputController = (function(_super) {
 
   InputController.prototype.onFlipCardDown = function(cardId) {
     return this.targetPlayer.flipCardDown(Card.find(cardId));
-  };
-
-  InputController.prototype.onChangeCardArea = function(cardId, areaId) {
-    return this.targetPlayer.changeCardArea(Card.find(cardId), areaId);
   };
 
   InputController.prototype.onZoomCardIn = function(cardId) {
@@ -111,6 +115,22 @@ InputController = (function(_super) {
 
   InputController.prototype.onThrowDice = function() {
     return this.targetPlayer.throwDice();
+  };
+
+  InputController.prototype.onCreateCounter = function(counterModel) {
+    return this.targetPlayer.addCounter(counterModel);
+  };
+
+  InputController.prototype.onRemoveCounter = function(counterId) {
+    return this.targetPlayer.removeCounter(Counter.find(counterId));
+  };
+
+  InputController.prototype.onMoveCounter = function(counterId, location) {
+    return this.targetPlayer.moveCounter(Counter.find(counterId), location);
+  };
+
+  InputController.prototype.onSetCounter = function(counterId, counterNumber) {
+    return this.targetPlayer.setCounter(Counter.find(counterId), counterNumber);
   };
 
   return InputController;

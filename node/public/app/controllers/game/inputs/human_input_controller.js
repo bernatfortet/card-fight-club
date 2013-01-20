@@ -13,6 +13,7 @@ HumanInputController = (function(_super) {
 
   function HumanInputController() {
     this.sendChatMsg = __bind(this.sendChatMsg, this);
+    this.onCounterDragStops = __bind(this.onCounterDragStops, this);
     this.onResize = __bind(this.onResize, this);
     this.onSubmitNumber = __bind(this.onSubmitNumber, this);
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
@@ -24,7 +25,7 @@ HumanInputController = (function(_super) {
     this.onMouseOverArea = __bind(this.onMouseOverArea, this);
     this.onDoubleClickArea = __bind(this.onDoubleClickArea, this);
     this.onDoubleClickCard = __bind(this.onDoubleClickCard, this);
-    this.onRightMouseClick = __bind(this.onRightMouseClick, this);
+    this.onRightMouseClickCard = __bind(this.onRightMouseClickCard, this);
     this.onAddNCards = __bind(this.onAddNCards, this);
     this.setKeyboardListeners = __bind(this.setKeyboardListeners, this);    HumanInputController.__super__.constructor.apply(this, arguments);
   }
@@ -68,7 +69,7 @@ HumanInputController = (function(_super) {
       stack: ".Card"
     });
     cardElement.on("dblclick", this.onDoubleClickCard);
-    cardElement.on("contextmenu", this.onRightMouseClick);
+    cardElement.on("contextmenu", this.onRightMouseClickCard);
     return this.setCardHoverListener(cardElement);
   };
 
@@ -128,12 +129,21 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.setElementListeners = function() {
     var _this = this;
-    $(".Draggable").draggable();
     $(".NumberA input").on("keydown", jwerty.event('enter', function(event) {
       return _this.onSubmitNumber(event);
     }));
     $(".NumberA input").on('submit', this.onSubmitNumber);
     return $(".Dice").on("click", this.onThrowDice);
+  };
+
+  HumanInputController.prototype.setCounterListener = function(counterElement) {
+    counterElement.draggable({
+      stop: this.onCounterDragStops,
+      snap: ".Card",
+      snapMode: "inner",
+      stack: ".Counter"
+    });
+    return counterElement.on("dblclick", this.onDoubleClickCounter);
   };
 
   HumanInputController.prototype.onAddNCards = function(numCards) {
@@ -145,16 +155,16 @@ HumanInputController = (function(_super) {
     return _results;
   };
 
-  HumanInputController.prototype.onRightMouseClick = function(event) {
+  HumanInputController.prototype.onRightMouseClickCard = function(event) {
     var RIGHT_MOUSE_BUTTON, tapState;
     RIGHT_MOUSE_BUTTON = 3;
     if (event.which === RIGHT_MOUSE_BUTTON) {
       if (!debugApp) event.preventDefault();
       tapState = $(event.currentTarget).attr("data-tapped");
       if (tapState === "true") {
-        return this.onUntapCard(this.getCardId(event.currentTarget));
+        return this.onUntapCard(this.getTargetObjectId(event.currentTarget));
       } else {
-        return this.onTapCard(this.getCardId(event.currentTarget));
+        return this.onTapCard(this.getTargetObjectId(event.currentTarget));
       }
     }
   };
@@ -163,9 +173,9 @@ HumanInputController = (function(_super) {
     var flipState;
     flipState = $(event.currentTarget).attr("data-flipped");
     if (flipState === "up") {
-      return this.onFlipCardDown(this.getCardId(event.currentTarget));
+      return this.onFlipCardDown(this.getTargetObjectId(event.currentTarget));
     } else {
-      return this.onFlipCardUp(this.getCardId(event.currentTarget));
+      return this.onFlipCardUp(this.getTargetObjectId(event.currentTarget));
     }
   };
 
@@ -194,13 +204,15 @@ HumanInputController = (function(_super) {
       x: ui.position.left / $(window).width(),
       y: ui.position.top / $(window).height()
     };
-    return this.onMoveCard(this.getCardId(event.target), location);
+    return this.onMoveCard(this.getTargetObjectId(event.target), location);
   };
 
   HumanInputController.prototype.onCardChangesArea = function(event, ui) {
     var areaId;
-    areaId = $(event.target).data().areaId;
-    return this.onChangeCardArea(this.getCardId(ui.draggable), areaId);
+    if ($(ui.draggable).hasClass(".Card")) {
+      areaId = $(event.target).data().areaId;
+      return this.onChangeCardArea(this.getTargetObjectId(ui.draggable), areaId);
+    }
   };
 
   HumanInputController.prototype.onTopCardFromAreaIsRevealedToggle = function(key, opt) {
@@ -211,7 +223,7 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.onMouseOverCard = function(event) {
     this.activeCard = event.currentTarget;
-    return this.onZoomCardIn(this.getCardId(this.activeCard));
+    return this.onZoomCardIn(this.getTargetObjectId(this.activeCard));
   };
 
   HumanInputController.prototype.onMouseOutCard = function(event) {
@@ -233,6 +245,26 @@ HumanInputController = (function(_super) {
     return $(".Conversation").height($(".Playzone").outerHeight() - 20 - (parseFloat($(".Conversation").css("top")) + parseFloat($(".Chat .Input").css("bottom")) + $(".Chat .Input").outerHeight()));
   };
 
+  HumanInputController.prototype.createCounter = function() {
+    var counterModel;
+    counterModel = Counter.create({
+      number: 0,
+      attached_card_id: null,
+      controller: null
+    });
+    return this.onCreateCounter(counterModel);
+  };
+
+  HumanInputController.prototype.onCounterDragStops = function(event, ui) {
+    var counterPosition, location;
+    counterPosition = ui.position;
+    location = {
+      x: ui.position.left / $(window).width(),
+      y: ui.position.top / $(window).height()
+    };
+    return this.onMoveCounter(this.getTargetObjectId(event.target), location);
+  };
+
   HumanInputController.prototype.sendChatMsg = function(event) {
     var msg, params;
     msg = $(event.target).val();
@@ -244,10 +276,10 @@ HumanInputController = (function(_super) {
     return app.gameController.multiplayerController.onSendChatMsg(msg);
   };
 
-  HumanInputController.prototype.getCardId = function(cardTarget) {
-    var card, cardId;
-    card = $(cardTarget);
-    return cardId = card.data().id;
+  HumanInputController.prototype.getTargetObjectId = function(target) {
+    var targetId;
+    target = $(target);
+    return targetId = target.data().id;
   };
 
   return HumanInputController;

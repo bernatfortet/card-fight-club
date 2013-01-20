@@ -27,12 +27,15 @@ var Multiplayer = {
 					_this.io.sockets.in(roomId).emit( "onUserJoinsRoom", "TODO fill user Data" )
 			});
 
+			//Deck
 			user.on('onCreateDeck', function( data ) {
 				user.get('roomId', function(err, roomId){
 					console.log( "onDeckIsCreated ");
 					user.broadcast.to(roomId).emit( "onDeckIsCreated", data );
 				});
 			});
+
+			//Cards
 			user.on('onCreateCard', function( data ) {
 				user.get('roomId', function(err, roomId){
 					console.log( "onCardIsCreated ");
@@ -87,12 +90,16 @@ var Multiplayer = {
 					user.broadcast.to(roomId).emit( "onCardFromAreaIsRevealedToggle", data );
 				});
 			});
+
+			//Chatt
 			user.on('onSendChatMsg', function( data ) {
 				user.get('roomId', function(err, roomId){
 					console.log( "onChatMsgIsReceived ");
 					user.broadcast.to(roomId).emit( "onChatMsgIsReceived", data );
 				});
 			});
+
+			//Gameplay
 			user.on('onPassTurn', function( data ) {
 				user.get('roomId', function(err, roomId){
 					console.log( "onTurnIsReceived ");
@@ -103,6 +110,32 @@ var Multiplayer = {
 				user.get('roomId', function(err, roomId){
 					console.log( "onDiceIsThrown ");
 					user.broadcast.to(roomId).emit( "onDiceIsThrown", data );
+				});
+			});
+
+			//Counter
+			user.on('onCreateCounter', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCounterIsCreated ");
+					user.broadcast.to(roomId).emit( "onCounterIsCreated", data );
+				});
+			});
+			user.on('onRemoveCounter', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCounterIsRemoved ");
+					user.broadcast.to(roomId).emit( "onCounterIsRemoved", data );
+				});
+			});
+			user.on('onMoveCounter', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCounterIsMoved ");
+					user.broadcast.to(roomId).emit( "onCounterIsMoved", data );
+				});
+			});
+			user.on('onSetCounter', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCounterIsSet ");
+					user.broadcast.to(roomId).emit( "onCounterIsSet", data );
 				});
 			});
 

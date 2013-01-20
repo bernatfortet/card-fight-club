@@ -61,6 +61,7 @@ require(
 			"order!controllers/game/multiplayer_controller",
 			"order!controllers/game/chat_controller",
 			"order!controllers/game/card_controller",
+			"order!controllers/game/counter_controller",
 			"order!controllers/game/zoomed_card_controller",
 			"order!controllers/game/card_lister_controller",
 			"order!controllers/game/sound_controller",
@@ -84,6 +85,7 @@ require(
 
 			//GAME
 			"order!models/card_model",
+			"order!models/counter_model",
 			"order!models/deck_model",
 			"order!models/area_model",
 
