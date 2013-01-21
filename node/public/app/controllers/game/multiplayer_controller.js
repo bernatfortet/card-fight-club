@@ -12,6 +12,8 @@ MultiplayerController = (function(_super) {
   MultiplayerController.prototype.local = false;
 
   function MultiplayerController() {
+    this.onUnattachCounter = __bind(this.onUnattachCounter, this);
+    this.onAttachCounterToCard = __bind(this.onAttachCounterToCard, this);
     this.onSetCounter = __bind(this.onSetCounter, this);
     this.onMoveCounter = __bind(this.onMoveCounter, this);
     this.onRemoveCounter = __bind(this.onRemoveCounter, this);
@@ -252,7 +254,7 @@ MultiplayerController = (function(_super) {
     if (localServer) {
       app.gameController.networkInputController.onCounterIsMoved(params);
     }
-    return console.log("Counter has moved ", opponentCounterId);
+    return console.log("Counter has moved ", params);
   };
 
   MultiplayerController.prototype.onSetCounter = function(counterModel) {
@@ -266,7 +268,35 @@ MultiplayerController = (function(_super) {
     if (localServer) {
       app.gameController.networkInputController.onCounterIsSet(params);
     }
-    return console.log("Counter has moved ", opponentCounterId);
+    return console.log("Counter has moved ", params);
+  };
+
+  MultiplayerController.prototype.onAttachCounterToCard = function(counterModel, cardModel) {
+    var opponentCardId, opponentCounterId, params;
+    opponentCounterId = this.setIdForOpponent(counterModel.id);
+    opponentCardId = this.setIdForOpponent(cardModel.id);
+    params = {
+      counterId: opponentCounterId,
+      cardId: opponentCardId
+    };
+    this.sendEvent("onAttachCounterToCard", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCounterIsAttachedToCard(params);
+    }
+    return console.log("Counter is Attached  ", params);
+  };
+
+  MultiplayerController.prototype.onUnattachCounter = function(counterModel) {
+    var opponentCounterId, params;
+    opponentCounterId = this.setIdForOpponent(counterModel.id);
+    params = {
+      counterId: opponentCounterId
+    };
+    this.sendEvent("onUnattachCounter", params);
+    if (localServer) {
+      app.gameController.networkInputController.onCounterIsUnattached(params);
+    }
+    return console.log("Counter is Unattached ", params);
   };
 
   MultiplayerController.prototype.setIdForOpponent = function(id) {

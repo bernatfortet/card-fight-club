@@ -1,4 +1,5 @@
 var PlayerController,
+  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -13,7 +14,8 @@ PlayerController = (function(_super) {
   PlayerController.prototype.cardListerController = null;
 
   function PlayerController() {
-    PlayerController.__super__.constructor.apply(this, arguments);
+    this.unattachCounter = __bind(this.unattachCounter, this);
+    this.attachCounterToCard = __bind(this.attachCounterToCard, this);    PlayerController.__super__.constructor.apply(this, arguments);
     this.deckController = new DeckController({
       el: this.el.find(".Deck"),
       player: this
@@ -295,6 +297,26 @@ PlayerController = (function(_super) {
     counterModel.controller.move(location.x, location.y);
     if (this.isPlayerNetworked()) {
       return this.multiplayerController.onMoveCounter(counterModel);
+    }
+  };
+
+  PlayerController.prototype.attachCounterToCard = function(counterModel, cardModel) {
+    counterModel.controller.attachToCard(cardModel.controller);
+    cardModel.controller.attachCounter(counterModel.controller);
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onAttachCounterToCard(counterModel, cardModel);
+    }
+  };
+
+  PlayerController.prototype.unattachCounter = function(counterModel) {
+    var cardController;
+    if (counterModel.controller.isAttached) {
+      cardController = counterModel.controller.cardControllerAttachedTo;
+      cardController.unattachCounter(counterModel.controller);
+      counterModel.controller.unattach();
+      if (this.isPlayerNetworked()) {
+        return this.multiplayerController.onUnattachCounter(counterModel);
+      }
     }
   };
 

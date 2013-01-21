@@ -212,6 +212,18 @@ class PlayerController extends Spine.Controller
 		counterModel.controller.move( location.x, location.y )
 		this.multiplayerController.onMoveCounter( counterModel ) if this.isPlayerNetworked()
 
+	attachCounterToCard: ( counterModel, cardModel ) =>
+		counterModel.controller.attachToCard( cardModel.controller )
+		cardModel.controller.attachCounter( counterModel.controller )
+		this.multiplayerController.onAttachCounterToCard( counterModel, cardModel ) if this.isPlayerNetworked()
+
+	unattachCounter: ( counterModel ) =>
+		if( counterModel.controller.isAttached )
+			cardController = counterModel.controller.cardControllerAttachedTo
+			cardController.unattachCounter( counterModel.controller )
+
+			counterModel.controller.unattach()
+			this.multiplayerController.onUnattachCounter( counterModel ) if this.isPlayerNetworked()
 
 	# Utils
 	setCardListeners: ( cardElement ) ->

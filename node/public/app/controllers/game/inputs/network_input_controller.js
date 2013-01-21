@@ -10,6 +10,8 @@ NetworkInputController = (function(_super) {
   NetworkInputController.prototype.server = null;
 
   function NetworkInputController() {
+    this.onCounterIsUnattached = __bind(this.onCounterIsUnattached, this);
+    this.onCounterIsAttachedToCard = __bind(this.onCounterIsAttachedToCard, this);
     this.onCounterIsSet = __bind(this.onCounterIsSet, this);
     this.onCounterIsMoved = __bind(this.onCounterIsMoved, this);
     this.onCounterIsRemoved = __bind(this.onCounterIsRemoved, this);
@@ -47,7 +49,9 @@ NetworkInputController = (function(_super) {
     this.server.on('onCounterIsCreated', this.onCounterIsCreated);
     this.server.on('onCounterIsRemoved', this.onCounterIsRemoved);
     this.server.on('onCounterIsMoved', this.onCounterIsMoved);
-    return this.server.on('onCounterIsSet', this.onCounterIsSet);
+    this.server.on('onCounterIsSet', this.onCounterIsSet);
+    this.server.on('onCounterIsAttachedToCard', this.onCounterIsAttachedToCard);
+    return this.server.on('onCounterIsUnattached', this.onCounterIsUnattached);
   };
 
   NetworkInputController.prototype.onDeckIsCreated = function(deckData) {
@@ -144,6 +148,14 @@ NetworkInputController = (function(_super) {
 
   NetworkInputController.prototype.onCounterIsSet = function(params) {
     return this.onSetCounter(params.counterId, params.counterNumber);
+  };
+
+  NetworkInputController.prototype.onCounterIsAttachedToCard = function(params) {
+    return this.onAttachCounterToCard(params.counterId, params.cardId);
+  };
+
+  NetworkInputController.prototype.onCounterIsUnattached = function(params) {
+    return this.onUnattachCounter(params.counterId);
   };
 
   NetworkInputController.prototype.getPlayersAreaIdFromName = function(areaName, player) {

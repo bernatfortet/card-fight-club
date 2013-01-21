@@ -13,13 +13,16 @@ HumanInputController = (function(_super) {
 
   function HumanInputController() {
     this.sendChatMsg = __bind(this.sendChatMsg, this);
+    this.onElementDropsOnCard = __bind(this.onElementDropsOnCard, this);
+    this.onClickCounter = __bind(this.onClickCounter, this);
+    this.onMouseOverCounter = __bind(this.onMouseOverCounter, this);
     this.onCounterDragStops = __bind(this.onCounterDragStops, this);
     this.onResize = __bind(this.onResize, this);
     this.onSubmitNumber = __bind(this.onSubmitNumber, this);
     this.onMouseOutCard = __bind(this.onMouseOutCard, this);
     this.onMouseOverCard = __bind(this.onMouseOverCard, this);
     this.onTopCardFromAreaIsRevealedToggle = __bind(this.onTopCardFromAreaIsRevealedToggle, this);
-    this.onCardChangesArea = __bind(this.onCardChangesArea, this);
+    this.onElementDropsOnArea = __bind(this.onElementDropsOnArea, this);
     this.onCardDragStops = __bind(this.onCardDragStops, this);
     this.onMouseOutArea = __bind(this.onMouseOutArea, this);
     this.onMouseOverArea = __bind(this.onMouseOverArea, this);
@@ -32,7 +35,7 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.setListeners = function() {
     $(".HumanPlayer .Area").droppable({
-      drop: this.onCardChangesArea,
+      drop: this.onElementDropsOnArea,
       hoverClass: "Active"
     });
     $(".Area").on("mouseover", this.onMouseOverArea);
@@ -70,6 +73,10 @@ HumanInputController = (function(_super) {
     });
     cardElement.on("dblclick", this.onDoubleClickCard);
     cardElement.on("contextmenu", this.onRightMouseClickCard);
+    cardElement.find(".TapContainer").droppable({
+      drop: this.onElementDropsOnCard,
+      hoverClass: "Active"
+    });
     return this.setCardHoverListener(cardElement);
   };
 
@@ -136,16 +143,6 @@ HumanInputController = (function(_super) {
     return $(".Dice").on("click", this.onThrowDice);
   };
 
-  HumanInputController.prototype.setCounterListener = function(counterElement) {
-    counterElement.draggable({
-      stop: this.onCounterDragStops,
-      snap: ".Card",
-      snapMode: "inner",
-      stack: ".Counter"
-    });
-    return counterElement.on("dblclick", this.onDoubleClickCounter);
-  };
-
   HumanInputController.prototype.onAddNCards = function(numCards) {
     var iCounter, _results;
     _results = [];
@@ -207,11 +204,15 @@ HumanInputController = (function(_super) {
     return this.onMoveCard(this.getTargetObjectId(event.target), location);
   };
 
-  HumanInputController.prototype.onCardChangesArea = function(event, ui) {
-    var areaId;
-    if ($(ui.draggable).hasClass(".Card")) {
+  HumanInputController.prototype.onElementDropsOnArea = function(event, ui) {
+    var areaId, counterId, dropedElement;
+    dropedElement = $(ui.draggable);
+    if (dropedElement.hasClass("Card")) {
       areaId = $(event.target).data().areaId;
       return this.onChangeCardArea(this.getTargetObjectId(ui.draggable), areaId);
+    } else if (dropedElement.hasClass("Counter")) {
+      counterId = this.getTargetObjectId(dropedElement);
+      return this.onUnattachCounter(counterId);
     }
   };
 
@@ -255,14 +256,48 @@ HumanInputController = (function(_super) {
     return this.onCreateCounter(counterModel);
   };
 
+  HumanInputController.prototype.setCounterListener = function(counterElement) {
+    counterElement.draggable({
+      stop: this.onCounterDragStops,
+      stack: ".Counter"
+    });
+    counterElement.on("mouseover", this.onMouseOverCounter);
+    counterElement.on("click", this.onClickCounter);
+    return counterElement.on("dblclick", this.onDoubleClickCounter);
+  };
+
   HumanInputController.prototype.onCounterDragStops = function(event, ui) {
     var counterPosition, location;
-    counterPosition = ui.position;
+    counterPosition = $(ui.helper).offset();
     location = {
-      x: ui.position.left / $(window).width(),
-      y: ui.position.top / $(window).height()
+      x: counterPosition.left / $(window).width(),
+      y: counterPosition.top / $(window).height()
     };
     return this.onMoveCounter(this.getTargetObjectId(event.target), location);
+  };
+
+  HumanInputController.prototype.onMouseOverCounter = function(event) {
+    var counterController;
+    return counterController = this.getTargetCounterController(event.currentTarget);
+  };
+
+  HumanInputController.prototype.onClickCounter = function(event) {
+    var counterController;
+    return counterController = this.getTargetCounterController(event.currentTarget);
+  };
+
+  HumanInputController.prototype.onElementDropsOnCard = function(event, ui) {
+    var _this = this;
+    return setTimeout(function() {
+      var cardElement, cardId, counterId, dropedElement;
+      cardElement = $(event.target).closest(".Card");
+      dropedElement = $(ui.draggable);
+      if (dropedElement.hasClass("Counter")) {
+        cardId = _this.getTargetObjectId(cardElement);
+        counterId = _this.getTargetObjectId(dropedElement);
+        return _this.onAttachCounterToCard(counterId, cardId);
+      }
+    }, 0);
   };
 
   HumanInputController.prototype.sendChatMsg = function(event) {
@@ -277,9 +312,25 @@ HumanInputController = (function(_super) {
   };
 
   HumanInputController.prototype.getTargetObjectId = function(target) {
-    var targetId;
-    target = $(target);
-    return targetId = target.data().id;
+    var isJqueryObject, targetId;
+    isJqueryObject = target instanceof jQuery;
+    if (isJqueryObject) {
+      return targetId = target.data().id;
+    } else {
+      return targetId = $(target).data().id;
+    }
+  };
+
+  HumanInputController.prototype.getTargetCardController = function(target) {
+    var cardController, targetobjectId;
+    targetobjectId = this.getTargetObjectId(target);
+    return cardController = Card.find(targetobjectId).controller;
+  };
+
+  HumanInputController.prototype.getTargetCounterController = function(target) {
+    var counterController, targetobjectId;
+    targetobjectId = this.getTargetObjectId(target);
+    return counterController = Counter.find(targetobjectId).controller;
   };
 
   return HumanInputController;

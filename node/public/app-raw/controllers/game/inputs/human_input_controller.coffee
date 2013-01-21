@@ -9,7 +9,7 @@ class HumanInputController extends InputController
 	setListeners: ->
 
 		$(".HumanPlayer .Area").droppable({
-			drop: this.onCardChangesArea
+			drop: this.onElementDropsOnArea
 			hoverClass: "Active"
 		})
 
@@ -51,6 +51,11 @@ class HumanInputController extends InputController
 		})
 		cardElement.on("dblclick", this.onDoubleClickCard )
 		cardElement.on("contextmenu", this.onRightMouseClickCard )
+
+		cardElement.find(".TapContainer").droppable({
+			drop: this.onElementDropsOnCard
+			hoverClass: "Active"
+		})
 
 		this.setCardHoverListener( cardElement )
 
@@ -103,17 +108,6 @@ class HumanInputController extends InputController
 
 		$(".Dice").on("click", this.onThrowDice )
 
-	setCounterListener: ( counterElement ) ->
-		counterElement.draggable({
-			stop: this.onCounterDragStops
-			snap: ".Card"
-			snapMode: "inner"
-			stack: ".Counter"
-		})
-		counterElement.on("dblclick", this.onDoubleClickCounter )
-		#TODO when input changes triggerSet
-
-
 	onAddNCards: ( numCards ) =>
 		for iCounter in [0...numCards]
 			this.onDrawCardFromArea( this.targetPlayer.deckArea.id )
@@ -130,8 +124,6 @@ class HumanInputController extends InputController
 				this.onUntapCard( this.getTargetObjectId( event.currentTarget ) )
 			else
 				this.onTapCard( this.getTargetObjectId( event.currentTarget ) )
-
-			
 
 	onDoubleClickCard: ( event ) =>
 		flipState = $(event.currentTarget).attr("data-flipped")
@@ -159,10 +151,19 @@ class HumanInputController extends InputController
 			y: ui.position.top / $(window).height()
 		this.onMoveCard( this.getTargetObjectId( event.target ), location )	
 
-	onCardChangesArea: ( event, ui ) =>
-		if( $(ui.draggable).hasClass(".Card") )
+	onElementDropsOnArea: ( event, ui ) =>
+		dropedElement = $(ui.draggable)
+
+		if( dropedElement.hasClass("Card") )
 			areaId = $(event.target).data().areaId
 			this.onChangeCardArea( this.getTargetObjectId( ui.draggable ), areaId )
+
+		else if( dropedElement.hasClass("Counter") )
+			counterId = this.getTargetObjectId( dropedElement )
+			this.onUnattachCounter( counterId )
+
+
+
 
 	onTopCardFromAreaIsRevealedToggle: ( key, opt ) =>
 		areaId = opt.$trigger.data().areaId
@@ -207,12 +208,39 @@ class HumanInputController extends InputController
 		counterModel = Counter.create( number:0,  attached_card_id: null, controller: null )
 		this.onCreateCounter( counterModel )
 
+	setCounterListener: ( counterElement ) ->
+		counterElement.draggable({
+			stop: this.onCounterDragStops
+			stack: ".Counter"
+		})
+		counterElement.on("mouseover", this.onMouseOverCounter )
+		counterElement.on("click", this.onClickCounter )
+		counterElement.on("dblclick", this.onDoubleClickCounter )
+		#TODO when input changes triggerSet
+		
 	onCounterDragStops: ( event, ui )  =>
-		counterPosition = ui.position
+		counterPosition = $(ui.helper).offset()
 		location = 
-			x: ui.position.left / $(window).width()
-			y: ui.position.top / $(window).height()
+			x: counterPosition.left / $(window).width()
+			y: counterPosition.top / $(window).height()
 		this.onMoveCounter( this.getTargetObjectId( event.target ), location )	
+
+	onMouseOverCounter: ( event ) =>
+		counterController = this.getTargetCounterController( event.currentTarget )
+
+	onClickCounter: ( event ) =>
+		counterController = this.getTargetCounterController( event.currentTarget )
+
+	onElementDropsOnCard: ( event, ui ) =>
+		setTimeout( => #By using this timeout this event is fired last
+			cardElement = $(event.target).closest(".Card")
+			dropedElement = $(ui.draggable)
+
+			if( dropedElement.hasClass("Counter") )
+				cardId = this.getTargetObjectId( cardElement )
+				counterId = this.getTargetObjectId( dropedElement )
+				this.onAttachCounterToCard( counterId, cardId )
+		, 0)
 
 
 	# Chat
@@ -228,5 +256,16 @@ class HumanInputController extends InputController
 
 	# Utils
 	getTargetObjectId: ( target ) ->
-		target = $(target)
-		targetId = target.data().id
+		isJqueryObject = target instanceof jQuery
+		if( isJqueryObject )
+			targetId = target.data().id
+		else 
+			targetId = $(target).data().id
+
+	getTargetCardController: ( target ) ->
+		targetobjectId = this.getTargetObjectId( target )
+		cardController = Card.find( targetobjectId ).controller
+
+	getTargetCounterController: ( target ) ->
+		targetobjectId = this.getTargetObjectId( target )
+		counterController = Counter.find( targetobjectId ).controller

@@ -13,7 +13,11 @@ CardController = (function(_super) {
 
   CardController.prototype.isFlippedUp = false;
 
+  CardController.prototype.attachedCounterControllers = null;
+
   function CardController() {
+    this.unattachCounter = __bind(this.unattachCounter, this);
+    this.attachCounter = __bind(this.attachCounter, this);
     this.isVisible = __bind(this.isVisible, this);
     this.zoomOut = __bind(this.zoomOut, this);
     this.zoomIn = __bind(this.zoomIn, this);
@@ -22,6 +26,7 @@ CardController = (function(_super) {
     this.untap = __bind(this.untap, this);
     this.tap = __bind(this.tap, this);    CardController.__super__.constructor.apply(this, arguments);
     this.render();
+    this.attachedCounterControllers = new List();
     this.item.setController(this);
   }
 
@@ -35,8 +40,9 @@ CardController = (function(_super) {
   };
 
   CardController.prototype.move = function(posX, posY) {
-    this.el.css("left", posX * 100 + "%");
-    return this.el.css("top", posY * 100 + "%");
+    var x, y;
+    x = this.el.css("left", posX * 100 + "%");
+    return y = this.el.css("top", posY * 100 + "%");
   };
 
   CardController.prototype.getLocation = function() {
@@ -79,6 +85,20 @@ CardController = (function(_super) {
 
   CardController.prototype.isVisible = function() {
     return this.isFlippedUp;
+  };
+
+  CardController.prototype.attachCounter = function(counterController) {
+    var exists;
+    exists = this.attachedCounterControllers.Exists(counterController);
+    if (!exists) return this.attachedCounterControllers.Add(counterController);
+  };
+
+  CardController.prototype.unattachCounter = function(counterController) {
+    return this.attachedCounterControllers.Remove(counterController);
+  };
+
+  CardController.prototype.getHeight = function() {
+    return this.el.find(".TapContainer").outerHeight();
   };
 
   return CardController;

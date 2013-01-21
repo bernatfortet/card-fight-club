@@ -3,10 +3,12 @@ class CardController extends Spine.Controller
 
 	isTapped: false
 	isFlippedUp: false
+	attachedCounterControllers: null
 
 	constructor: ->
 		super
 		this.render()
+		this.attachedCounterControllers = new List()
 		this.item.setController( this )
 
 	render: ->
@@ -17,8 +19,8 @@ class CardController extends Spine.Controller
 		this.el.css("z-index", parseInt( $(".Card").last().css("zIndex") ) + 1)
 
 	move: ( posX, posY ) ->
-		this.el.css("left", posX * 100 + "%" )
-		this.el.css("top", posY * 100 + "%" )
+		x = this.el.css("left", posX * 100 + "%" )
+		y = this.el.css("top", posY * 100 + "%" )
 
 	getLocation: ->
 		xCenterPoint = this.el.offset().left
@@ -51,3 +53,18 @@ class CardController extends Spine.Controller
 
 	isVisible: =>
 		return this.isFlippedUp
+
+
+	#Atatched Counters
+	attachCounter: ( counterController ) =>
+		exists = this.attachedCounterControllers.Exists( counterController )
+		if( !exists )
+			this.attachedCounterControllers.Add( counterController )
+
+	unattachCounter: ( counterController ) =>
+		this.attachedCounterControllers.Remove( counterController )
+
+
+	#Utils
+	getHeight: () ->
+		this.el.find(".TapContainer").outerHeight()

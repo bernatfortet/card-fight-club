@@ -25,7 +25,6 @@ SoundController = (function(_super) {
   SoundController.prototype.renderSound = function(soundName) {
     var params, soundType;
     soundType = "ogg";
-    console.log("sounds/" + soundName + "." + soundType);
     params = {
       soundId: soundName,
       soundSource: "sounds/" + soundName + "." + soundType,

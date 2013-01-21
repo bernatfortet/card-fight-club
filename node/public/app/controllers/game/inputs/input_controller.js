@@ -10,6 +10,8 @@ InputController = (function(_super) {
   InputController.prototype.targetPlayer = null;
 
   function InputController() {
+    this.onUnattachCounter = __bind(this.onUnattachCounter, this);
+    this.onAttachCounterToCard = __bind(this.onAttachCounterToCard, this);
     this.onSetCounter = __bind(this.onSetCounter, this);
     this.onMoveCounter = __bind(this.onMoveCounter, this);
     this.onRemoveCounter = __bind(this.onRemoveCounter, this);
@@ -131,6 +133,14 @@ InputController = (function(_super) {
 
   InputController.prototype.onSetCounter = function(counterId, counterNumber) {
     return this.targetPlayer.setCounter(Counter.find(counterId), counterNumber);
+  };
+
+  InputController.prototype.onAttachCounterToCard = function(counterId, cardId) {
+    return this.targetPlayer.attachCounterToCard(Counter.find(counterId), Card.find(cardId));
+  };
+
+  InputController.prototype.onUnattachCounter = function(counterId) {
+    return this.targetPlayer.unattachCounter(Counter.find(counterId));
   };
 
   return InputController;

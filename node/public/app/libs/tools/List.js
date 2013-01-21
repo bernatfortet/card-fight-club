@@ -1,9 +1,3 @@
-/* 
- * List
- * DesafioChampions, Kotoc
- * author Marc Freixas.
- */
-
 function List ()
 {
 	this.list = [];
@@ -39,6 +33,16 @@ function List ()
 			return null;
 		}
 	}	
+
+	this.Exists = function( item )
+	{
+		if( this.list.indexOf( item ) != -1 ){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	this.isEmpty = function(){
 		return ( this.list.length == 0);

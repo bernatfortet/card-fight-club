@@ -198,7 +198,7 @@ class MultiplayerController extends Spine.Controller
 		this.sendEvent( "onMoveCounter", params )
 
 		app.gameController.networkInputController.onCounterIsMoved( params ) if localServer
-		console.log( "Counter has moved ", opponentCounterId );
+		console.log( "Counter has moved ", params );
 
 	onSetCounter: ( counterModel ) =>	
 		opponentCounterId = this.setIdForOpponent( counterModel.id )
@@ -209,8 +209,29 @@ class MultiplayerController extends Spine.Controller
 		this.sendEvent( "onSetCounter", params )
 
 		app.gameController.networkInputController.onCounterIsSet( params ) if localServer
-		console.log( "Counter has moved ", opponentCounterId );
+		console.log( "Counter has moved ", params );
 
+	onAttachCounterToCard: ( counterModel, cardModel ) =>
+		opponentCounterId 	= this.setIdForOpponent( counterModel.id )
+		opponentCardId	 	= this.setIdForOpponent( cardModel.id )
+		params =
+			counterId: opponentCounterId
+			cardId: opponentCardId
+
+		this.sendEvent( "onAttachCounterToCard", params )
+
+		app.gameController.networkInputController.onCounterIsAttachedToCard( params ) if localServer
+		console.log( "Counter is Attached  ", params );
+
+	onUnattachCounter: ( counterModel ) =>
+		opponentCounterId = this.setIdForOpponent( counterModel.id )
+		params = 
+			counterId: opponentCounterId
+
+		this.sendEvent( "onUnattachCounter", params )
+
+		app.gameController.networkInputController.onCounterIsUnattached( params ) if localServer
+		console.log( "Counter is Unattached ", params );
 
 	# Utils
 	setIdForOpponent: ( id ) ->

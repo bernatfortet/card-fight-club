@@ -91,3 +91,9 @@ class InputController extends Spine.Controller
 
 	onSetCounter: ( counterId, counterNumber ) =>		
 		this.targetPlayer.setCounter( Counter.find( counterId ), counterNumber );
+
+	onAttachCounterToCard: ( counterId, cardId ) =>
+		this.targetPlayer.attachCounterToCard( Counter.find( counterId ), Card.find( cardId ) )
+
+	onUnattachCounter: ( counterId ) =>
+		this.targetPlayer.unattachCounter( Counter.find( counterId ) )

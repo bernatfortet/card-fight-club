@@ -43,7 +43,7 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		}
 
 		.cards{ .rel; z-index: 4;}
-		.card{ width:107px; height:107px; position:fixed !important; .abs; .unselectable; .anchor; z-index:2;
+		.card{ width:107px; height:107px; position:fixed !important; .unselectable; .anchor; z-index:2;
 			.tap-container{ width:107px; height:150px; .abs; left:0; top:0; .br(7px);}
 			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; .br(7px); }
 			.img{ .cover-all; .trans( rotateY(180deg) translateZ(1px) ); transform-origin: center center 0; background:black; .br(7px); }
@@ -87,7 +87,22 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		&[data-state="visible"]{ .shown; }
 		&[data-state="hidden"]{ .hidden; }
 	}
+
+	.counters{ .rel; z-index:8;}
+		.counter{ width:24px; height:24px; position:fixed !important; top:5px; border:1px solid white; .br(15px); .unselectable; .anchor; z-index:2;
+			&:hover, &[status="Focused"]{ .bs(0 0 5px 0 black);}
+			.inner{ width:20px; height:20px; border:2px solid black; .br(15px); }
+			&.blueCounter .inner{ background:#00eaff; }
+			&.yellowCounter .inner{ background:#ffca00; }
+			&.redCounter .inner{ background:#ff2e00; }
+
+			input{ width:100%; height:100%; background:transparent; border:0; width:100%;}
+
+			&[state="Dragging"]{ position:fixed; }
+			&[state="Attached"]{ position:relative !important; }
+		}
 }
+
 
 .context-menu-list{ min-width:60px; .abs; background:white; .br(3px); .bs( 0px 0px 15px 0px #000 ); .unselectable;
 	.context-menu-item{ padding:7px 10px; color:black; .anchor;
@@ -144,15 +159,6 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		.hexagon{ background:url("../images/hexagon.png") no-repeat center center;
 			span{ .rel; top:5px; }
 		}
-	}
-	.counter{ width:15px; height:15px; .rel; top:5px; border:1px solid white; .br(10px);
-		&:hover, &[status="Focused"]{ .bs(0 0 5px 0 black);}
-		.inner{ width:11px; height:11px; .br(5px); border:2px solid black; .br(10px); }
-		&.blueCounter .inner{ background:#00eaff; }
-		&.yellowCounter .inner{ background:#ffca00; }
-		&.redCounter .inner{ background:#ff2e00; }
-
-		input{ width:100%; height:100%; background:transparent; border:0; width:100%;}
 	}
 
 

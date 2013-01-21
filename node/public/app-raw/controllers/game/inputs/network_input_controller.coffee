@@ -11,6 +11,7 @@ class NetworkInputController extends InputController
 	setListeners: () ->
 		#Deck
 		this.server.on 'onDeckIsCreated', 					this.onDeckIsCreated
+
 		#Cards
 		this.server.on 'onCardIsCreated', 					this.onCardIsCreated
 		this.server.on 'onCardIsRemoved', 					this.onCardIsRemoved
@@ -20,19 +21,24 @@ class NetworkInputController extends InputController
 		this.server.on 'onCardIsFlippedDown', 				this.onCardIsFlippedDown
 		this.server.on 'onCardAreaIsChanged', 				this.onCardAreaIsChanged
 		this.server.on 'onCardFromAreaIsRevealedToggle', 	this.onCardFromAreaIsRevealedToggle
+
 		#Chat
 		this.server.on 'onChatMsgIsReceived', 				this.onChatMsgIsReceived
+
 		#Gameplay
 		this.server.on 'onTurnIsReceived', 					this.onTurnIsReceived
 		this.server.on 'onDiceIsThrown', 					this.onDiceIsThrown
+
 		#Counters
 		this.server.on 'onCounterIsCreated', 				this.onCounterIsCreated
 		this.server.on 'onCounterIsRemoved', 				this.onCounterIsRemoved
 		this.server.on 'onCounterIsMoved', 					this.onCounterIsMoved
 		this.server.on 'onCounterIsSet', 					this.onCounterIsSet
+		this.server.on 'onCounterIsAttachedToCard', 		this.onCounterIsAttachedToCard
+		this.server.on 'onCounterIsUnattached', 			this.onCounterIsUnattached
 
 
-	#Deck Model
+	#Deck
 	onDeckIsCreated: ( deckData ) =>
 		if( this.targetPlayer.deck == null )
 			this.onCreateDeck( deckData )
@@ -75,6 +81,7 @@ class NetworkInputController extends InputController
 		areaId = this.getPlayersAreaIdFromName( params.areaName, this.targetPlayer )
 		this.onToggleRevealCardFromArea( params.cardId, areaId )
 
+
 	#Chat
 	onChatMsgIsReceived: ( params ) =>
 		app.gameController.chatController.renderChatMsg( params )
@@ -103,7 +110,12 @@ class NetworkInputController extends InputController
 
 	onCounterIsSet: ( params ) =>		
 		this.onSetCounter( params.counterId, params.counterNumber );
-		
+
+	onCounterIsAttachedToCard: ( params ) =>		
+		this.onAttachCounterToCard( params.counterId, params.cardId )
+
+	onCounterIsUnattached: ( params ) =>		
+		this.onUnattachCounter( params.counterId );
 
 	#Utils
 	getPlayersAreaIdFromName: ( areaName, player ) ->

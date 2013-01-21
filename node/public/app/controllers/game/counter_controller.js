@@ -1,5 +1,4 @@
 var CounterController,
-  __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
   __hasProp = Object.prototype.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
 
@@ -9,13 +8,16 @@ CounterController = (function(_super) {
 
   CounterController.prototype.template = "CounterTemplate";
 
+  CounterController.prototype.cardControllerAttachedTo = null;
+
+  CounterController.prototype.isAttached = false;
+
   CounterController.prototype.elements = {
     "input": "input"
   };
 
   function CounterController() {
-    this.attachToCard = __bind(this.attachToCard, this);
-    this.set = __bind(this.set, this);    CounterController.__super__.constructor.apply(this, arguments);
+    CounterController.__super__.constructor.apply(this, arguments);
     this.render();
     this.item.setController(this);
   }
@@ -30,8 +32,10 @@ CounterController = (function(_super) {
   };
 
   CounterController.prototype.move = function(posX, posY) {
-    this.el.css("left", posX * 100 + "%");
-    return this.el.css("top", posY * 100 + "%");
+    if (!this.isAttached) {
+      this.el.css("left", posX * 100 + "%");
+      return this.el.css("top", posY * 100 + "%");
+    }
   };
 
   CounterController.prototype.getLocation = function() {
@@ -48,7 +52,43 @@ CounterController = (function(_super) {
     return this.input.val(number);
   };
 
-  CounterController.prototype.attachToCard = function(cardController) {};
+  CounterController.prototype.attachToCard = function(cardController) {
+    var offsetXtoCard, offsetYtoCard;
+    this.cardControllerAttachedTo = cardController;
+    this.isAttached = true;
+    this.el.appendTo(cardController.el);
+    offsetXtoCard = this.el.offset().left - cardController.el.offset().left;
+    offsetYtoCard = this.el.offset().top - cardController.el.offset().top;
+    this.el.css("left", offsetXtoCard);
+    this.el.css("top", offsetYtoCard);
+    return this.el.attr("state", "Attached");
+  };
+
+  CounterController.prototype.unattach = function() {
+    var offsetX, offsetY, player;
+    offsetX = this.el.offset().left;
+    offsetY = this.el.offset().top;
+    this.el.css("left", offsetX);
+    this.el.css("top", offsetY);
+    player = this.getPlayer();
+    this.el.appendTo(player.find(".Counters"));
+    this.el.attr("state", "");
+    this.cardControllerAttachedTo = null;
+    return this.isAttached = false;
+  };
+
+  CounterController.prototype.getPlayer = function() {
+    var player;
+    return player = this.el.closest(".Player");
+  };
+
+  CounterController.prototype.isElementPlayerOpponent = function() {
+    if (this.getPlayer().hasClass("Opponent")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   return CounterController;
 

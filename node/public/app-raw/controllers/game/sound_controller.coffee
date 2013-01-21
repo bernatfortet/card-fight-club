@@ -20,7 +20,6 @@ class SoundController extends Spine.Controller
 
 	renderSound: ( soundName ) ->
 		soundType = "ogg"
-		console.log( "sounds/#{soundName}.#{soundType}" );
 		params =
 			soundId: soundName
 			soundSource: "sounds/#{soundName}.#{soundType}"
