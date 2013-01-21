@@ -71,6 +71,8 @@ class PlayerController extends Spine.Controller
 		
 		this.flipCardUp( cardModel )
 
+		return cardController;
+
 	removeCard: ( cardModel ) ->
 		cardModel.controller.el.remove()
 		cardModel.controller = null
@@ -199,6 +201,7 @@ class PlayerController extends Spine.Controller
 			this.setCounterListeners( counterController.el )
 
 		this.renderCounter( counterController.el )
+		return counterController
 
 	renderCounter: ( counterEl ) ->
 		this.el.find(".Counters").append( counterEl )

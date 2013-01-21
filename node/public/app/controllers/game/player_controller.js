@@ -107,7 +107,8 @@ PlayerController = (function(_super) {
     this.renderCard(cardController.el);
     this.changeCardArea(cardModel, this.hand.id);
     this.moveToAreaLocation(cardModel, this.hand.id);
-    return this.flipCardUp(cardModel);
+    this.flipCardUp(cardModel);
+    return cardController;
   };
 
   PlayerController.prototype.removeCard = function(cardModel) {
@@ -278,7 +279,8 @@ PlayerController = (function(_super) {
       this.multiplayerController.onCreateCounter(counterModel);
       this.setCounterListeners(counterController.el);
     }
-    return this.renderCounter(counterController.el);
+    this.renderCounter(counterController.el);
+    return counterController;
   };
 
   PlayerController.prototype.renderCounter = function(counterEl) {

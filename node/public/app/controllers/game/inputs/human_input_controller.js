@@ -34,6 +34,7 @@ HumanInputController = (function(_super) {
   }
 
   HumanInputController.prototype.setListeners = function() {
+    var _this = this;
     $(".HumanPlayer .Area").droppable({
       drop: this.onElementDropsOnArea,
       hoverClass: "Active"
@@ -41,6 +42,21 @@ HumanInputController = (function(_super) {
     $(".Area").on("mouseover", this.onMouseOverArea);
     $(".Area").on("mouseout", this.onMouseOutArea);
     $(".HumanPlayer .CardPile").on("dblclick", this.onDoubleClickArea);
+    $(".HumanPlayer .CardPile").draggable({
+      helper: "clone",
+      stop: function(event, ui) {
+        var areaModel, cardController, cardLocation, originCardPileClone;
+        originCardPileClone = $(ui.helper);
+        cardLocation = {
+          x: originCardPileClone.offset().left / $(window).width(),
+          y: originCardPileClone.offset().top / $(window).height()
+        };
+        areaModel = Area.find($(event.target).data().areaId);
+        cardController = _this.targetPlayer.createCardFromTopOfArea(areaModel);
+        _this.onMoveCard(cardController.item.id, cardLocation);
+        return originCardPileClone.remove();
+      }
+    });
     $.contextMenu({
       selector: ".HumanPlayer .CardPile",
       items: {
@@ -139,6 +155,21 @@ HumanInputController = (function(_super) {
     $(".NumberA input").on("keydown", jwerty.event('enter', function(event) {
       return _this.onSubmitNumber(event);
     }));
+    $(".CounterOrigin").draggable({
+      helper: "clone",
+      stop: function(event, ui) {
+        var counterController, counterLocation, originCounterClone;
+        originCounterClone = $(ui.helper);
+        counterLocation = {
+          x: originCounterClone.offset().left / $(window).width(),
+          y: originCounterClone.offset().top / $(window).height()
+        };
+        counterController = _this.createCounter();
+        _this.onMoveCounter(counterController.item.id, counterLocation);
+        return originCounterClone.remove();
+      }
+    });
+    Counter;
     $(".NumberA input").on('submit', this.onSubmitNumber);
     return $(".Dice").on("click", this.onThrowDice);
   };

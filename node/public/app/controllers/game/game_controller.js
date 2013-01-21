@@ -74,9 +74,7 @@ GameController = (function(_super) {
     return $(".Loading").remove();
   };
 
-  GameController.prototype.callDebugMethods = function() {
-    return app.gameController.humanInputController.createCounter();
-  };
+  GameController.prototype.callDebugMethods = function() {};
 
   return GameController;
 

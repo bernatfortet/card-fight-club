@@ -52,4 +52,4 @@ class GameController extends Spine.Controller
 		$(".Loading").remove() #Use Spine sections
 
 	callDebugMethods: ->
-		app.gameController.humanInputController.createCounter()
+		

@@ -18,6 +18,21 @@ class HumanInputController extends InputController
 
 		$(".HumanPlayer .CardPile").on("dblclick", this.onDoubleClickArea )
 
+
+		$(".HumanPlayer .CardPile").draggable(
+			helper: "clone"
+			stop: ( event, ui ) =>
+				originCardPileClone = $(ui.helper)
+				cardLocation = 
+					x: originCardPileClone.offset().left / $(window).width()
+					y: originCardPileClone.offset().top / $(window).height()
+
+				areaModel = Area.find( $(event.target).data().areaId )
+				cardController = this.targetPlayer.createCardFromTopOfArea( areaModel )
+				this.onMoveCard( cardController.item.id, cardLocation )
+				originCardPileClone.remove()
+		)
+
 		$.contextMenu({
 			selector: ".HumanPlayer .CardPile"
 			items:
@@ -103,7 +118,20 @@ class HumanInputController extends InputController
 		$(".NumberA input").on("keydown", jwerty.event('enter', (event) =>
 			this.onSubmitNumber( event )
 		))
+		$(".CounterOrigin").draggable(
+			helper: "clone"
+			stop: ( event, ui ) =>
+				originCounterClone = $(ui.helper)
+				counterLocation = 
+					x: originCounterClone.offset().left / $(window).width()
+					y: originCounterClone.offset().top / $(window).height()
 
+				counterController = this.createCounter()
+				this.onMoveCounter( counterController.item.id, counterLocation )
+				originCounterClone.remove()
+		)
+
+		Counter
 		$(".NumberA input").on('submit', this.onSubmitNumber );
 
 		$(".Dice").on("click", this.onThrowDice )
