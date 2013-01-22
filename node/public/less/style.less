@@ -17,7 +17,7 @@ body{ z-index: -2; background-color:#1e1d24;  }
 		@graveyardImage: url("../images/graveyard.jpg");
 
 		.area{}
-		.cardpile{ background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px); .anim;
+		.cardpile{ background:@backCardImage no-repeat right center; background-size: contain; .unselectable; .anchor; .br(7px);
 		}
 		.hand{ width:85%; height:150px; .abs; left:10px; bottom:13px;
 		}
@@ -28,7 +28,7 @@ body{ z-index: -2; background-color:#1e1d24;  }
 			&.Active{ border: 1px solid rgba(255,255,255,0.1); .bs( 0 0 10px 0 rgba(255,255,255,0.1) inset); }
 		}
 		.deck{ width:107px; height:150px; .abs; right:10px; bottom:13px;
-			&:hover{ .fancyGreenGlow; .anim;}
+			&:hover:not(.ui-draggable-dragging){ .fancyGreenGlow; .anim;}
 			&.Active{ .fancyGreenGlow; }
 			&[data-isEmpty="true"]{ background-image: @emtyCardImage;}
 		}
