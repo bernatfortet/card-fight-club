@@ -39,15 +39,13 @@ class CounterController extends Spine.Controller
 		this.isAttached = true
 
 		this.el.appendTo( cardController.el )
-
-
+		this.el.attr( "state", "Attached" )
 
 		offsetXtoCard = this.el.offset().left - cardController.el.offset().left
 		offsetYtoCard = this.el.offset().top - cardController.el.offset().top
 		this.el.css("left", offsetXtoCard )
 		this.el.css("top", offsetYtoCard )
 
-		this.el.attr( "state", "Attached" )
 
 	unattach: () ->
 		offsetX = this.el.offset().left

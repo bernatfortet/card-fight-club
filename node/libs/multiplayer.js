@@ -138,6 +138,18 @@ var Multiplayer = {
 					user.broadcast.to(roomId).emit( "onCounterIsSet", data );
 				});
 			});
+			user.on('onAttachCounterToCard', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCounterIsAttachedToCard ");
+					user.broadcast.to(roomId).emit( "onCounterIsAttachedToCard", data );
+				});
+			});
+			user.on('onUnattachCounter', function( data ) {
+				user.get('roomId', function(err, roomId){
+					console.log( "onCounterIsUnattached ");
+					user.broadcast.to(roomId).emit( "onCounterIsUnattached", data );
+				});
+			});
 
 		});
 

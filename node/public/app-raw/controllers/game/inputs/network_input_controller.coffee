@@ -99,7 +99,7 @@ class NetworkInputController extends InputController
 
 	#Counters
 	onCounterIsCreated: ( params ) =>
-		counterModel = Counter.create( id: params.counterId, number:0,  attached_card_id: params.cardId, controller: null )
+		counterModel = Counter.create( id: params.counterId, number: params.counterNumber,  attached_card_id: params.cardId, controller: null )
 		this.onCreateCounter(counterModel);
 
 	onCounterIsRemoved: ( params ) =>

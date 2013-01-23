@@ -44,10 +44,11 @@ GameController = (function(_super) {
     });
     this.humanInputController.setTargetPlayer(this.player);
     this.networkInputController.setTargetPlayer(this.opponent);
-    this.player.setDeck(User.first().deck);
     this.humanInputController.setListeners();
     this.humanInputController.onResize();
     this.showGameBoard();
+    this.player.setDeck(User.first().deck);
+    this.player.createLifeCounter();
     if (localServer && debugApp) return this.callDebugMethods();
   };
 

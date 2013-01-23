@@ -269,22 +269,49 @@ PlayerController = (function(_super) {
     }
   };
 
+  PlayerController.prototype.createLifeCounter = function() {
+    var counterModel, lifeCounterController;
+    counterModel = Counter.create({
+      number: 20,
+      attached_card_id: null,
+      controller: null
+    });
+    return lifeCounterController = this.addCounter(counterModel);
+  };
+
   PlayerController.prototype.addCounter = function(counterModel) {
     var counterController;
     counterController = new CounterController({
       item: counterModel
     });
     counterModel.setController(counterController);
+    this.renderCounter(counterController);
     if (this.isPlayerNetworked()) {
       this.multiplayerController.onCreateCounter(counterModel);
-      this.setCounterListeners(counterController.el);
+      this.setCounterListeners(counterController);
     }
-    this.renderCounter(counterController.el);
     return counterController;
   };
 
-  PlayerController.prototype.renderCounter = function(counterEl) {
-    return this.el.find(".Counters").append(counterEl);
+  PlayerController.prototype.renderCounter = function(counterController) {
+    var isLifeCounter;
+    isLifeCounter = counterController.item.number === 20;
+    if (!isLifeCounter) {
+      return this.el.find(".Counters").append(counterController.el);
+    } else {
+      counterController.el.remove();
+      counterController.el = this.el.find(".LifeCounter");
+      counterController.el.attr("data-id", counterController.item.id);
+      return counterController.el.find("input").val(counterController.item.number);
+    }
+  };
+
+  PlayerController.prototype.setCounter = function(counterModel, counterNumber) {
+    counterModel.controller.el.find("input").val(counterNumber);
+    counterModel.controller.el.find(".number").html(counterNumber);
+    if (this.isPlayerNetworked()) {
+      return this.multiplayerController.onSetCounter(counterModel, counterNumber);
+    }
   };
 
   PlayerController.prototype.removeCounter = function(counterModel) {

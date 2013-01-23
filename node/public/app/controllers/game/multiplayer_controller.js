@@ -219,6 +219,7 @@ MultiplayerController = (function(_super) {
     counterId = this.setIdForOpponent(counterModel.id);
     params = {
       counterId: counterId,
+      counterNumber: counterModel.number,
       attached_card_id: counterModel.attachedCardId != null
     };
     this.sendEvent("onCreateCounter", params);
@@ -238,7 +239,7 @@ MultiplayerController = (function(_super) {
     if (localServer) {
       app.gameController.networkInputController.onCounterIsRemoved(params);
     }
-    return console.log("Card has been Removed ", params);
+    return console.log("Counter is Removed ", params);
   };
 
   MultiplayerController.prototype.onMoveCounter = function(counterModel) {
@@ -257,12 +258,12 @@ MultiplayerController = (function(_super) {
     return console.log("Counter has moved ", params);
   };
 
-  MultiplayerController.prototype.onSetCounter = function(counterModel) {
+  MultiplayerController.prototype.onSetCounter = function(counterModel, counterNumber) {
     var opponentCounterId, params;
     opponentCounterId = this.setIdForOpponent(counterModel.id);
     params = {
       counterId: opponentCounterId,
-      counterNumber: counterModel.number
+      counterNumber: counterNumber
     };
     this.sendEvent("onSetCounter", params);
     if (localServer) {

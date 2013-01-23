@@ -131,7 +131,7 @@ NetworkInputController = (function(_super) {
     var counterModel;
     counterModel = Counter.create({
       id: params.counterId,
-      number: 0,
+      number: params.counterNumber,
       attached_card_id: params.cardId,
       controller: null
     });

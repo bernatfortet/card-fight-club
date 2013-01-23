@@ -31,6 +31,8 @@ class PlayerController extends Spine.Controller
 		this.graveyardController.setItem( this.graveyard )
 		this.sideboardController.setItem( this.sideboard )
 
+
+
 	setDeck: ( deck ) ->
 		this.deck = Deck.create( 
 			name: deck.name, 
@@ -192,19 +194,36 @@ class PlayerController extends Spine.Controller
 
 
 	# Counters
+	createLifeCounter: () ->
+		counterModel = Counter.create( number: 20, attached_card_id: null, controller: null )
+		lifeCounterController = this.addCounter( counterModel )
+
 	addCounter: ( counterModel ) ->
 		counterController = new CounterController( item: counterModel )
 		counterModel.setController( counterController )
 
+		this.renderCounter( counterController )
+
 		if ( this.isPlayerNetworked() ) #TODO should all players be able to set and move counters? 
 			this.multiplayerController.onCreateCounter( counterModel )
-			this.setCounterListeners( counterController.el )
+			this.setCounterListeners( counterController )
 
-		this.renderCounter( counterController.el )
 		return counterController
 
-	renderCounter: ( counterEl ) ->
-		this.el.find(".Counters").append( counterEl )
+	renderCounter: ( counterController ) ->
+		isLifeCounter = counterController.item.number == 20
+		if( !isLifeCounter )
+			this.el.find(".Counters").append( counterController.el )
+		else 
+			counterController.el.remove()
+			counterController.el = this.el.find(".LifeCounter")
+			counterController.el.attr("data-id", counterController.item.id )
+			counterController.el.find("input").val( counterController.item.number )
+
+	setCounter: ( counterModel, counterNumber ) ->
+		counterModel.controller.el.find("input").val( counterNumber )
+		counterModel.controller.el.find(".number").html( counterNumber )
+		this.multiplayerController.onSetCounter( counterModel, counterNumber ) if this.isPlayerNetworked()
 
 	removeCounter: ( counterModel ) ->
 		counterModel.controller.el.remove()

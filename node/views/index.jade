@@ -43,20 +43,6 @@ html(lange="en")
 						.input.Input
 							.background.flash.Flash
 							input( type="text", placeholder="Send Message" )
-					.elements
-						.element.numberA.NumberA
-							input( type="text", value="20" )
-						.element.numberB.NumberB
-							input( type="text", value="20" )
-						.element.dice.Dice
-						.element.counter.blueCounter.CounterOrigin
-							.inner
-						.element.counter.yellowCounter.CounterOrigin
-							.inner
-						.element.counter.redCounter.CounterOrigin
-							.inner
-						.element.hexagon.Hexagon
-							span 20
 
 
 				.playzone.Playzone
@@ -71,6 +57,10 @@ html(lange="en")
 						.button.MoveDown move Down
 						.button.MoveToBottom move To Bottom
 
+					.tools
+						.dice.Dice
+						.counter.CounterOrigin
+							.number 1
 
 					.player.opponent.Player.Opponent
 						.cards.Cards
@@ -81,6 +71,8 @@ html(lange="en")
 							//.player-name name
 						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
 						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")
+						.life-counter.LifeCounter
+							.number 20
 
 					.player.Player.HumanPlayer
 						.cards.Cards
@@ -91,3 +83,5 @@ html(lange="en")
 							//.player-name name
 						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
 						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")
+						.life-counter.LifeCounter
+							input( type="text", value="20" )

@@ -57,11 +57,11 @@ CounterController = (function(_super) {
     this.cardControllerAttachedTo = cardController;
     this.isAttached = true;
     this.el.appendTo(cardController.el);
+    this.el.attr("state", "Attached");
     offsetXtoCard = this.el.offset().left - cardController.el.offset().left;
     offsetYtoCard = this.el.offset().top - cardController.el.offset().top;
     this.el.css("left", offsetXtoCard);
-    this.el.css("top", offsetYtoCard);
-    return this.el.attr("state", "Attached");
+    return this.el.css("top", offsetYtoCard);
   };
 
   CounterController.prototype.unattach = function() {

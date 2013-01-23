@@ -42,10 +42,8 @@
             </div>
           </div>
         </div></script><script type="text/x-jquery-tmpl" id="CounterTemplate">
-        <div data-id="${id}" class="counter blueCounter Counter">
-          <div class="inner">
-            <!--input-->
-          </div>
+        <div data-id="${id}" class="counter Counter">
+          <div class="number">1</div>
         </div></script>
       </div>
       <div class="loading Loading"><span>Loading</span></div>
@@ -62,25 +60,6 @@
               <input type="text" placeholder="Send Message">
             </div>
           </div>
-          <div class="elements">
-            <div class="element numberA NumberA">
-              <input type="text" value="20">
-            </div>
-            <div class="element numberB NumberB">
-              <input type="text" value="20">
-            </div>
-            <div class="element dice Dice"></div>
-            <div class="element counter blueCounter CounterOrigin">
-              <div class="inner"></div>
-            </div>
-            <div class="element counter yellowCounter CounterOrigin">
-              <div class="inner"></div>
-            </div>
-            <div class="element counter redCounter CounterOrigin">
-              <div class="inner"></div>
-            </div>
-            <div class="element hexagon Hexagon"><span>20</span></div>
-          </div>
         </div>
         <div class="playzone Playzone">
           <div class="zoomed-card ZoomedCard"></div>
@@ -92,6 +71,12 @@
             <div class="button MoveDown">move Down</div>
             <div class="button MoveToBottom">move To Bottom</div>
           </div>
+          <div class="tools">
+            <div class="dice Dice"></div>
+            <div class="counter CounterOrigin">
+              <div class="number">1</div>
+            </div>
+          </div>
           <div class="player opponent Player Opponent">
             <div class="cards Cards"></div>
             <div class="counters Counters"></div>
@@ -102,6 +87,9 @@
             </div>
             <div data-isEmpty="true" class="graveyard area cardpile Graveyard Area CardPile"></div>
             <div data-isEmpty="true" class="sideboard area cardpile Sideboard Area CardPile"></div>
+            <div class="life-counter LifeCounter">
+              <div class="number">20</div>
+            </div>
           </div>
           <div class="player Player HumanPlayer">
             <div class="cards Cards"></div>
@@ -113,6 +101,9 @@
             </div>
             <div data-isEmpty="true" class="graveyard area cardpile Graveyard Area CardPile"></div>
             <div data-isEmpty="true" class="sideboard area cardpile Sideboard Area CardPile"></div>
+            <div class="life-counter LifeCounter">
+              <input type="text" value="20">
+            </div>
           </div>
         </div>
       </div>

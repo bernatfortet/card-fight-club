@@ -115,9 +115,10 @@ class HumanInputController extends InputController
 		));
 
 	setElementListeners: () ->
-		$(".NumberA input").on("keydown", jwerty.event('enter', (event) =>
-			this.onSubmitNumber( event )
-		))
+		#$(".LifeCounter").on("keydown", jwerty.event('enter', (event) =>
+		#	this.onSubmitNumber( event )
+		#))
+
 		$(".CounterOrigin").draggable(
 			helper: "clone"
 			stop: ( event, ui ) =>
@@ -131,8 +132,10 @@ class HumanInputController extends InputController
 				originCounterClone.remove()
 		)
 
-		Counter
-		$(".NumberA input").on('submit', this.onSubmitNumber );
+		$(".CounterOrigin").droppable(
+			drop: this.onElementDropsOnCounter
+			hoverClass: "Active"
+		)
 
 		$(".Dice").on("click", this.onThrowDice )
 
@@ -236,14 +239,22 @@ class HumanInputController extends InputController
 		counterModel = Counter.create( number:0,  attached_card_id: null, controller: null )
 		this.onCreateCounter( counterModel )
 
-	setCounterListener: ( counterElement ) ->
+	setCounterListener: ( counterController ) ->
+		counterElement = counterController.el
 		counterElement.draggable({
 			stop: this.onCounterDragStops
 			stack: ".Counter"
 		})
-		counterElement.on("mouseover", this.onMouseOverCounter )
+
+		counterElement.find("input").on("keydown", jwerty.event('enter', (event) =>
+			counterNumber = counterElement.find("input").val();
+			this.onSetCounter( counterController.item.id, counterNumber )
+		))
+
+		counterElement.find("input")
+		#counterElement.on("mouseover", this.onMouseOverCounter )
 		counterElement.on("click", this.onClickCounter )
-		counterElement.on("dblclick", this.onDoubleClickCounter )
+		#counterElement.on("dblclick", this.onDoubleClickCounter )
 		#TODO when input changes triggerSet
 		
 	onCounterDragStops: ( event, ui )  =>
@@ -258,6 +269,7 @@ class HumanInputController extends InputController
 
 	onClickCounter: ( event ) =>
 		counterController = this.getTargetCounterController( event.currentTarget )
+		counterController.el.attr("state", "Active")
 
 	onElementDropsOnCard: ( event, ui ) =>
 		setTimeout( => #By using this timeout this event is fired last
@@ -270,6 +282,11 @@ class HumanInputController extends InputController
 				this.onAttachCounterToCard( counterId, cardId )
 		, 0)
 
+	onElementDropsOnCounter: ( event, ui ) =>
+		dropedElement = $(ui.draggable)
+		if( dropedElement.hasClass("Counter") )
+			counterId = this.getTargetObjectId( dropedElement )
+			this.onRemoveCounter( counterId )
 
 	# Chat
 	sendChatMsg: ( event ) =>

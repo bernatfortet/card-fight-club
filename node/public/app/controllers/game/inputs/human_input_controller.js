@@ -13,6 +13,7 @@ HumanInputController = (function(_super) {
 
   function HumanInputController() {
     this.sendChatMsg = __bind(this.sendChatMsg, this);
+    this.onElementDropsOnCounter = __bind(this.onElementDropsOnCounter, this);
     this.onElementDropsOnCard = __bind(this.onElementDropsOnCard, this);
     this.onClickCounter = __bind(this.onClickCounter, this);
     this.onMouseOverCounter = __bind(this.onMouseOverCounter, this);
@@ -152,9 +153,6 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.setElementListeners = function() {
     var _this = this;
-    $(".NumberA input").on("keydown", jwerty.event('enter', function(event) {
-      return _this.onSubmitNumber(event);
-    }));
     $(".CounterOrigin").draggable({
       helper: "clone",
       stop: function(event, ui) {
@@ -169,8 +167,10 @@ HumanInputController = (function(_super) {
         return originCounterClone.remove();
       }
     });
-    Counter;
-    $(".NumberA input").on('submit', this.onSubmitNumber);
+    $(".CounterOrigin").droppable({
+      drop: this.onElementDropsOnCounter,
+      hoverClass: "Active"
+    });
     return $(".Dice").on("click", this.onThrowDice);
   };
 
@@ -287,14 +287,21 @@ HumanInputController = (function(_super) {
     return this.onCreateCounter(counterModel);
   };
 
-  HumanInputController.prototype.setCounterListener = function(counterElement) {
+  HumanInputController.prototype.setCounterListener = function(counterController) {
+    var counterElement,
+      _this = this;
+    counterElement = counterController.el;
     counterElement.draggable({
       stop: this.onCounterDragStops,
       stack: ".Counter"
     });
-    counterElement.on("mouseover", this.onMouseOverCounter);
-    counterElement.on("click", this.onClickCounter);
-    return counterElement.on("dblclick", this.onDoubleClickCounter);
+    counterElement.find("input").on("keydown", jwerty.event('enter', function(event) {
+      var counterNumber;
+      counterNumber = counterElement.find("input").val();
+      return _this.onSetCounter(counterController.item.id, counterNumber);
+    }));
+    counterElement.find("input");
+    return counterElement.on("click", this.onClickCounter);
   };
 
   HumanInputController.prototype.onCounterDragStops = function(event, ui) {
@@ -314,7 +321,8 @@ HumanInputController = (function(_super) {
 
   HumanInputController.prototype.onClickCounter = function(event) {
     var counterController;
-    return counterController = this.getTargetCounterController(event.currentTarget);
+    counterController = this.getTargetCounterController(event.currentTarget);
+    return counterController.el.attr("state", "Active");
   };
 
   HumanInputController.prototype.onElementDropsOnCard = function(event, ui) {
@@ -329,6 +337,15 @@ HumanInputController = (function(_super) {
         return _this.onAttachCounterToCard(counterId, cardId);
       }
     }, 0);
+  };
+
+  HumanInputController.prototype.onElementDropsOnCounter = function(event, ui) {
+    var counterId, dropedElement;
+    dropedElement = $(ui.draggable);
+    if (dropedElement.hasClass("Counter")) {
+      counterId = this.getTargetObjectId(dropedElement);
+      return this.onRemoveCounter(counterId);
+    }
   };
 
   HumanInputController.prototype.sendChatMsg = function(event) {

@@ -170,6 +170,7 @@ class MultiplayerController extends Spine.Controller
 
 		params = 
 			counterId: counterId
+			counterNumber: counterModel.number
 			attached_card_id: counterModel.attachedCardId?
 
 		this.sendEvent( "onCreateCounter", params )
@@ -185,7 +186,7 @@ class MultiplayerController extends Spine.Controller
 		this.sendEvent( "onRemoveCounter", params )
 
 		app.gameController.networkInputController.onCounterIsRemoved( params ) if localServer
-		console.log( "Card has been Removed ", params );
+		console.log( "Counter is Removed ", params );
 
 	onMoveCounter: ( counterModel ) =>
 		invertedLocation = counterModel.controller.getLocation()
@@ -200,11 +201,11 @@ class MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onCounterIsMoved( params ) if localServer
 		console.log( "Counter has moved ", params );
 
-	onSetCounter: ( counterModel ) =>	
+	onSetCounter: ( counterModel, counterNumber ) =>	
 		opponentCounterId = this.setIdForOpponent( counterModel.id )
 		params =
 			counterId: opponentCounterId
-			counterNumber: counterModel.number
+			counterNumber: counterNumber
 
 		this.sendEvent( "onSetCounter", params )
 
