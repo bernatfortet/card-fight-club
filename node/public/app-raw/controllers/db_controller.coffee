@@ -5,7 +5,7 @@ class DBController extends Spine.Controller
 	apiKey: "apiKey=50b9ed0fe4b0afba6ecc5836"
 
 	#Tutor Server
-	tutorServerUrl: "http://"+window.location.hostname+":3000/card/"
+	tutorServerUrl: "http://"+window.location.hostname+":8080/api/v1/cards/"
 
 	userId: "50dcf675e4b0876155f7f7c8"
 
@@ -40,7 +40,7 @@ class DBController extends Spine.Controller
 		card = UserCard.create({
 			id: cardId,
 			name: tutorCardData.name,
-			image_url: tutorCardData.image_url,
+			image_url: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{cardId}&type=card",
 			type: tutorCardData.type
 		})
 		console.log( card );
@@ -70,7 +70,7 @@ class DBController extends Spine.Controller
 		$.ajax({
 			url: this.tutorServerUrl + cardId,
 			type: "GET",
-			dataType: "jsonp",
+			dataType: "json",
 			success: ( JSON ) => 
 				this.onLoadCard( JSON, cardId )
 		})

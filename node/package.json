@@ -10,6 +10,11 @@
     "jade": "*",
     "less-middleware": "*",
     "socket.io": "*",
-    "now": "*"
+    "now": "*",
+    "tutor": "0.4.0",
+    "restify"
+  },
+  devDependencies: {
+    "coffee-script": "1.6.x"
   }
 }
