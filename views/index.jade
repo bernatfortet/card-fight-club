@@ -1,0 +1,87 @@
+!!! 5
+html(lange="en")
+
+	head
+		include meta
+
+		//Favicon
+		link( rel="shortcut icon", href="../favicon.ico")
+		link( rel="apple-touch-icon", href="../apple-touch-icon.png")
+
+		//Css 
+		link( rel="stylesheet", type="text/css", media="screen", href="/css/style.css")
+
+		//App Javascript
+		script( data-main="/app/main.js", src="/app/libs/require-jquery.min.js")
+		
+		//Socket IO Client
+		script( src="socket.io/socket.io.js")
+
+		//Other Javascript
+		//script( src="/app/libs/ga.js")
+
+		//RSS TODO
+
+	body.home
+		#Scripts
+		#WebsiteApp
+			#Views
+				include ../public/app-raw/views/views
+
+			.loading.Loading
+				span Loading
+			.section#Login
+			.section.game#Game
+
+				.Sounds
+				.sidebar.Sidebar
+					.logo.Logo
+					.chat.Chat
+						.conversation.Conversation
+						.your-turn.YourTurn
+							span Your Turn
+						.input.Input
+							.background.flash.Flash
+							input( type="text", placeholder="Send Message" )
+
+
+				.playzone.Playzone
+					.zoomed-card.ZoomedCard
+
+					.card-lister.CardLister(data-state="hidden")
+						.close.Close
+							
+						.button.MoveToTop move To Top
+						.button.MoveUp move Up
+						.list.List
+						.button.MoveDown move Down
+						.button.MoveToBottom move To Bottom
+
+					.tools
+						.dice.Dice
+						.counter.CounterOrigin
+							.number 1
+
+					.player.opponent.Player.Opponent
+						.cards.Cards
+						.counters.Counters
+						.deck.area.cardpile.Deck.Area.CardPile(data-isEmpty="true")
+						.hand.area.Hand(data-isEmpty="true")
+						.board.area.Board(data-isEmpty="true")
+							//.player-name name
+						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
+						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")
+						.life-counter.LifeCounter
+							.number 20
+
+					.player.Player.HumanPlayer
+						.cards.Cards
+						.counters.Counters
+						.deck.area.cardpile.Deck.Area.CardPile(data-isEmpty="true")
+						.hand.area.Hand.Area(data-isEmpty="true")
+						.board.area.Board.Area(data-isEmpty="true")
+							//.player-name name
+						.graveyard.area.cardpile.Graveyard.Area.CardPile(data-isEmpty="true")
+						.sideboard.area.cardpile.Sideboard.Area.CardPile(data-isEmpty="true")
+						.life-counter.LifeCounter
+							input( type="text", value="20" )
