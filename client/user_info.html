@@ -1,0 +1,63 @@
+<template name="logginButtons">
+	<div class="user-info-container">
+	{{#if currentUser}}
+		{{> user_info}}
+	{{else}}
+		{{> user_logged_out}}
+	{{/if}}
+	
+</template>
+
+<template name="user_logged_out">
+	<div class="login-buttons">
+		<h3 class="">Log In </h3>
+
+		<div class="social-logins">
+			<div class="facebook" id="LoginWithFacebook"></div>
+		</div>
+
+		<div class="separator"><span>or</span></div>
+
+		<div class="password-login">
+			<input id="LoginUsername" type="text" placeholder="username">
+			<input id="LoginPassword" type="password" placeholder="password">
+			<div class="button" id="LoginWithPassword">Login</div>
+		</div>
+	</div>
+</template>
+
+<template name="user_info">
+	<div class="user-info">
+
+	{{#if loggingIn}}
+		{{> progress_bar}}
+	{{else}}
+		<div class="user-data">
+			{{>user_image}}
+			<div class="user-name">{{ currentUser.profile.username }}</div>
+		</div>
+		<div class="options">
+			<div id="AccountSettings">Account Settings</div>
+			<div id="Logout">Log Out</div>
+		</div>
+	{{/if}}
+	
+	</div>
+</template>
+
+<template name="user_image">
+	<div class="user-image">
+		<img src="{{currentUser.profile.picture}}" />
+	</div>
+</template>
+
+<template name="progress_bar">
+	<div>... logging in</div>
+</template>
+
+
+
+<template name="current_user">
+	<div>{{identity}} is in match: {{currentMatch}}
+	</div>
+</template>

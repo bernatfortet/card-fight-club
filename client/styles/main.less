@@ -1,0 +1,68 @@
+@import "style-magic.less";
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,800);
+
+@brandColor:#30bbc7;
+@facebook:#3b5998;
+
+.opensans{ font-family: 'Open Sans', 'Helvetica', 'sans-serif'; }
+
+
+#WebsiteApp{ width:90%; padding:5%; min-width:0; .opensans; }
+.matches-list{ .element;
+	.match{ .rel; .element; .overflow;
+		input{ .abs; right:10px; top:10px;}
+	}
+}
+
+.users-list{ .element; }
+.presences-list{ .element; }
+
+.clickable{ cursor:pointer; .unselectable; }
+
+
+.login-buttons{ width:200px; margin:0 auto; padding:20px; background:@white; .br(3px);
+	h3{ margin-bottom:20px; .tcenter; }
+
+	.social-logins{ @buttonWidth:56px; width:@buttonWidth; margin:0 auto; .overflow;
+		& > div{ width:56px; height:56px; .fl; display:block; .clickable;  }
+		.facebook{ background:@facebook; 
+			&:hover{ background-color:lighten(@facebook, 10%) }
+			&:active{ background-color:darken(@facebook, 5%) }
+		}
+	}
+	.separator{ margin:25px 0; border-bottom:1px solid darken(@white, 10%);
+		span{ width:20px; .rel; top:7px; display:block; margin:0 auto; padding:0 20px; background:@white; color:darken(@white, 20%) }
+	}
+	.password-login{ width:100%;
+		input{ width:85%; margin:0 auto 10px; padding:10px 15px; display:block; color:darken(@white, 20%); border:3px solid darken(@white, 10%); .br(3px);
+			&:hover{ color:darken(@white, 60%); border-color:darken(@white, 30%); }
+			&:focus{ color:darken(@white, 80%); border-color:darken(@white, 70%); }
+		}
+		.button{ margin:0 auto 10px; padding:10px 18px;  background:@brandColor; color:@white; .br(3px); cursor:pointer;
+			&:hover{ background-color:lighten(@brandColor, 10%) }
+			&:active{ background-color:darken(@brandColor, 5%) }
+		}
+	}
+
+}
+
+.user-info{ height:30px; .abs; right:20px; top:20px; padding:10px 15px 10px 10px; background:@white; color:black; .br(3px); z-index:4; .overflow; .anim;
+
+	.user-data{ height: 30px;
+		.user-image{ @size:30px; width:@size; height:@size; .fl; margin-right:10px; .br(3px); .overflow;
+			img{ width:100%; height:auto; }
+		}
+		.user-name{ .fl; .rel; top:6px; .fs(16px); font-weight:700;  }
+
+	}
+
+	.options{ margin-top:10px }
+
+	&:hover{ height:80px; .anim;
+		.options{}
+	}
+
+}
+
+.element{ margin:0 0 10px 0; padding:10px; color:white; border:1px solid fade(white, 20%); }
+

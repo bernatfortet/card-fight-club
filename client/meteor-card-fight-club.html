@@ -1,0 +1,69 @@
+<head>
+	<title>meteor-card-fight-club</title>
+	<script>
+		var api = {}
+	</script>
+</head>
+
+<body>
+
+	<div id="WebsiteApp">
+		{{loginButtons}}
+
+		{{> logginButtons }}
+
+		{{#if currentUser}}
+
+			{{> matches_list}}
+
+			{{> users_list}}
+
+		{{/if}}
+	</div>
+
+</body>
+
+<template name="matches_list">
+	<div class="matches-list">
+		{{#each matches}}
+			{{> matches_list_item}}
+		{{else}}
+			No Active Matches
+		{{/each}}
+
+	<input id="CreateMatch" type="button" value="Create Match" />
+	</div>
+</template>
+
+
+<template name="matches_list_item">
+	<div class="match Match">
+		<h4>Match: {{_id}}</h4>
+		{{users}}
+		<input class="JoinMatch" type="button" value="Join Match" id="{{_id}}" />
+	</div>
+</template>
+
+
+
+<template name="users_list">
+	<div class="users-list">
+	{{#each users}}
+		{{#if profile.online}}
+			{{> users_list_item}}
+		{{/if}}
+	{{else}}
+		No User yet
+	{{/each}}
+	</div>
+</template>
+
+<template name="users_list_item">
+	<h1>{{profile.name}} is
+		{{#if profile.online}}
+		online
+		{{else}}
+		offline
+		{{/if}}
+	</h1>
+</template>
