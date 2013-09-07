@@ -22,9 +22,7 @@ UserStatus.on "sessionLogout", (userId, sessionId) ->
 	matchUserisIn = Matches.findOne({ users: userId } )
 
 
-	if( matchUserisIn )
-		console.log matchUserisIn
-		updateMatch = Matches.update( matchUserisIn, { $pull: { "users": userId } } )
+	Meteor.call( 'leaveAllMatches' )
 
 
 

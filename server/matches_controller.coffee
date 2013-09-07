@@ -13,24 +13,24 @@ Meteor.methods
 	
 
 	leaveOtherMatches: ->
-		#db.matches.find( {"users": 'ockgnEpfsBPAR4fDf'} )
-
 		matchesUserisIn = Matches.find({ users: Meteor.userId() } ).fetch()
 
 		for match in matchesUserisIn
+			usersCurrentMatchId = Meteor.users.findOne( Meteor.userId(), { currentMatchId: match._id }).currentMatchId
+			if( match._id != usersCurrentMatchId )
+				Meteor.call( 'leaveMatch', match._id )
 
-			console.log '---------'
-			console.log match._id
-			console.log Meteor.users.findOne( Meteor.userId(), { currentMatchId: match._id }).currentMatchId 
+	leaveAllMatches: ->
+		matchesUserisIn = Matches.find({ users: Meteor.userId() } ).fetch()
 
-			console.log '---------'
+		for match in matchesUserisIn
+			Meteor.call( 'leaveMatch', match._id )
 
-			if( match._id != Meteor.users.findOne( Meteor.userId(), { currentMatchId: match._id }).currentMatchId )
+	leaveMatch: ( match_id ) ->
+		Matches.update( match_id, { $pull: { "users": Meteor.userId() } } )
+		
+		updatedMatch = Matches.findOne({ _id: match_id } )
+		console.log updatedMatch
 
-				Matches.update( match._id, { $pull: { "users": Meteor.userId() } } )
-
-				updatedMatch = Matches.findOne({ _id: match._id } )
-				console.log updatedMatch
-
-				if( updatedMatch.users.length == 0 )
-					Matches.remove({ _id: match._id } )
+		if( updatedMatch.users.length == 0 )
+			Matches.remove({ _id: match_id } )
