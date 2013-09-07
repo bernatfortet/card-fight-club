@@ -25,3 +25,7 @@ UserStatus.on "sessionLogout", (userId, sessionId) ->
 	if( matchUserisIn )
 		console.log matchUserisIn
 		updateMatch = Matches.update( matchUserisIn, { $pull: { "users": userId } } )
+
+
+
+console.log 'test', Meteor._session

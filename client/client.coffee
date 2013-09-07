@@ -8,5 +8,5 @@ currentUserController = new CurrentUserController()
 loginController = new LoginController()
 
 Template.users_list.users = ->
-	console.log Meteor.users.find().fetch()
+	#console.log Meteor.users.find().fetch()
 	Meteor.users.find()
