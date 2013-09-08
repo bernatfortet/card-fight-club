@@ -8,7 +8,6 @@
 <body>
 
 	<div id="WebsiteApp">
-		{{loginButtons}}
 
 		{{> logginButtons }}
 
@@ -65,5 +64,12 @@
 		{{else}}
 		offline
 		{{/if}}
+
+		
+		{{#if $neq currentUser._id _id }}
+		<input class="ChallengeUser" type="button" value="ChallengeUser" id="{{_id}}" />
+		{{/if}}
+
 	</h1>
+
 </template>

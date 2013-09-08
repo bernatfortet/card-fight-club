@@ -1,5 +1,7 @@
 {
   "packages": {
-    "user-status": {}
+    "user-status": {},
+    "streams": {},
+    "handlebar-helpers": {}
   }
 }

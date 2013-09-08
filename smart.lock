@@ -2,13 +2,25 @@
   "meteor": {},
   "dependencies": {
     "basePackages": {
-      "user-status": {}
+      "user-status": {},
+      "streams": {},
+      "handlebar-helpers": {}
     },
     "packages": {
       "user-status": {
         "git": "https://github.com/mizzao/meteor-user-status.git",
         "tag": "v0.1.5",
         "commit": "0169a468e57155f1d61fc2b1cd76bc9ca51c7313"
+      },
+      "streams": {
+        "git": "https://github.com/arunoda/meteor-streams.git",
+        "tag": "v0.1.15",
+        "commit": "a380d777bfa5fde3096adafb253cc040ba65117b"
+      },
+      "handlebar-helpers": {
+        "git": "https://github.com/raix/Meteor-handlebar-helpers.git",
+        "tag": "v0.0.9",
+        "commit": "71e94c99462b8801a34c5363510758b6ff5f5ac7"
       }
     }
   }
