@@ -1,11 +1,10 @@
 Meteor.methods
 
-	createMatch: ( match_id ) ->
-		matchesController.createMatch(  match_id )
-
+	createMatchAndJoin: () ->
+		matchesController.createMatchAndJoin()
 
 	joinMatch: ( match_id ) ->
-		matchesController.joinMatch(  match_id )
+		matchesController.joinMatch(  match_id, Meteor.userId() )
 
 
 
@@ -18,20 +17,20 @@ class @MatchesController
 		playing: 	'playing'
 		finished: 	'finished'
 
+	openMatches: null
+
 	constructor: ->
 		#console.log 'Matches Controller init'
 
-	createMatch: ( match_id ) ->
-		match_id = Matches.insert( name: 'test', users: [ Meteor.userId() ], state: this.states.filling )
-		this.joinMatch( match_id )
+	createMatch: ->
+		match_id = Matches.insert( name: 'test', state: this.states.filling )
 
-
-	joinMatch: ( match_id ) ->
+	joinMatch: ( match_id, user_id ) ->
 		if( this.matchCanBeJoined( match_id ) )
-			Matches.update(match_id, $addToSet: { users: Meteor.userId() } )
+			Matches.update( match_id, $addToSet: { users: user_id } )
+			Meteor.users.update( user_id, $set: { currentMatchId: match_id })
 
-			Meteor.users.update( Meteor.userId(), $set: { currentMatchId: match_id })
-			this.leaveOtherMatches()
+			this.leaveOtherMatches( user_id )
 
 			if( this.checkIfMatchIsFull( match_id ) )
 				this.setMatchState( match_id, this.states.full  )
@@ -40,10 +39,13 @@ class @MatchesController
 			console.log 'Match is Full'
 			# Match Is full
 
+	createMatchAndJoin: ->
+		console.log 'Creating Match and joining'
+		createdMatchId = this.createMatch()
+		this.joinMatch( createdMatchId, Meteor.userId() )	
 
 	matchCanBeJoined: ( match_id ) ->
 		matchState = this.getMatchState( match_id )
-		console.log 'matchState', matchState
 
 		if( matchState == this.states.empty || matchState == this.states.filling )
 			return true
@@ -72,25 +74,25 @@ class @MatchesController
 		Matches.findOne( match_id ).state
 
 
-	leaveOtherMatches: ->
-		matchesUserisIn = Matches.find({ users: Meteor.userId() } ).fetch()
+	leaveOtherMatches: ( user_id ) ->
+		console.log user_id
+		matchesUserisIn = Matches.find({ users: user_id } ).fetch()
 
 		for match in matchesUserisIn
-			usersCurrentMatchId = Meteor.users.findOne( Meteor.userId(), { currentMatchId: match._id }).currentMatchId
-			if( match._id != usersCurrentMatchId )
+			userCurrentMatchId = Meteor.users.findOne( user_id, { currentMatchId: match._id }).currentMatchId
+			if( match._id != userCurrentMatchId )
 				this.leaveMatch( match._id )
 
-	leaveAllMatches: ->
-		matchesUserisIn = Matches.find({ users: Meteor.userId() } ).fetch()
+	leaveAllMatches: ( user_id ) ->
+		matchesUserisIn = Matches.find({ users: user_id } ).fetch()
 
 		for match in matchesUserisIn
-			this.leaveMatch( match._id )
+			this.leaveMatch( match._id, user_id )
 
-	leaveMatch: ( match_id ) ->
-		Matches.update( match_id, { $pull: { "users": Meteor.userId() } } )
+	leaveMatch: ( match_id, user_id ) ->
+		Matches.update( match_id, { $pull: { "users": user_id } } )
 		
 		updatedMatch = Matches.findOne({ _id: match_id } )
-		#console.log updatedMatch
 
 		if( updatedMatch.users.length == 0 )
 			Matches.remove({ _id: match_id } )

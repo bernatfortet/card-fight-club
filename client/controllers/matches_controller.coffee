@@ -8,20 +8,24 @@ class @MatchesController
 		this.setListeners()
 
 
+
 	setListeners: ->
+		console.log 'settings listeners'
+
 		Template.matches_list.events(
 			'click #CreateMatch' : =>
 				match_id = $(event.currentTarget).attr('id')
-				this.createMatch( match_id )
+				this.createMatch()
 
 			'click .JoinMatch' : (event) =>
 				match_id = $(event.currentTarget).attr('id')
 				this.joinMatch( match_id )
 		)
 
-	createMatch: ( match_id ) ->
-		Session.set( 'currentMatchId', match_id )
-		Meteor.call( 'createMatch', match_id )
+	createMatch: ->
+		
+		Session.set( 'currentMatchId' )
+		Meteor.call( 'createMatchAndJoin' )
 
 
 	joinMatch: ( match_id ) ->

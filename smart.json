@@ -2,6 +2,9 @@
   "packages": {
     "user-status": {},
     "streams": {},
-    "handlebar-helpers": {}
+    "handlebar-helpers": {},
+    "npm": {},
+    "router": {},
+    "collection-api": {}
   }
 }

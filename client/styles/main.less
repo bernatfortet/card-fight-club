@@ -1,10 +1,11 @@
 @import "style-magic.less";
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,800);
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,700,300,800');
 
 @brandColor:#30bbc7;
 @facebook:#3b5998;
 
 .opensans{ font-family: 'Open Sans', 'Helvetica', 'sans-serif'; }
+.bold{ font-weight:700; }
 
 
 #WebsiteApp{ width:90%; padding:5%; padding-top:100px; min-width:0; .opensans; }
@@ -20,7 +21,17 @@
 .clickable{ cursor:pointer; .unselectable; }
 
 
-.login-buttons{ width:200px; margin:0 auto; padding:20px; background:@white; .br(3px);
+.box{ padding:20px; background:@white; color:@black; .br(3px); }
+
+
+.button{ padding:10px 18px;  background:@brandColor; color:@white; .br(3px); cursor:pointer; .unselectable;
+	&:hover{ background-color:lighten(@brandColor, 10%) }
+	&:active{ background-color:darken(@brandColor, 5%) }
+}
+
+
+
+.login-buttons{ .box; width:200px; margin:0 auto;
 	h3{ margin-bottom:20px; .tcenter; }
 
 	.social-logins{ @buttonWidth:56px; width:@buttonWidth; margin:0 auto; .overflow;
@@ -38,10 +49,7 @@
 			&:hover{ color:darken(@white, 60%); border-color:darken(@white, 30%); }
 			&:focus{ color:darken(@white, 80%); border-color:darken(@white, 70%); }
 		}
-		.button{ margin:0 auto 10px; padding:10px 18px;  background:@brandColor; color:@white; .br(3px); cursor:pointer;
-			&:hover{ background-color:lighten(@brandColor, 10%) }
-			&:active{ background-color:darken(@brandColor, 5%) }
-		}
+		.button{ margin:0 auto 10px; }
 	}
 
 }
@@ -52,7 +60,7 @@
 		.user-image{ @size:30px; width:@size; height:@size; .fl; margin-right:10px; .br(3px); .overflow;
 			img{ width:100%; height:auto; }
 		}
-		.user-name{ .fl; .rel; top:6px; .fs(16px); font-weight:700;  }
+		.user-name{ .fl; .rel; top:6px; .fs(16px); .bold; }
 
 	}
 
@@ -66,3 +74,14 @@
 
 .element{ margin:0 0 10px 0; padding:10px; color:white; border:1px solid fade(white, 20%); }
 
+.challenge{ .box; width:250px; .tcenter; .overflow;
+	> div{ margin-bottom:10px; }
+	> div:last-child{ margin-bottom:0; }
+	.title{ margin-bottom:20px; .fs(16px); .bold; }
+	.status{ .upcase; font-weight:300; }
+	.countdown{ .fs(32px); .bold; }
+	.button{ width:80px; .fl; margin-bottom:0; }
+	.button:last-child{ .fr; }
+}
+
+.button{ background:@brandColor; }

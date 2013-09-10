@@ -16,3 +16,6 @@ accounts-password
 user-status
 streams
 handlebar-helpers
+npm
+router
+collection-api

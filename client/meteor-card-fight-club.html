@@ -17,10 +17,44 @@
 
 			{{> users_list}}
 
+
+			{{> challenge}}
+
 		{{/if}}
 	</div>
 
 </body>
+
+
+
+<template name="challenge">
+	{{#if $.Session.equals 'status' 'challenge_sent'}}
+	<div class="challenge">
+		<div class="title">Challenge sent</div>
+		<div class="status">waiting</div>
+		<div class="countdown">30</div>
+	</div>
+	{{else}}
+	{{#if $.Session.equals 'status' 'challenge_received'}}
+	<div class="challenge">
+		<div class="title">{{$.Session.get 'challengerUserId'}} is challenging you</div>
+		<div class="button Accept">Accept</div>
+		<div class="button Refuse">Refuse</div>
+	</div>
+	{{else}}
+	{{#if $.Session.equals 'status' 'challenge_refused'}}
+	<div class="challenge">
+		<div class="title">Challenge has been Refused</div>
+		<div class="button Accept">Accept</div>
+		<div class="button Refuse">Refuse</div>
+	</div>
+	{{else}}
+	
+	{{/if}}
+	{{/if}}
+	{{/if}}
+</template>
+
 
 <template name="matches_list">
 	<div class="matches-list">
