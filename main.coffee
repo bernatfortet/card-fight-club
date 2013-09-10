@@ -4,4 +4,5 @@
 @Matches = new Meteor.Collection('matches')
 
 
-@chatStream = new Meteor.Stream('chat');
+@matchesStream = new Meteor.Stream('matches');
+@gameStream = new Meteor.Stream('game')
