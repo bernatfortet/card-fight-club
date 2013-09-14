@@ -6,10 +6,8 @@ class @GameController extends Spine.Controller
 		board: "board"
 		graveyard: "graveyard"
 
-
 	constructor: ->
 		super
-
 
 	initialize: ->
 		this.multiplayerController = new MultiplayerController()
@@ -17,9 +15,7 @@ class @GameController extends Spine.Controller
 		this.networkInputController = new NetworkInputController()
 		this.chatController = new ChatController( el: $(".Chat") )
 		this.soundController = new SoundController( el: $(".Sounds") )
-
-		this.multiplayerController = new MultiplayerController( )
-
+		
 		this.zoomedCardController = new ZoomedCardController( el: $(".ZoomedCard") )
 		this.cardListerController = new CardListerController( el: $(".CardLister") )
 
@@ -34,11 +30,10 @@ class @GameController extends Spine.Controller
 		this.humanInputController.onResize()
 		this.showGameBoard()
 
-		this.player.setDeck( User.first().deck )
+		#this.player.setDeck( User.first().deck )
+		selectedDeckId = '1'
+		this.player.setDeck( Meteor.decks.findOne( selectedDeckId ) )
 		this.player.createLifeCounter()
-		
-
-		this.callDebugMethods() if localServer && debugApp
 
 	reset: ->
 		for card in Card.all()
@@ -49,10 +44,7 @@ class @GameController extends Spine.Controller
 			if( card.controller && ownerIsPlayer )
 				cardOwner.changeCardArea( card, cardOwner.deckArea.id )
 
-
 	showGameBoard: ->
 		$("#Game").addClass("active") #Use Spine sections
 		$(".Loading").remove() #Use Spine sections
-
-	callDebugMethods: ->
 		

@@ -24,7 +24,6 @@ class @ChallengeController
 
 		# Challenge Received
 		matchesStream.on "onChallenge", 		this.onReceiveChallenge
-		matchesStream.on "challengeAccepeted", 	this.onChallangeIsAccepted
 		matchesStream.on "challengeRefused", 	this.onChallangeIsRefused
 
 
@@ -48,7 +47,6 @@ class @ChallengeController
 
 		matchesStream.emit('challengeAccepeted', params );
 		Session.set('status', 'challenge_accepted')
-		#Session.set('status', 'challenge')
 
 	denyChallange: ( params ) ->
 		params =
@@ -58,10 +56,10 @@ class @ChallengeController
 		matchesStream.emit('challengeRefused', params );
 		#Session.set('status', 'challenge')
 
-	onChallangeIsAccepted: ( params ) ->
-		Session.set('status', 'challenge_accepted')
-		console.log 'Challenge Accepeted, Move to Match'
-
 	onChallangeIsRefused: ( params ) ->
 		Session.set('status', 'challenge_refused')
 		console.log 'Challange has been denied'
+
+
+	moveToMatch: -> #TODO Move to GameController or something like that
+		Session.set('section', 'SectionMatch')

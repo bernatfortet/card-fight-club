@@ -1,13 +1,7 @@
 class @DBController extends Spine.Controller
 
-	#MongoDB
-	baseMongoLabDBUrl: "https://api.mongolab.com/api/1/databases/card-fight-club/collections/"
-	apiKey: "apiKey=50b9ed0fe4b0afba6ecc5836"
-
 	#Tutor Server
-	tutorServerUrl: "http://"+window.location.hostname+":8080/api/v1/cards/"
-
-	userId: "50dcf675e4b0876155f7f7c8"
+	tutorServerUrl: "http://"+window.location.hostname+":3000/api/v1/cards/"
 
 	userInfo: null
 

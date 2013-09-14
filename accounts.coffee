@@ -7,10 +7,10 @@ if( Meteor.isServer )
 			facebookPicture = "http://graph.facebook.com/" + user.services.facebook.id + "/picture/?width=200&height=200"
 			user.profile =
 				picture: facebookPicture
-				password: '123'
 				name: user.services.facebook.first_name
 				full_name: user.services.facebook.name
 				username: user.services.facebook.username
+				current_deck_id: "99PvQu4ne4XjFWRtC"
 
 		return user
 

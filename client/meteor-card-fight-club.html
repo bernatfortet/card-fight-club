@@ -7,24 +7,23 @@
 
 <body>
 
-	<div id="WebsiteApp">
+	<div id="WebsiteApp" section="{{$.Session.get 'section'}}">
 
 		{{> logginButtons }}
-
+		
 		{{#if currentUser}}
-
-			{{> matches_list}}
-
-			{{> users_list}}
-
-
-			{{> challenge}}
-
+			<div class="section SectionMain">
+				{{> matches_list}}
+				{{> users_list}}
+				{{> challenge}}
+			</div>
+			<div class="section SectionMatch">
+				{{> match}}
+			</div>
 		{{/if}}
 	</div>
 
 </body>
-
 
 
 <template name="challenge">

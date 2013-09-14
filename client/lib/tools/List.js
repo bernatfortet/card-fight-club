@@ -1,4 +1,4 @@
-function List ()
+List = function ()
 {
 	this.list = [];
 	

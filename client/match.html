@@ -1,0 +1,67 @@
+<template name="match">
+	<div class="game" id="Game">
+		
+		<div class="Sounds"></div>
+
+		<div class="sidebar Sidebar">
+			<div class="logo Logo"></div>
+			<div class="chat Chat">
+				
+				<div class="conversation Conversation"></div>
+				<div class="your-turn YourTurn">
+					<span>Your Turn</span>
+				</div>
+				<div class="input Input">
+					<div class="background flash Flash"></div>
+					<input type="text" placeholder="Send Message">
+				</div>
+			</div>
+		</div>
+
+		<div class="playzone Playzone">
+			<div class="zoomed-card ZoomedCard"></div>
+			<div class="card-lister CardLister" sate-state="hidden"></div>
+			<div class="close Close"></div>
+			<div class="button MoveToTop">move to Top</div>
+			<div class="button MoveUp">move up</div>
+			<div class="list List"></div>
+			<div class="button MoveDown">move Down</div>
+			<div class="button MoveToBottom">move to Bottom</div>
+
+			<div class="tools">
+				<div class="dice Dice"></div>
+				<div class="counter CounterOrigin">
+					<div class="number">1</div>
+				</div>
+			</div>
+
+			<div class="player opponent Player Opponent">
+				<div class="card Cards"></div>
+				<div class="counter Counters"></div>
+				<div class="deck area cardpile Deck Area CardPile" data-isEmpty="true"></div>
+				<div class="hand area Hand" data-isEmpty="true"></div>
+				<div class="board area Board" data-isEmpty="true"></div>
+				<div class="graveyard area cardpile Graveyard Area CardPile" data-isEmpty="true"></div>
+				<div class="sideboard area cardpile Sideboard Area CardPile" data-isEmpty="true"></div>
+				<div class="life-counter LifeCounter">
+					<div class="number">20</div>
+				</div>
+			</div>
+
+			<div class="player Player HumanPlayer">
+				<div class="cards Cards"></div>
+				<div class="counters Counters"></div>
+				<div class="deck area cardpile Deck Area CardPile" data-isEmpty="true"></div>
+				<div class="hand area Hand" data-isEmpty="true"></div>
+				<div class="board area Board" data-isEmpty="true"></div>
+				<div class="graveyard area cardpile Graveyard Area CardPile" data-isEmpty="true"></div>
+				<div class="sideboard area cardpile Sideboard Area CardPile" data-isEmpty="true"></div>
+				<div class="life-counter LifeCounter">
+					<input type="text" value="20">
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</template>

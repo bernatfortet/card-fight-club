@@ -22,19 +22,34 @@ class @MatchesController
 	constructor: ->
 		#console.log 'Matches Controller init'
 
+		this.setListeners()
+
+	setListeners: ->
+
+		matchesStream.on "challengeAccepeted", ( params ) ->
+			#console.log 'Challenge Accepted', params
+			createdMatchId = matchesController.createMatch()
+			matchesController.joinMatch( createdMatchId, params.challengerUserId )
+			matchesController.joinMatch( createdMatchId, params.challengedUserId )
+			matchesStream.emit( 'challengeAccepeted', params )
+
+
 	createMatch: ->
 		match_id = Matches.insert( name: 'test', state: this.states.filling )
 
 	joinMatch: ( match_id, user_id ) ->
+		console.log user_id, ' - is joingMatch - can be joined?',  this.matchCanBeJoined( match_id ) 
 		if( this.matchCanBeJoined( match_id ) )
 			Matches.update( match_id, $addToSet: { users: user_id } )
 			Meteor.users.update( user_id, $set: { currentMatchId: match_id })
 
 			this.leaveOtherMatches( user_id )
 
+			console.log 'is match Full? ', this.checkIfMatchIsFull( match_id )
+
 			if( this.checkIfMatchIsFull( match_id ) )
 				this.setMatchState( match_id, this.states.full  )
-				console.log 'Two users in match! sending them a lovely message'
+				this.startMatch( match_id )
 		else
 			console.log 'Match is Full'
 			# Match Is full
@@ -44,6 +59,17 @@ class @MatchesController
 		createdMatchId = this.createMatch()
 		this.joinMatch( createdMatchId, Meteor.userId() )	
 
+	startMatch: ( match_id ) ->
+		this.setMatchState( match_id, this.states.playing )
+		users = Matches.findOne( match_id ).users
+		params =
+			player0: Meteor.users.findOne( users[0] )
+			player1: Meteor.users.findOne( users[1] )
+			match: match_id
+
+		matchesStream.emit('onStartMatch', params )
+
+
 	matchCanBeJoined: ( match_id ) ->
 		matchState = this.getMatchState( match_id )
 
@@ -51,7 +77,6 @@ class @MatchesController
 			return true
 		else
 			return false
-
 	
 	checkIfMatchIsFull: ( match_id ) ->
 		usersInMatch = Matches.findOne({ _id: match_id } ).users.length
@@ -61,8 +86,9 @@ class @MatchesController
 			return false
 
 	checkIfMatchIsPlaying: ( match_id ) ->
-		usersInMatch = Matches.findOne({ _id: match_id } ).users.length
-		if( usersInMatch <= 2 )
+		match = Matches.findOne({ _id: match_id } )
+		usersInMatch = match.users.length
+		if( usersInMatch < 2  && match.state == this.states.playing  )
 			return true
 		else
 			return false

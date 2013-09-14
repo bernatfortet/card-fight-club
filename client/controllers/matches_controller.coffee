@@ -22,8 +22,11 @@ class @MatchesController
 				this.joinMatch( match_id )
 		)
 
+		matchesStream.on "onStartMatch", this.onStartMatch
+
+
+
 	createMatch: ->
-		
 		Session.set( 'currentMatchId' )
 		Meteor.call( 'createMatchAndJoin' )
 
@@ -31,3 +34,7 @@ class @MatchesController
 	joinMatch: ( match_id ) ->
 		Session.set( 'currentMatchId', match_id )
 		Meteor.call( 'joinMatch', match_id )
+
+	onStartMatch: ( params ) ->
+		Session.set('section', 'SectionMatch')
+		console.log 'params', params
