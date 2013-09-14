@@ -1,5 +1,9 @@
 class @CounterController extends Spine.Controller
-	template: "CounterTemplate"
+	template: '
+		<div class="counter blueCounter Counter" data-id="${id}">
+			<div class="inner"></div>
+		</div>
+	'
 
 	cardControllerAttachedTo: null
 	isAttached: false
@@ -13,7 +17,7 @@ class @CounterController extends Spine.Controller
 		this.item.setController( this )
 
 	render: ->
-		this.el = ( $("#"+this.template).tmpl( this.item ) )
+		this.el =  $.tmpl( this.template, this.item )
 		this.setZindex()
 
 	setZindex: ->

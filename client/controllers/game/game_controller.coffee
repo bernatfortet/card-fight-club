@@ -31,8 +31,7 @@ class @GameController extends Spine.Controller
 		this.showGameBoard()
 
 		#this.player.setDeck( User.first().deck )
-		selectedDeckId = '1'
-		this.player.setDeck( Meteor.decks.findOne( selectedDeckId ) )
+		this.player.setDeck( Decks.findOne( Meteor.user().profile.current_deck_id ) )
 		this.player.createLifeCounter()
 
 	reset: ->

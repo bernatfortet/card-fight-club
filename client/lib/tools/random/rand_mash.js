@@ -1,4 +1,4 @@
-function Mash() {
+Mash = function() {
   var n = 0xefc8249d;
 
   var mash = function(data) {

@@ -1,4 +1,4 @@
-function Alea() {
+Alea = function() {
   return (function(args) {
     // Johannes Baagøe <baagoe@baagoe.com>, 2010
     var s0 = 0;

@@ -15,8 +15,8 @@ class @SoundController extends Spine.Controller
 	constructor: ->
 		super
 
-		#for index of this.soundList
-			#this.renderSound( this.soundList[index] )
+		for index of this.soundList
+			this.renderSound( this.soundList[index] )
 
 	renderSound: ( soundName ) ->
 		soundType = "ogg"

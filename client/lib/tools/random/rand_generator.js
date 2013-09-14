@@ -1,4 +1,4 @@
-var Rand = function() {
+Rand = function() {
   if (!Rand.generator) Rand.generator = Alea();
   return Rand.generator();
 } 

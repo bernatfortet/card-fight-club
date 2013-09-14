@@ -6,11 +6,9 @@ Meteor.publish( 'matches', ->
 	return Matches.find()
 )
 
-
 Meteor.publish( 'decks', ->
 	return Decks.find()
 )
-
 
 Meteor.publish( 'userStatus', ->
 	return Meteor.users.find { "profile.online": true }

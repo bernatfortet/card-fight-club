@@ -240,5 +240,5 @@ class @MultiplayerController extends Spine.Controller
 		return id
 
 	sendEvent: ( event, params ) ->
-		params.userName = User.first().name
+		params.userName = Meteor.user().profile.username
 		gameStream.emit( event, params ) if !localServer

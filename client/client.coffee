@@ -1,7 +1,9 @@
 Meteor.subscribe( 'users' )
 Meteor.subscribe( 'userStatus' )
 Meteor.subscribe( 'matches' )
-Meteor.subscribe( 'decks' )
+Meteor.subscribe( 'decks', ->
+	app.initialize()
+)
 
 @cards = new Meteor.Collection('cards')
 
@@ -11,7 +13,7 @@ Template.users_list.users = ->
 
 
 
-Meteor.startup( ->
+Meteor.startup( =>
 	matchesController = new MatchesController()
 	currentUserController = new CurrentUserController()
 	loginController = new LoginController()
@@ -20,8 +22,8 @@ Meteor.startup( ->
 	if( Meteor.user() )
 		Session.set('section', 'SectionMain')
 
-		api.app = new App( el: $("body") )
-		api.app.initialize()
+		@app = new App( el: $("body") )
+		
 )
 
 
@@ -34,30 +36,23 @@ class App extends Spine.Controller
 
 	initialize: ->
 		this.setupCards()
-		#this.gameController = new GameController()
-		#this.startGame()
-		#this.dbController = new DBController()
-		#this.networkController = new NetworkController()
-
-
-
-
-		#this.dbController.getDeckFromMongoLab( this.getDeckid() )
-
-	createUser: ( userData, deckData  ) ->
-		randomId = Math.floor( Math.random() * 1000 )
-		User.create({ id: randomId,  name: "User"+randomId, deck: deckData })
-		this.networkController.onReady()
+		this.gameController = new GameController()
 
 	startGame: ->
-		#this.gameController.initialize()
+		this.gameController.initialize()
 
+
+	# Deck Setup ==========================
+
+	cardsToLoad: 0
+	tutorServerUrl: "http://"+window.location.hostname+":3000/api/v1/cards/"
 
 	setupCards: ->
 		userDeck = Decks.findOne( Meteor.user().profile.current_deck_id )
 		console.log 'userDeck', userDeck
 
 		for index of userDeck.cards
+			console.log 'asdfadsf'
 			cardId = userDeck.cards[index]
 			this.getCardFromTutor( cardId, this.onLoadCard, cardId )
 			this.cardsToLoad = index
@@ -77,9 +72,8 @@ class App extends Spine.Controller
 		console.log( this.cardsToLoad, this.cardsToLoad <= 0 );
 		if( this.cardsToLoad <= 0 )
 			console.log( "finished ");
-			app.createUser( "pepito", mongolabDeckData )
+			app.startGame()
 
-	cardsToLoad: 0
 
 	onLoadCard: ( tutorCardData, cardId ) ->
 		this.cardsToLoad--
@@ -89,18 +83,17 @@ class App extends Spine.Controller
 			image_url: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=#{cardId}&type=card",
 			type: tutorCardData.type
 		})
-		console.log( card );
 		this.finishLoadinUserInfo( this.mongolabDeckData )
 
 
 @api = {}
 
-serverIp = window.location.hostname
-localServer = true
-debugApp = true
+@serverIp = window.location.hostname
+@localServer = true
+@debugApp = true
 
 
-isOnInternet = window.location.hostname != "localhost"
+@isOnInternet = window.location.hostname != "localhost"
 
 if( isOnInternet )
 	localServer = false

@@ -38,3 +38,4 @@ class @MatchesController
 	onStartMatch: ( params ) ->
 		Session.set('section', 'SectionMatch')
 		console.log 'params', params
+		

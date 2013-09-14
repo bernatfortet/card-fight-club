@@ -3,7 +3,7 @@ Queue.js
 Created by Stephen Morley - http://code.stephenmorley.org/ - under CC
 */
 
-function Queue()
+Queue = function ()
 {
 	var queue  = [];
 
