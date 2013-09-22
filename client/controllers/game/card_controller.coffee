@@ -1,5 +1,17 @@
 class @CardController extends Spine.Controller
-	template: "CardTemplate"
+	template: '
+		<div class="card Card" data-area"${area}" data-flipped"down" data-tapped"" data-zoom"false" data-id="${id}">
+			<div class="tap-cointainer TapContainer">
+				<div class="flip-container">
+					<div class="img">
+						<div class="loading"></div>
+						<img src="${image_url}">
+					</div>
+					<img src="images/back.jpg"class="back">
+				</div>
+			</div>
+		</div>
+	'
 
 	isTapped: false
 	isFlippedUp: false
@@ -12,7 +24,7 @@ class @CardController extends Spine.Controller
 		this.item.setController( this )
 
 	render: ->
-		this.el = ( $("#"+this.template).tmpl( this.item ) )
+		this.el =  $.tmpl( this.template, this.item )
 		this.setZindex()
 
 	setZindex: ->

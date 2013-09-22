@@ -23,24 +23,5 @@ UserStatus.on "sessionLogout", (userId, sessionId) ->
 
 
 Meteor.startup( ->
-	this.matchesController = new MatchesController()
-
-	matchesStream.permissions.read ( ( eventName, params ) ->
-		switch eventName
-			when 'onChallenge'
-				if( params.challengedUserId == this.userId ) then true else false
-			when 'challengeAccepeted'
-				if( params.player == this.userId ) then true else false
-				return true
-			when 'onStartMatch'
-				if( params.player0._id == this.userId || params.player1._id == this.userId ) then true else false
-			else
-				return true
-
-	), false
-
-	matchesStream.permissions.write ( event, params ) ->
-		console.log 'writing', event, params
-		true
 
 )

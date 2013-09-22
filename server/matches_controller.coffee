@@ -1,3 +1,26 @@
+Meteor.startup( ->
+	this.matchesController = new MatchesController()
+
+	matchesStream.permissions.read ( ( eventName, params ) ->
+		switch eventName
+			when 'onChallenge'
+				if( params.challengedUserId == this.userId ) then true else false
+			when 'challengeAccepeted'
+				if( params.player == this.userId ) then true else false
+				return true
+			when 'onStartMatch'
+				if( params.player0._id == this.userId || params.player1._id == this.userId ) then true else false
+			else
+				return true
+
+	), false
+
+	matchesStream.permissions.write ( event, params ) ->
+		#console.log 'writing', event, params
+		true
+
+)
+
 Meteor.methods
 
 	createMatchAndJoin: () ->
@@ -5,8 +28,6 @@ Meteor.methods
 
 	joinMatch: ( match_id ) ->
 		matchesController.joinMatch(  match_id, Meteor.userId() )
-
-
 
 class @MatchesController
 
@@ -38,24 +59,24 @@ class @MatchesController
 		match_id = Matches.insert( name: 'test', state: this.states.filling )
 
 	joinMatch: ( match_id, user_id ) ->
-		console.log user_id, ' - is joingMatch - can be joined?',  this.matchCanBeJoined( match_id ) 
+		#console.log user_id, ' - is joingMatch - can be joined?',  this.matchCanBeJoined( match_id ) 
 		if( this.matchCanBeJoined( match_id ) )
 			Matches.update( match_id, $addToSet: { users: user_id } )
 			Meteor.users.update( user_id, $set: { currentMatchId: match_id })
 
 			this.leaveOtherMatches( user_id )
 
-			console.log 'is match Full? ', this.checkIfMatchIsFull( match_id )
+			#console.log 'is match Full? ', this.checkIfMatchIsFull( match_id )
 
 			if( this.checkIfMatchIsFull( match_id ) )
 				this.setMatchState( match_id, this.states.full  )
 				this.startMatch( match_id )
 		else
-			console.log 'Match is Full'
+			#console.log 'Match is Full'
 			# Match Is full
 
 	createMatchAndJoin: ->
-		console.log 'Creating Match and joining'
+		#console.log 'Creating Match and joining'
 		createdMatchId = this.createMatch()
 		this.joinMatch( createdMatchId, Meteor.userId() )	
 

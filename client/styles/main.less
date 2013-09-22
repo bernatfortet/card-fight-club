@@ -8,7 +8,7 @@
 .bold{ font-weight:700; }
 
 
-#WebsiteApp{z-index:200; .cover-all; min-width:1200px; min-height:770px; .overflow;	background-image:url("/images/bkg.jpg"); background-size:100% 100%;}
+#App{z-index:200; .cover-all; min-width:1200px; min-height:770px; .overflow;	background-image:url("/images/bkg.jpg"); background-size:100% 100%;}
 
 .SectionMain{ width:90%; padding:5%; padding-top:100px; min-width:0; .opensans; }
 .matches-list{ .element;
@@ -89,9 +89,9 @@
 
 
 // Sections ======================
-
+/*
 .section{ .hide; }
-#WebsiteApp{
+#App{
 	&[section="SectionMain"]{
 		.SectionMain{ .show; }
 	}
@@ -99,7 +99,7 @@
 		.SectionMatch{ .show; }
 	}
 }
-
+*/
 
 //Game ============================
 .playzone{ width:85%; height:100%; .abs; left:0; top:0; z-index:-2; 
@@ -145,10 +145,10 @@
 		.cards{ .rel; z-index: 4;}
 		.card{ width:107px; height:107px; position:fixed !important; .unselectable; .anchor; z-index:2;
 			.tap-container{ width:107px; height:150px; .abs; left:0; top:0; .br(7px);}
-			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; .br(7px); }
+			.flip-container{ .cover-all;  .trans( rotateY(0deg) ); transform-origin: center center 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; .br(7px); }
 			.img{ .cover-all; .trans( rotateY(180deg) translateZ(1px) ); transform-origin: center center 0; background:black; .br(7px); }
 				.placeholder-name{ .cover-all; color:white;}
-				.loading{ width:16px; height:16px; .abs; top:48%; left:50%; margin-left:-8px; background:url("../images/ajax-loader.gif") no-repeat; }
+				.loading{ width:16px; height:16px; .abs; top:48%; left:50%; margin-left:-8px; background:url("/images/ajax-loader.gif") no-repeat; }
 				img{ .cover-all; .br(7px); }
 			.back{ .cover-all; .br(7px);}
 
@@ -201,7 +201,7 @@
 
 	.tools{ width:92px; height:27px; .abs; bottom:50%; right:10px; margin-top:-13px;
 		& > div{ .fl; .rel; top:13px; margin-right:15px;}
-		.dice{ width:27px; height:27px; .br(3px); background:url("../images/dice.jpg") no-repeat center center; .anchor; z-index:8; }
+		.dice{ width:27px; height:27px; .br(3px); background:url("/images/dice.jpg") no-repeat center center; .anchor; z-index:8; }
 
 	}
 
@@ -215,7 +215,7 @@
 
 
 .sidebar{ width:200px; height:100%; .abs; right:0; top:0; z-index:-2 }
-	.logo{ width:187; height:68px; .rel; margin:20px auto 0; background: url("../images/logo.png") no-repeat; .op(0.2); .anchor; .anim(300ms); z-index:-1;
+	.logo{ width:187; height:68px; .rel; margin:20px auto 0; background: url("/images/logo.png") no-repeat; .op(0.2); .anchor; .anim(300ms); z-index:-1;
 		&:hover{ .op(1); .anim(300ms);}
 	}
 	.chat{ 

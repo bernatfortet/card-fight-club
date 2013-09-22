@@ -1,8 +1,31 @@
+@api = {}
+
+@serverIp = window.location.hostname
+@localServer = false
+@debugApp = true
+
+
+@isOnInternet = window.location.hostname != "localhost"
+
+if( isOnInternet )
+	localServer = false
+	debugApp = false
+
+
+###
+if( !localServer && !debugApp )
+	window.onbeforeunload: -> 
+		if ( true )
+			return "Are you sure you want to exit this page?"
+###
+
 Meteor.subscribe( 'users' )
 Meteor.subscribe( 'userStatus' )
 Meteor.subscribe( 'matches' )
 Meteor.subscribe( 'decks', ->
-	app.initialize()
+
+	if( Meteor.user() )
+		app.initialize()
 )
 
 @cards = new Meteor.Collection('cards')
@@ -20,9 +43,8 @@ Meteor.startup( =>
 	challengController = new ChallengeController()
 
 	if( Meteor.user() )
-		Session.set('section', 'SectionMain')
+		@app = new App( el: $("#App") )
 
-		@app = new App( el: $("body") )
 		
 )
 
@@ -33,19 +55,29 @@ class App extends Spine.Controller
 
 	constructor: ->
 		super
+		api.app = this
 
 	initialize: ->
-		this.setupCards()
 		this.gameController = new GameController()
 
 	startGame: ->
+		this.setState( 'SectionMatch' )
 		this.gameController.initialize()
+
+
+	setState: ( newState ) ->
+		this.el.attr('section', newState )
+
 
 
 	# Deck Setup ==========================
 
 	cardsToLoad: 0
 	tutorServerUrl: "http://"+window.location.hostname+":3000/api/v1/cards/"
+
+	prepareGame: ->
+		this.setState( 'SectionWaitingOpponent' )
+		this.setupCards()
 
 	setupCards: ->
 		userDeck = Decks.findOne( Meteor.user().profile.current_deck_id )
@@ -69,14 +101,13 @@ class App extends Spine.Controller
 		})
 
 	finishLoadinUserInfo: ( mongolabDeckData ) ->
-		console.log( this.cardsToLoad, this.cardsToLoad <= 0 );
-		if( this.cardsToLoad <= 0 )
+		console.log( this.cardsToLoad, this.cardsToLoad == 0 );
+		if( this.cardsToLoad == 0 )
 			console.log( "finished ");
 			app.startGame()
 
 
 	onLoadCard: ( tutorCardData, cardId ) ->
-		this.cardsToLoad--
 		card = UserCard.create({
 			id: cardId,
 			name: tutorCardData.name,
@@ -84,25 +115,4 @@ class App extends Spine.Controller
 			type: tutorCardData.type
 		})
 		this.finishLoadinUserInfo( this.mongolabDeckData )
-
-
-@api = {}
-
-@serverIp = window.location.hostname
-@localServer = true
-@debugApp = true
-
-
-@isOnInternet = window.location.hostname != "localhost"
-
-if( isOnInternet )
-	localServer = false
-	debugApp = false
-
-
-###
-if( !localServer && !debugApp )
-	window.onbeforeunload: -> 
-		if ( true )
-			return "Are you sure you want to exit this page?"
-###
+		this.cardsToLoad--

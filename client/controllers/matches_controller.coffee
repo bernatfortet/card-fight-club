@@ -36,6 +36,6 @@ class @MatchesController
 		Meteor.call( 'joinMatch', match_id )
 
 	onStartMatch: ( params ) ->
-		Session.set('section', 'SectionMatch')
+		app.prepareGame()
 		console.log 'params', params
 		

@@ -216,7 +216,7 @@ class @HumanInputController extends InputController
 		console.log("OnResize");
 
 		#Playzone Width
-		$(".Playzone").width( $("#WebsiteApp").width() - $(".Sidebar").outerWidth(); )
+		$(".Playzone").width( app.el.width() - $(".Sidebar").outerWidth(); )
 
 		#Board Height
 		handOuterHeight = $(".HumanPlayer .Hand").outerHeight() + parseFloat($(".HumanPlayer .Hand").css("bottom")) + 18

@@ -12,9 +12,9 @@ class @NetworkInputController extends InputController
 		#Cards
 		gameStream.on 'onCardIsCreated', 					this.onCardIsCreated
 		gameStream.on 'onCardIsRemoved', 					this.onCardIsRemoved
-		gameStream.on 'onCardIsMoved', 					this.onCardIsMoved
-		gameStream.on 'onCardIsTapped',					this.onCardIsTapped
-		gameStream.on 'onCardIsFlippedUp', 				this.onCardIsFlippedUp
+		gameStream.on 'onCardIsMoved', 						this.onCardIsMoved
+		gameStream.on 'onCardIsTapped',						this.onCardIsTapped
+		gameStream.on 'onCardIsFlippedUp', 					this.onCardIsFlippedUp
 		gameStream.on 'onCardIsFlippedDown', 				this.onCardIsFlippedDown
 		gameStream.on 'onCardAreaIsChanged', 				this.onCardAreaIsChanged
 		gameStream.on 'onCardFromAreaIsRevealedToggle', 	this.onCardFromAreaIsRevealedToggle
@@ -31,8 +31,8 @@ class @NetworkInputController extends InputController
 		gameStream.on 'onCounterIsRemoved', 				this.onCounterIsRemoved
 		gameStream.on 'onCounterIsMoved', 					this.onCounterIsMoved
 		gameStream.on 'onCounterIsSet', 					this.onCounterIsSet
-		gameStream.on 'onCounterIsAttachedToCard', 		this.onCounterIsAttachedToCard
-		gameStream.on 'onCounterIsUnattached', 			this.onCounterIsUnattached
+		gameStream.on 'onCounterIsAttachedToCard', 			this.onCounterIsAttachedToCard
+		gameStream.on 'onCounterIsUnattached', 				this.onCounterIsUnattached
 
 
 	#Deck
@@ -51,6 +51,7 @@ class @NetworkInputController extends InputController
 		this.onRemoveCard( params.cardId )
 
 	onCardIsMoved: ( params ) =>
+		console.log 'params'
 		this.onMoveCard( params.cardId, params.location )
 
 	onCardAreaIsChanged: ( params ) =>

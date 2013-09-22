@@ -7,7 +7,7 @@
 
 <body>
 
-	<div id="WebsiteApp" section="{{$.Session.get 'section'}}">
+	<div id="App" section="SectionMain">
 
 		{{> logginButtons }}
 		
@@ -19,6 +19,9 @@
 			</div>
 			<div class="section SectionMatch">
 				{{> match}}
+			</div>
+			<div class="section SectionWaitingOpponent">
+				Waiting Opponent
 			</div>
 		{{/if}}
 	</div>
