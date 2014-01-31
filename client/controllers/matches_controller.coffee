@@ -36,6 +36,14 @@ class @MatchesController
 		Meteor.call( 'joinMatch', match_id )
 
 	onStartMatch: ( params ) ->
+
+		#Set OpponentId to the user who is not the sender of the event
+		console.log  'SettingOpponentId', Meteor.userId(), params.player0, Meteor.userId() == params.player0 
+		if( Meteor.userId() == params.player0._id )
+			opponent = params.player1
+		else
+			opponent = params.player0
+
+		Session.set( 'opponent', opponent )
 		app.prepareGame()
-		console.log 'params', params
 		

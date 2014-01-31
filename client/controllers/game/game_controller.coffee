@@ -30,9 +30,12 @@ class @GameController extends Spine.Controller
 		this.humanInputController.onResize()
 		this.showGameBoard()
 
-		#this.player.setDeck( User.first().deck )
-		this.player.setDeck( Decks.findOne( Meteor.user().profile.current_deck_id ) )
 		this.player.createLifeCounter()
+
+		this.multiplayerController.onGameSetupComplete()
+
+	startGameCommunication: ->
+		this.player.setDeck( Decks.findOne( Meteor.user().profile.current_deck_id ) )	
 
 	reset: ->
 		for card in Card.all()

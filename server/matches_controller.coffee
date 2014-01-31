@@ -1,4 +1,5 @@
 Meteor.startup( ->
+	console.log '------------------------------------------------------>>>>>>>>>>>>>>'
 	this.matchesController = new MatchesController()
 
 	matchesStream.permissions.read ( ( eventName, params ) ->
@@ -22,12 +23,12 @@ Meteor.startup( ->
 )
 
 Meteor.methods
-
 	createMatchAndJoin: () ->
 		matchesController.createMatchAndJoin()
 
 	joinMatch: ( match_id ) ->
 		matchesController.joinMatch(  match_id, Meteor.userId() )
+
 
 class @MatchesController
 
@@ -82,10 +83,10 @@ class @MatchesController
 
 	startMatch: ( match_id ) ->
 		this.setMatchState( match_id, this.states.playing )
-		users = Matches.findOne( match_id ).users
+		usersInMatch = Matches.findOne( match_id ).users
 		params =
-			player0: Meteor.users.findOne( users[0] )
-			player1: Meteor.users.findOne( users[1] )
+			player0: Meteor.users.findOne( usersInMatch[0] )
+			player1: Meteor.users.findOne( usersInMatch[1] )
 			match: match_id
 
 		matchesStream.emit('onStartMatch', params )

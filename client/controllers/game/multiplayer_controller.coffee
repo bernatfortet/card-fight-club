@@ -138,7 +138,7 @@ class @MultiplayerController extends Spine.Controller
 	# Chat
 	onSendChatMsg: ( msg ) ->
 		params =
-			userName: User.first().name
+			userName: Meteor.user().profile.username
 			msg: msg
 
 		this.sendEvent( "onSendChatMsg", params )
@@ -233,6 +233,13 @@ class @MultiplayerController extends Spine.Controller
 		app.gameController.networkInputController.onCounterIsUnattached( params ) if localServer
 		console.log( "Counter is Unattached ", params );
 
+	onGameSetupComplete: () =>
+		this.sendEvent( "onGameSetupComplete", params )
+
+		app.gameController.networkInputController.onGameSetupIsCompleted( params ) if localServer
+		console.log( "Game Setup completed ", params );
+
+
 	# Utils
 	setIdForOpponent: ( id ) ->
 		if( id[0] != "o")
@@ -241,6 +248,9 @@ class @MultiplayerController extends Spine.Controller
 
 	sendEvent: ( event, params ) ->
 		#console.log 'SendEvent: ', event
-		
+
 		params.userName = Meteor.user().profile.username
+		params.userId = Meteor.user()._id
+		params.opponentId = Session.get('opponent')._id
+
 		gameStream.emit( event, params ) if !localServer

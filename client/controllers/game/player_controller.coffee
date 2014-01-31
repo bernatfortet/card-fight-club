@@ -184,7 +184,7 @@ class @PlayerController extends Spine.Controller
 		diceResult = this.getRandomInt( 1, 6 )
 
 		params = 
-			userName: User.first().name
+			userName: Meteor.user().profile.username
 			diceResult: diceResult
 
 		app.gameController.chatController.renderThrowDice( params )

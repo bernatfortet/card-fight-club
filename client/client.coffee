@@ -64,11 +64,8 @@ class App extends Spine.Controller
 		this.setState( 'SectionMatch' )
 		this.gameController.initialize()
 
-
 	setState: ( newState ) ->
-		this.el.attr('section', newState )
-
-
+		this.el.attr('section', newState ) 
 
 	# Deck Setup ==========================
 

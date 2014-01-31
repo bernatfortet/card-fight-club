@@ -7,36 +7,37 @@ class @NetworkInputController extends InputController
 
 	setListeners: () ->
 		#Deck
-		gameStream.on 'onDeckIsCreated', 					this.onDeckIsCreated
+		gameStream.on 'onCreateDeck', 					this.onDeckIsCreated
 
 		#Cards
-		gameStream.on 'onCardIsCreated', 					this.onCardIsCreated
-		gameStream.on 'onCardIsRemoved', 					this.onCardIsRemoved
-		gameStream.on 'onCardIsMoved', 						this.onCardIsMoved
-		gameStream.on 'onCardIsTapped',						this.onCardIsTapped
-		gameStream.on 'onCardIsFlippedUp', 					this.onCardIsFlippedUp
-		gameStream.on 'onCardIsFlippedDown', 				this.onCardIsFlippedDown
-		gameStream.on 'onCardAreaIsChanged', 				this.onCardAreaIsChanged
-		gameStream.on 'onCardFromAreaIsRevealedToggle', 	this.onCardFromAreaIsRevealedToggle
+		gameStream.on 'onCreateCard', 					this.onCardIsCreated
+		gameStream.on 'onRemoveCard', 					this.onCardIsRemoved
+		gameStream.on 'onMoveCard', 						this.onCardIsMoved
+		gameStream.on 'onTapCard',						this.onCardIsTapped
+		gameStream.on 'onFlipCardUp', 					this.onCardIsFlippedUp
+		gameStream.on 'onFlipCardDown', 				this.onCardIsFlippedDown
+		gameStream.on 'onCardChangesArea', 				this.onCardAreaIsChanged
+		gameStream.on 'onToggleRevealCardFromArea', 	this.onCardFromAreaIsRevealedToggle
 
 		#Chat
-		gameStream.on 'onChatMsgIsReceived', 				this.onChatMsgIsReceived
+		gameStream.on 'onSendChatMsg', 				this.onChatMsgIsReceived
 
 		#Gameplay
-		gameStream.on 'onTurnIsReceived', 					this.onTurnIsReceived
-		gameStream.on 'onDiceIsThrown', 					this.onDiceIsThrown
+		gameStream.on 'onPassTurn', 					this.onTurnIsReceived
+		gameStream.on 'onThrowDice', 					this.onDiceIsThrown
 
 		#Counters
-		gameStream.on 'onCounterIsCreated', 				this.onCounterIsCreated
-		gameStream.on 'onCounterIsRemoved', 				this.onCounterIsRemoved
-		gameStream.on 'onCounterIsMoved', 					this.onCounterIsMoved
-		gameStream.on 'onCounterIsSet', 					this.onCounterIsSet
-		gameStream.on 'onCounterIsAttachedToCard', 			this.onCounterIsAttachedToCard
-		gameStream.on 'onCounterIsUnattached', 				this.onCounterIsUnattached
+		gameStream.on 'onCreateCounter', 				this.onCounterIsCreated
+		gameStream.on 'onRemoveCounter', 				this.onCounterIsRemoved
+		gameStream.on 'onMoveCounter', 					this.onCounterIsMoved
+		gameStream.on 'onSetCounter', 					this.onCounterIsSet
+		gameStream.on 'onAttachCounterToCard', 			this.onCounterIsAttachedToCard
+		gameStream.on 'onUnattachCounter', 				this.onCounterIsUnattached
 
 
 	#Deck
 	onDeckIsCreated: ( deckData ) =>
+		console.log 'Opponente ---> Deck is created', deckData
 		if( this.targetPlayer.deck == null )
 			this.onCreateDeck( deckData )
 

@@ -11,8 +11,7 @@ class @InputController extends Spine.Controller
 
 	#Deck Model
 	onCreateDeck: ( deckData ) =>
-		this.targetPlayer.setDeck( deckData );
-
+		this.targetPlayer.setDeck( deckData );	
 
 	#Cards
 	onCreateCard: ( cardModel ) =>

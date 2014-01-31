@@ -13,10 +13,8 @@ class @ChatController extends Spine.Controller
 		super
 
 	renderMsg: ( params ) ->
-		if( params.userId )
-			params.player = User.find( params.userId ).name
-		else if( params.userName )
-			params.player = params.userName
+		console.log 'sendMessage', params
+		params.player = params.userName
 
 		this.conversation.append( $.tmpl( this.template, params ) )
 
